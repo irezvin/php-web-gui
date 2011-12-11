@@ -1,0 +1,88 @@
+.paxError {
+/*    z-index: 255;
+    position: absolute;
+    left: 50px;
+    top: 50px;
+    width: 700px;
+*/
+    height: 300px;
+    overflow: scroll;
+    padding: 1em;
+/*    margin-bottom: 1em;*/
+    border: 5px solid silver;
+    background-color: darkred;
+    color: white;
+}
+
+.paxError a {color: gold}
+
+.resizeablePanel .bd {
+    overflow:auto;
+}
+
+.resizeablePanel .ft {
+    height:15px;
+    padding:0;
+}
+
+.resizeablePanel .yui-resize-handle-br {
+    right:0;
+    bottom:0;
+    height: 8px;
+    width: 8px;
+    position:absolute;
+}
+
+.resizeablePanel .hide-scrollbars .yui-resize .bd {
+    overflow: hidden;
+}
+
+.resizeablePanel .show-scrollbars .yui-resize .bd {
+    overflow: auto;
+}
+
+.resizeablePanel .show-scrollbars .underlay {
+    overflow: visible;
+}
+
+.yui-skin-sam .yui-toolbar-container .yui-toolbar-editcode span.yui-toolbar-icon {
+    background-image: url( assets/html_editor.gif );
+    background-position: 0 1px;
+    left: 5px;
+}
+.yui-skin-sam .yui-toolbar-container .yui-button-editcode-selected span.yui-toolbar-icon {
+    background-image: url( assets/html_editor.gif );
+    background-position: 0 1px;
+    left: 5px;
+}
+.editor-hidden {
+    visibility: hidden;
+    top: -9999px;
+    left: -9999px;
+    position: absolute;
+}
+
+.yui-resize-handle-br {
+    height: 11px;
+    width: 11px;
+    background-position: -20px -60px;
+    background-color: transparent;
+}
+
+.yui-hidden {
+    top: -999999px
+}
+
+
+.ygtvitem .selected .ygtvlabel {font-weight: bold}
+
+
+
+html.busyCursor, html.busyCursor body, html.busyCursor *, html.busyCursor a, html.busyCursor a:hover, html.busyCursor a *, html.busyCursor a:hover * {
+		cursor: progress!important
+}
+html.pauseCursor, html.pauseCursor body, html.pauseCursor *, html.pauseCursor a, html.pauseCursor a:hover, html.pauseCursor a *, html.pauseCursor a:hover * {cursor: wait!important}
+
+/*
+html.normalCursor, html.normalCursor body, html.normalCursor *, html.normalCursor a, html.normalCursor a:hover, html.normalCursor a *, html.normalCursor a:hover * {cursor: auto!important}
+*/
