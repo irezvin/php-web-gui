@@ -1,0 +1,7 @@
+<?php
+
+$config = array(
+    'webUrl' => 'http://nivzer2/paxMvc/',
+    'useLocalSessionSavePath' => true,
+    'useComet' => 0,
+);
