@@ -1,0 +1,7 @@
+.ygtvcheck0 { background: url(state0.png) 0 -4px no-repeat; width:16px; cursor:pointer }
+.ygtvcheck1 { background: url(state1.png) 0 -4px no-repeat; width:16px; cursor:pointer }
+.ygtvcheck2 { background: url(state2.png) 0 -4px no-repeat; width:16px; cursor:pointer }
+.ygtvcheck3 { background: url(state3.png) 0 -4px no-repeat; width:16px; cursor:pointer }
+.ygtvcheck4 { background: url(state4.png) 0 -4px no-repeat; width:16px; cursor:pointer }
+.ygtvcheck5 { background: url(state5.png) 0 -4px no-repeat; width:16px; cursor:pointer }
+span.ygtvcheck { display: inline-block; height: 1.1em; width: 1em }
