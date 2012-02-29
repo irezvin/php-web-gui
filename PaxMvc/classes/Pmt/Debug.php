@@ -11,7 +11,7 @@ class Pmt_Debug {
     }
     
     static function registerHandlers() {
-        Ae_Dispatcher::loadClass('Ae_Database');
+        Ae_Dispatcher::loadClass('Ae_Legacy_Database');
         Ae_Callbacks::getInstance()->addHandler(CALLBACK_AE_DATABASE_AFTER_QUERY, array('Pmt_Debug', 'logSql'), 'Pmt_Debug.logSql');
         //var_dump(Ae_Callbacks::getInstance()->listCallbacks());
     }

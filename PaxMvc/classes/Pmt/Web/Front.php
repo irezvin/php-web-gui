@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Web_Front extends Ae_Controller implements Pm_I_Web_Front {
+class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     
     var $_defaultMethodName = 'default';
     
@@ -188,7 +188,7 @@ class Pmt_Web_Front extends Ae_Controller implements Pm_I_Web_Front {
         
         header('content-type: '.$this->contentType);
         
-        if ($this->instantiateDisaptcher) Ae_Dispatcher::instantiate($this->id, false, $this->lang, 'Ae_Native_Adapter', 'Ae_Dispatcher', 
+        if ($this->instantiateDisaptcher) Ae_Dispatcher::instantiate($this->id, false, $this->lang, 'Ae_Legacy_Adapter_Native', 'Ae_Dispatcher', 
             array('configPath' => $this->configPath));
 
         // stupid hack
