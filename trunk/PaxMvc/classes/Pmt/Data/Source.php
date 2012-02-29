@@ -726,7 +726,7 @@ class Pmt_Data_Source extends Pmt_Base {
     }
     
     /**
-     * @return Ae_Database
+     * @return Ae_Legacy_Database
      */
     function getAeDb() {
         if ($this->aeDb === false) {

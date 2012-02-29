@@ -14,7 +14,7 @@ abstract class Pmt_App extends Pmt_Autoparams implements Ae_I_Lang_ResourceProvi
     protected $currentUser = false;
     
     /**
-     * @var Ae_Database
+     * @var Ae_Legacy_Database
      */
     protected $db = false;
     
@@ -28,7 +28,7 @@ abstract class Pmt_App extends Pmt_Autoparams implements Ae_I_Lang_ResourceProvi
     protected $langStrings = array();
     
     /**
-     * @return Ae_Database
+     * @return Ae_Legacy_Database
      */
     function getDb() {
         if ($this->db === false) {
@@ -105,7 +105,7 @@ abstract class Pmt_App extends Pmt_Autoparams implements Ae_I_Lang_ResourceProvi
      */
     function createImageUploadController() {
         $baseUrl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
-        $uCtx = new Ae_Controller_Context_Http(array(
+        $uCtx = new Ae_Legacy_Controller_Context_Http(array(
             'baseUrl' => $baseUrl.'?c=img', 
         ));
         $uCtx->populate('request', 'imageUploader');
@@ -231,7 +231,7 @@ abstract class Pmt_App extends Pmt_Autoparams implements Ae_I_Lang_ResourceProvi
      */
     function createUploadController() {
         $baseUrl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
-        $uCtx = new Ae_Controller_Context_Http(array(
+        $uCtx = new Ae_Legacy_Controller_Context_Http(array(
             'baseUrl' => $baseUrl.'?c=file', 
         ));
         $uCtx->populate('request', 'uploader');
@@ -245,7 +245,7 @@ abstract class Pmt_App extends Pmt_Autoparams implements Ae_I_Lang_ResourceProvi
     }
     
     function instantiateDispatcher() {
-        Ae_Dispatcher::instantiate(get_class($this).'_Dispatcher', false, $this->getDispatcherLang(), 'Ae_Native_Adapter', 'Ae_Dispatcher', 
+        Ae_Dispatcher::instantiate(get_class($this).'_Dispatcher', false, $this->getDispatcherLang(), 'Ae_Legacy_Adapter_Native', 'Ae_Dispatcher', 
             array('configPath' => 'app.config.php'));       
     }
 
@@ -264,14 +264,14 @@ abstract class Pmt_App extends Pmt_Autoparams implements Ae_I_Lang_ResourceProvi
             header('content-type: text/html; charset=utf8');
             $c = $this->createImageUploadController();
             $r = $c->getResponse();
-            $o = new Ae_Native_Output(array('showOuterHtml' => true));
+            $o = new Ae_Output_Native(array('showOuterHtml' => true));
             $o->outputResponse($r);
             $res = true;
         } elseif(isset($_REQUEST['c']) && ($_REQUEST['c'] == 'file')) {
             header('content-type: text/html; charset=utf8');
             $c = $this->createUploadController();
             $r = $c->getResponse();
-            $o = new Ae_Native_Output(array('showOuterHtml' => true));
+            $o = new Ae_Output_Native(array('showOuterHtml' => true));
             $o->outputResponse($r);
             $res = true;
         } 
