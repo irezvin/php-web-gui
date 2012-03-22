@@ -1,0 +1,22 @@
+<?php
+
+$config = array(
+    'webUrl' => 'http://nivzer2/paxDemos/',
+    'useLocalSessionSavePath' => true,
+    'useComet' => 0,
+    
+    'outputPrototype' => array('class' => 'Ae_Legacy_Output_Native', 'showOuterHtml' => true),
+    
+    'assetPlaceholders' => array('{YUI}' => 'http://nivzer2/yui/build'),
+     
+    'legacyDatabasePrototype' => array(
+        'class' => 'Ae_Legacy_Database_Native',
+        '__construct' => array(array(
+            'user' => 'irezvin',
+            'password' => '',
+            'db' => 'paxmvc',
+            'prefix' => 'pax_',
+        )),
+    ),
+    
+);

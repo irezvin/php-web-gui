@@ -1,11 +1,11 @@
 <?php
 
-// {classdef}
 class Example_HelloWorld extends Pmt_Controller_Aggregate {
+
+    // {init}
 
     var $timesClicked = 0;
 
-    // {init}
     function doOnGetControlPrototypes(& $prototypes) {
         Ae_Util::ms($prototypes, array(
             'btnHello' => array('label' => 'Click me'),
@@ -21,5 +21,3 @@ class Example_HelloWorld extends Pmt_Controller_Aggregate {
     // {/handler}
 
 }
-
-// {/classdef}
