@@ -4,7 +4,7 @@
  * @deprecated
  * Use Pmt_Application instead
  */
-abstract class Pmt_App extends Pmt_Autoparams implements Ae_I_Lang_ResourceProvider {
+abstract class Pmt_Legacy_App extends Pmt_Autoparams implements Ae_I_Lang_ResourceProvider {
     
     protected $currentUserId = false;
     

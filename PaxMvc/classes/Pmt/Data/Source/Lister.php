@@ -43,7 +43,7 @@ class Pmt_Data_Source_Lister extends Pmt_Autoparams {
             $i++;
         }
         
-        $aeDb = $this->dataSource->getAeDb();
+        $aeDb = $this->dataSource->getLegacyDb();
         $coll->addWhere($aeDb->sqlKeysCriteria(array($pk), $this->dataSource->getMapper()->listPkFields(), $this->dataSource->getAlias()));
         $sql = "SELECT ".implode(", ", $columns)." ".$coll->getStatementTail();
         $aeDb->setQuery($sql);
@@ -63,7 +63,7 @@ class Pmt_Data_Source_Lister extends Pmt_Autoparams {
         if ($ordValues !== false) {
             $crits = array();
             $i = 0;
-            $aeDb = $this->dataSource->getAeDb();
+            $aeDb = $this->dataSource->getLegacyDb();
             foreach ($owd[0] as $orderExpr) {
                 //$o = $orderExpr;
                 //$crits[] = "IF(".$o.'<>'.$aeDb->Quote($ordValues[$i]).','.$o.($owd[1][$i]? ' < ' : ' > ').$aeDb->Quote($ordValues[$i]);
@@ -124,7 +124,7 @@ class Pmt_Data_Source_Lister extends Pmt_Autoparams {
         if (!$returnWholeRecord) {
             $cols = implode(", ", $this->dataSource->getMapper()->listPkFields());
             $sql = $coll->getStatementTail(true, true, true, $cols);
-            $aeDb = $this->dataSource->getAeDb();
+            $aeDb = $this->dataSource->getLegacyDb();
             $aeDb->setQuery($sql);
             $rows = $aeDb->loadResult();
             if (count($rows)) {

@@ -54,7 +54,7 @@ class Pmt_Controller_Std_Tree extends Pmt_Controller_MDI_Window implements Pmt_I
     function getMapper() {
         if ($this->mapper === false) {
             if (!strlen($this->mapperClass)) throw new Exception("\$mapperClass not provided");
-            $this->mapper = Ae_Dispatcher::getMapper($this->mapperClass);
+            $this->mapper = $this->getApplication()->getMapper($this->mapperClass);
             if ($this->mapper instanceof Pmt_I_Tree_Mapper) {
                 if (!($this->mapper instanceof Pmt_I_Tree_Mapper_AdjacencyList || $this->mapper instanceof Pmt_I_Tree_Mapper_NestedSets))
                     throw new Exception("Currently Pmt_Controller_Std_Tree supports only mappers that implement "

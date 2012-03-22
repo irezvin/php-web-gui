@@ -38,8 +38,6 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     
     var $lang = 'english';
 
-    var $instantiateDisaptcher = false;
-    
     var $configPath = 'app.config.php';
     
     var $id = 'paxApplication';
@@ -50,7 +48,7 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     protected $application = null;
     
     /**
-     * @var Pmt_App
+     * @var Pmt_Legacy_App
      */
     var $app = false;
     
@@ -188,9 +186,6 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
         
         header('content-type: '.$this->contentType);
         
-        if ($this->instantiateDisaptcher) Ae_Dispatcher::instantiate($this->id, false, $this->lang, 'Ae_Legacy_Adapter_Native', 'Ae_Dispatcher', 
-            array('configPath' => $this->configPath));
-
         // stupid hack
         if (isset($_REQUEST['messages']) && isset($_REQUEST['sid'])) {
         	$conv = $this->createConversation();
@@ -239,6 +234,7 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
         
         if ($this->conversation->hasToProcessWebRequest()) {
             $this->conversation->processWebRequest();
+            $this->_response->noHtml = true;
         } elseif ($this->showHtml) {
         	$this->conversation->notifyPageRender();
             $this->showHtml();
@@ -270,6 +266,35 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     }
     
     function showHtml() {
+
+        if (!$this->_response) $this->_response = new Ae_Controller_Response_Html;
+        
+        $jsl = $this->getInitiallyLoadedAssets();
+        foreach ($this->controllers as $c) {
+            $jsl = array_merge($jsl, $c->getAssetLibs());
+        }
+        $newJsl = array();
+        $jsl = $this->applyHacksToAssetLibs($jsl);
+        foreach ($jsl as & $l) {
+            if (substr($l, 0, 1) !== '{' && (substr($l, 0, 7) != 'http://') && (substr($l, 0, 8) !== 'https://')) $l = '{PAX}/'.ltrim($l, '/');
+        }
+        $this->_response->addAssetLibs($jsl);
+
+        ob_start();
+        foreach($this->controllers as $c) {  $c->showHeadElements(); }
+        $h = ob_get_clean();
+        if (strlen(trim($h))) $this->_response->addHeadTag($h);
+        
+        if ($this->bodyAttribs) $this->_response->bodyAttribs = $this->bodyAttribs;
+        
+        ob_start();
+        $this->showBody();
+        $this->_response->content = ob_get_clean();
+        $this->conversation->start();
+        foreach ($this->controllers as $con) $con->notifyFrontInitialized();
+        
+        return;
+        
 ?>
 <<?php echo "?"; ?>xml version="1.0" encoding="windows-1251"<?php echo "?"; ?>><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
         <head>
@@ -378,7 +403,9 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     }
     
     protected function getSessionStateVarName() {
-        return $this->id.'Var';
+        $res = $this->id.'Var';
+        if (strlen($this->sessionSuffix)) $res .= $this->sessionSuffix;
+        return $res;
     }
     
     protected function initialize() {
@@ -506,6 +533,9 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
         }
         $newJsl = array();
         $jsl = $this->applyHacksToAssetLibs($jsl);
+        
+        
+        
         foreach ($jsl as $js) {
             $js = $this->getJsOrCssUrl($js);
             if (substr($js, -4) == '.css') {

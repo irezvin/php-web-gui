@@ -48,7 +48,7 @@ class Pmt_Data_Source_Lister_Memory extends Pmt_Data_Source_Lister {
     
     function getRecordNumberByKey($pk) {
         $this->updateKeyIndex();
-        //if (is_object($pk)) $pk = $this->dataSource->getAeDb()->quote($pk);
+        //if (is_object($pk)) $pk = $this->dataSource->getLegacyDb()->quote($pk);
         if (is_array($pk)) {
             $pk = '_'.implode('_', $pk);
         } else {

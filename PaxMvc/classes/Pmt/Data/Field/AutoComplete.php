@@ -88,7 +88,7 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
         $res = false;
         $res = (strpos($expression, '{{query}}') !== false) || (strpos($expression, '{{value}}') !== false);
         if ($res) {
-            $expression = str_replace('{{query}}', $this->listSource->getAeDb()->Quote($query), $expression);
+            $expression = str_replace('{{query}}', $this->listSource->getLegacyDb()->Quote($query), $expression);
             $expression = str_replace('{{value}}', $this->value, $expression);
         }
         return $res;
@@ -103,12 +103,12 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
                 $c = $this->listSource->createCollection();
                 
                 if (strlen($this->labelExpression)) $qlf = $this->labelExpression; 
-                    else $qlf = $this->listSource->getAeDb()->NameQuote($c->getAlias()).'.'.$this->listSource->getAeDb()->NameQuote($lf);
+                    else $qlf = $this->listSource->getLegacyDb()->NameQuote($c->getAlias()).'.'.$this->listSource->getLegacyDb()->NameQuote($lf);
                 
                 if ($this->replaceQuery($qlf, $params['request']))  
                     $c->addWhere($qlf);
                 else
-                    $c->addWhere($qlf.' LIKE '.$this->listSource->getAeDb()->Quote('%'.$params['request'].'%'));
+                    $c->addWhere($qlf.' LIKE '.$this->listSource->getLegacyDb()->Quote('%'.$params['request'].'%'));
                 
                 if (strlen($alde)) $c->addExtraColumn($alde.' AS _alde');
                 if ($this->maxResults !== false) $c->setLimits(0, $this->maxResults);
@@ -263,8 +263,8 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
                 if ($this->listSource && strlen($this->valueFieldName)) {
                     $c = $this->listSource->createCollection();
                     if (strlen($alde)) $c->addExtraColumn($alde.' AS _alde');
-                    $qvf = $this->listSource->getAeDb()->NameQuote($this->valueFieldName);
-                    $c->addWhere($qvf.' = '.$this->listSource->getAeDb()->Quote($value));
+                    $qvf = $this->listSource->getLegacyDb()->NameQuote($this->valueFieldName);
+                    $c->addWhere($qvf.' = '.$this->listSource->getLegacyDb()->Quote($value));
                     $c->setLimits(0, 1);
                     if ($rec = $c->getNext()) {
                         if (strlen($lf)) $res = $rec->getField($lf);
@@ -294,7 +294,7 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
             if ($this->listSource && strlen($lf) && strlen($this->valueFieldName)) {
                 $c = $this->listSource->createCollection();
                 if (strlen($this->labelExpression)) $qlf = $this->labelExpression; 
-                    else $qlf = $this->listSource->getAeDb()->NameQuote($c->getAlias()).'.'.$this->listSource->getAeDb()->NameQuote($lf);
+                    else $qlf = $this->listSource->getLegacyDb()->NameQuote($c->getAlias()).'.'.$this->listSource->getLegacyDb()->NameQuote($lf);
 
                 if ($this->replaceQuery($qlf, $text)) {
                     $c->addWhere($qlf);
@@ -305,8 +305,8 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
                     
                 } else {
                     
-                    if ($extact) $c->addWhere($qlf.' = '.$this->listSource->getAeDb()->Quote($text));
-                        else $c->addWhere($qlf.' LIKE '.$this->listSource->getAeDb()->Quote($text.'%'));
+                    if ($extact) $c->addWhere($qlf.' = '.$this->listSource->getLegacyDb()->Quote($text));
+                        else $c->addWhere($qlf.' LIKE '.$this->listSource->getLegacyDb()->Quote($text.'%'));
                     $c->setLimits(0, 1);
                     if ($rec = $c->getNext()) {
                         $res = $rec->getField($this->valueFieldName);

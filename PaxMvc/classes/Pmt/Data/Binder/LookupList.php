@@ -163,12 +163,10 @@ class Pmt_Data_Binder_LookupList extends Pmt_Data_Binder {
     function getValuesProvider() {
         if ($this->valuesProvider === false) {
             if ($this->valuesProviderPrototype) {
-                Ae_Dispatcher::loadClass('Ae_Model_Values');
                 $this->valuesProvider = & Ae_Model_Values::factoryIndependent($this->valuesProviderPrototype);
             }
             elseif ($p = & $this->propInfo) {
                 if (isset($p->values) && $p->values || isset($p->valueList) && is_array($p->valueList)) {
-                    Ae_Dispatcher::loadClass('Ae_Model_Values');
                     $this->valuesProvider = & Ae_Model_Values::factoryWithProperty($p);
                 }
             }

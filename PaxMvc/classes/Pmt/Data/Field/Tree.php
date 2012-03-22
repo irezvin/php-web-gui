@@ -301,7 +301,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
     protected function setMapperClass($mapperClass) {
         $this->mapperClass = $mapperClass;
         if (strlen($mapperClass)) {
-            $mapper = & Ae_Dispatcher::getMapper($mapperClass);
+            $mapper = $this->getApplication()->getMapper($mapperClass);
             if ($mapper instanceof Pmt_I_Tree_Mapper)
                 $this->setTreeProvider($mapper->createTreeProvider());
         }
@@ -595,7 +595,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
     protected function defaultFindTreeItems($substring, $limit) {
         $results = array();
         $mapper = false;
-        if ($this->mapperClass) $mapper = & Ae_Dispatcher::getMapper($this->mapperClass);
+        if ($this->mapperClass) $mapper = $this->getApplication()->getMapper($this->mapperClass);
         if ($mapper && strlen($titleFieldName = $mapper->getTitleFieldName())) {
             $db =  & $mapper->database;
             if (strlen($substring)) {
@@ -619,7 +619,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
     protected function defaultFormatSearchResults (array $results) {
         $items = array();
         $m = false;
-        if ($this->mapperClass) $m = Ae_Dispatcher::getMapper($this->mapperClass);
+        if ($this->mapperClass) $m = $this->getApplication()->getMapper($this->mapperClass);
         if ($m && strlen($tf = $m->getTitleFieldName())) {
             foreach ($results as $result)
             $items[] = array('value' => $result->$tf, 'label' => $result->$tf);

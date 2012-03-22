@@ -41,12 +41,12 @@ class Pmt_Controller_MDI extends Pmt_Controller {
         parent::doAfterControlsCreated();
     }
 
-    protected function setApp(Pmt_App $app) {
+    protected function setApp(Pmt_Legacy_App $app) {
         $this->app = $app;
     }
 
     /**
-     * @return Pmt_App
+     * @return Pmt_Legacy_App
      */
     function getApp() {
         return $this->app;

@@ -844,6 +844,19 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
         return $res;
     }
     
+    /**
+     * @return Pmt_Application
+     */
+    function getApplication() {
+        $res = null;
+        $c = $this->getController();
+        if ($c) {
+            $wf = $c->getWebFront();
+            $res = $c->getApplication();
+        }
+        return $res;
+    }
+    
 }
 
 ?>

@@ -164,18 +164,18 @@ class Pmt_Data_Field_List_MultiWithFilter extends Pmt_Data_Field_List {
         $this->filter->setDisabled($this->readOnly);
         if (!$this->lockListUpdate) {
             $this->lockListUpdate = true;
-            $db = Ae_Dispatcher::getInstance()->database;
+            $db = $this->getApplication()->getDb();
             if ($vp = $this->binder->getValuesProvider()) {
                 $vp->resetCache();
                 $w = array();
                 $o = array();
                 if ($this->recordPropertyValue) {
-                    if (!$this->showAll) $w[] = $this->idExpr.' '.$db->sqlEqCriteria($this->recordPropertyValue);
-                    $o[] = 'IF ('.$this->idExpr.' '.$db->sqlEqCriteria($this->recordPropertyValue).', 0, 1) ASC';
+                    if (!$this->showAll) $w[] = $this->idExpr.' '.$db->eqCriterion($this->recordPropertyValue);
+                    $o[] = 'IF ('.$this->idExpr.' '.$db->eqCriterion($this->recordPropertyValue).', 0, 1) ASC';
                 }
                 $o[] = $this->filterExpr.' ASC';
                 if (!$this->showAll && strlen($this->filterText)) {
-                    $w[] = $this->filterExpr.' LIKE '.$db->Quote($this->filterText.'%');
+                    $w[] = $this->filterExpr.' LIKE '.$db->q($this->filterText.'%');
                 }
                 $vp->where = implode(" OR ", $w); 
                 $vp->ordering = implode(", ", $o);

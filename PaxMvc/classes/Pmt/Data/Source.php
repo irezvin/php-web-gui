@@ -112,6 +112,7 @@ class Pmt_Data_Source extends Pmt_Base {
     
     function setMapperClass($mapperClass) {
         $this->mapperClass = $mapperClass;
+        $this->mapper = false;
         $this->intReset();
     }
 
@@ -217,11 +218,17 @@ class Pmt_Data_Source extends Pmt_Base {
         return $this->mapperClass;
     }
     
+    function setMapper(Ae_Model_Mapper $mapper) {
+        $this->mapper = $mapper;
+        $this->mapperClass = $mapper->getId();
+        $this->intReset();
+    }
+    
     /**
      * @return Ae_Model_Mapper
      */
     function getMapper() {
-        if ($this->mapper === false && strlen($this->mapperClass)) $this->mapper = Ae_Dispatcher::getMapper($this->mapperClass);
+        if ($this->mapper === false && strlen($this->mapperClass)) $this->mapper = $this->getApplication()->getMapper($this->mapperClass);
         return $this->mapper;
     }
     
@@ -254,7 +261,7 @@ class Pmt_Data_Source extends Pmt_Base {
                 $k = $this->currentKey;
                 if (!is_array($k)) $k = array($k);
                 $coll = & $this->createCollection();
-                $coll->addWhere($this->getAeDb()->sqlKeysCriteria($k, $this->getMapper()->listPkFields(), $this->alias));
+                $coll->addWhere($this->getLegacyDb()->sqlKeysCriteria($k, $this->getMapper()->listPkFields(), $this->alias));
                 if ($this->debug) Pm_Conversation::log($this->getResponderId(), $coll->getStatementTail());
                 $this->currentRecord = $coll->getNext();
             } else {
@@ -589,7 +596,6 @@ class Pmt_Data_Source extends Pmt_Base {
      * @return Ae_Model_Collection
      */
     function createCollection() {
-        if (class_exists('Ae_Dispatcher')) Ae_Dispatcher::loadClass('Ae_Model_Collection');
         $coll = new Ae_Model_Collection($this->mapperClass, false, $this->where? "(".implode(") AND (", $this->where).")" : '', false, $this->extraJoins);
         if ($this->having) $coll->setHaving($this->having);
         if ($this->restrictions) {
@@ -597,7 +603,7 @@ class Pmt_Data_Source extends Pmt_Base {
         	foreach ($this->restrictions as $columns => $value) if ($value === false) { $hasFalse = true; break; }
         	if ($hasFalse) $coll->addWhere('1 = 0');
         	else
-            	$coll->addWhere($this->getAeDb()->sqlKeysCriteria(array(array_values($this->restrictions)), array_keys($this->restrictions), $this->alias), $coll->getAlias());
+            	$coll->addWhere($this->getLegacyDb()->sqlKeysCriteria(array(array_values($this->restrictions)), array_keys($this->restrictions), $this->alias), $coll->getAlias());
         }
         if (strlen($this->alias)) $coll->setAlias($this->alias);
         $coll->setOrder($this->getEffectiveOrdering());
@@ -609,7 +615,7 @@ class Pmt_Data_Source extends Pmt_Base {
     protected function doOnSleep() {
         $this->mapper = false;
         $this->sqlDb = false;
-        $this->aeDb = false;
+        $this->legacyDb = false;
         $this->collection = false;
         return parent::doOnSleep();
     }
@@ -642,7 +648,7 @@ class Pmt_Data_Source extends Pmt_Base {
         if (($c = count($od[1]))) {
             $lastDir = $od[1][$c - 1];
         }
-        $aeDb = $this->getAeDb();
+        $aeDb = $this->getLegacyDb();
         foreach ($this->getMapper()->listPkFields() as $f) {
             if (!in_array("{$this->alias}.".$f, $od[0]) && !in_array($aeDb->nameQuote($this->alias).'.'.$aeDb->nameQuote($f), $od[0]))
                 $res[] = "{$this->alias}.". $f.($lastDir? ' ASC' : ' DESC');
@@ -719,8 +725,7 @@ class Pmt_Data_Source extends Pmt_Base {
      */
     function getSqlDb() {
         if ($this->sqlDb === false) {
-            Ae_Dispatcher::loadClass('Ae_Sql_Db_Ae');
-            $this->sqlDb = new Ae_Sql_Db_Ae($this->getAeDb());
+            $this->sqlDb = $this->getApplication()->getDb();
         }
         return $this->sqlDb;
     }
@@ -728,12 +733,11 @@ class Pmt_Data_Source extends Pmt_Base {
     /**
      * @return Ae_Legacy_Database
      */
-    function getAeDb() {
-        if ($this->aeDb === false) {
-            $disp = Ae_Dispatcher::getInstance();
-            $this->aeDb = $disp->database;
+    function getLegacyDb() {
+        if ($this->legacyDb === false) {
+            $this->legacyDb = $this->getApplication()->getLegacyDatabase();
         }
-        return $this->aeDb;
+        return $this->legacyDb;
     }
     
     protected function intOpen() {
@@ -830,7 +834,7 @@ class Pmt_Data_Source extends Pmt_Base {
     	if ($asResidentResponder) {
     	    $mt = $this->getMapper()->getLastUpdateTime();
     	    foreach ($this->monitoredMappers as $m) {
-    	        if (($t = Ae_Dispatcher::getMapper($m)->getMtime()) > $mt) $mt = $t; 
+    	        if (($t = $this->getApplication()->getMapper($m)->getMtime()) > $mt) $mt = $t; 
     	    }
         	if ($this->lastMtime < ($mt)) {
         		$this->lastMtime = $mt;
