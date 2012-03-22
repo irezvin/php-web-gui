@@ -19,7 +19,7 @@ class Pmt_Composite_Display extends Pmt_Composite implements Pmt_I_Control_Displ
     protected function createDisplayParentImpl() {
         if (!$this->idp) {
             $this->idp = new Pmt_Impl_DisplayParent(array(
-                'allowedChildrenClass' => $this->allowedChildrenClass,
+                'allowedDisplayChildrenClass' => $this->allowedChildrenClass,
                 'conversation' => $this->conversation? $this->conversation : null,
                 'responderId' => $this->responderId,
                 'container' => $this,

@@ -29,7 +29,7 @@ class Pmt_Controller_Std_Details extends Pmt_Controller_MDI_Window {
 	function setPrimaryKey($primaryKey) {
 		$this->primaryKey = $primaryKey;
 		if ($this->dsDetails && strlen($this->mapperClass)) {
-			$m = Ae_Dispatcher::getMapper($this->mapperClass);
+			$m = $this->getApplication()->getMapper($this->mapperClass);
 			$f = $m->listPkFields();
 			if (is_array($primaryKey)) {
 				for ($i = 0; $i < count($f); $i++) $restr[$f[$i]] = $primaryKey[$i];

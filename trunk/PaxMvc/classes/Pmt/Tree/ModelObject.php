@@ -1,7 +1,5 @@
 <?php
 
-Ae_Dispatcher::loadClass('Ae_Model_Object');
-
 /**
  * @deprecated
  * Use Ae_Tree_ModelObject

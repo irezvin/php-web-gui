@@ -196,9 +196,9 @@ class Pmt_Data_Filter extends Pmt_Base {
         if ($f = $this->getFinder()) {
             $res = $f->createSqlSelect();
         } elseif ($this->sqlSelectPrototype) {
-            $res = new Ae_Sql_Select(new Ae_Sql_Db_Ae(Ae_Dispatcher::getInstance()->database), $this->sqlSelectPrototype);
+            $res = new Ae_Sql_Select($this->getApplication()->getDb(), $this->sqlSelectPrototype);
         } else {
-            $res = new Ae_Sql_Select(new Ae_Sql_Db_Ae(Ae_Dispatcher::getInstance()->database), array(
+            $res = new Ae_Sql_Select($this->getApplication()->getDb(), array(
                 'primaryAlias' => $this->dataSource->getAlias(),
                 'tables' => array(
                     $this->dataSource->getAlias() => array('tableName' => $this->dataSource->getMapper()->tableName),

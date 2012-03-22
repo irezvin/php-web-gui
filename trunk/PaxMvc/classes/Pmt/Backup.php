@@ -120,7 +120,7 @@ class Pmt_Backup extends Pmt_Autoparams {
     
     function createMySqlBackup() {
         if (!$this->hasDir()) $this->createDir();
-        exec("mysqldump ".Ae_Dispatcher::getInstance()->database->getMysqlArgs(true)." | gzip > ".escapeshellarg($this->getMySqlFilename(true)), $this->output);
+        exec("mysqldump ".$this->getApplication()->getLegacyDatabase()->getMysqlArgs(true)." | gzip > ".escapeshellarg($this->getMySqlFilename(true)), $this->output);
         $res = $this->hasMySql();
         return $res;
     }
@@ -135,7 +135,8 @@ class Pmt_Backup extends Pmt_Autoparams {
     
     function restoreMySqlBackup() {
         if ($this->hasMySql()) {
-            exec("gzip -dc ".escapeshellarg($this->getMySqlFilename(true))." | mysql ".Ae_Dispatcher::getInstance()->database->getMysqlArgs(true), $this->output, $this->lastResult);
+            $db = $this->getApplication()->getLegacyDatabase();
+            exec("gzip -dc ".escapeshellarg($this->getMySqlFilename(true))." | mysql ".$db->getMysqlArgs(true), $this->output, $this->lastResult);
             $res = !$this->lastResult;
         } else {
             $res = false;
