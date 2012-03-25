@@ -110,7 +110,8 @@ class Pd_Index extends Ae_Legacy_Controller {
             }
             $this->_response->mergeWithResponse($resp);
         } else {
-            $this->_templatePart = 'index';
+            $this->_tplData['examplesIndex'] = $this->getExamplesIndex();
+            $this->_templatePart = 'start';
         }
     }
     

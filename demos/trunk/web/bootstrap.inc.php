@@ -1,4 +1,4 @@
 <?php
 
-$avancorePath = dirname(__FILE__).'/../../Avancore3/Avancore';
-$paxPath = dirname(__FILE__).'/../../Pax2/PaxMvc';
+$avancorePath = dirname(__FILE__).'/../../Avancore3';
+$paxPath = dirname(__FILE__).'/../../PWG';

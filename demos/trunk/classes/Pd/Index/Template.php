@@ -124,4 +124,13 @@ class Pd_Index_Template extends Ae_Template_Html {
         echo implode("\n", $this->exampleFile->getHighlightedLines());
     }
     
+    function showStart() {
+        ob_start();
+?>
+        <h1>PWG examples</h1>
+        <p>Select example from the list</p>
+<?php        
+        $this->showWrap(ob_get_clean());
+    }
+    
 }
