@@ -1,6 +1,6 @@
 <?php
 
-abstract class Pmt_Application extends Ae_Application {
+abstract class Pwg_Application extends Ae_Application {
     
     /**
      * @var Ae_Avancore
@@ -8,18 +8,18 @@ abstract class Pmt_Application extends Ae_Application {
     protected $avancore = false;
 
     /**
-     * @var Pmt_PaxMvc
+     * @var Pwg_Pwg
      */
-    protected $paxMvc = false;
+    protected $pwg = false;
     
-    protected $defaultControllerId = 'Pmt_Web_Front';
+    protected $defaultControllerId = 'Pwg_Web_Front';
 
     protected function doOnInitialize() {
         parent::doOnInitialize();
         if (!$this->avancore) $this->avancore = Ae_Avancore::getInstance();
-        $this->getPaxMvc();
-        $this->controllers['Pmt_Web_Front'] = array(
-            'class' => 'Pmt_Web_Front',
+        $this->getPwg();
+        $this->controllers['Pwg_Web_Front'] = array(
+            'class' => 'Pwg_Web_Front',
         );
         if ($this->getUseLocalSessionSavePath()) {
             ini_set('session.save_path', $this->adapter->getVarTmpPath());
@@ -27,10 +27,10 @@ abstract class Pmt_Application extends Ae_Application {
     }
  
     /**
-     * @return Pmt_Web
+     * @return Pwg_Web
      */
     function getWebFront() {
-        return $this->getController('Pmt_Web_Front');
+        return $this->getController('Pwg_Web_Front');
     }
     
     function setAvancore(Ae_Avancore $avancore) {
@@ -46,21 +46,21 @@ abstract class Pmt_Application extends Ae_Application {
         return $this->avancore;
     }
 
-    function setPaxMvc(Pmt_PaxMvc $paxMvc) {
-        if ($this->paxMvc !== false) throw new Exception("Can setPaxMvc() only once!");
-        $this->paxMvc = $paxMvc;
+    function setPwg(Pwg_Pwg $pwg) {
+        if ($this->pwg !== false) throw new Exception("Can setPwg() only once!");
+        $this->pwg = $pwg;
     }
 
     /**
-     * @return Pmt_PaxMvc
+     * @return Pwg_Pwg
      */
-    function getPaxMvc() {
-        if (!$this->paxMvc) $this->paxMvc = Pmt_PaxMvc::getInstance();
-        return $this->paxMvc;
+    function getPwg() {
+        if (!$this->pwg) $this->pwg = Pwg_Pwg::getInstance();
+        return $this->pwg;
     }
     
     function getDefaultAssetPlaceholders() {
-        $res = array_merge($this->getPaxMvc()->getAssetPlaceholders(), parent::getDefaultAssetPlaceholders());
+        $res = array_merge($this->getPwg()->getAssetPlaceholders(), parent::getDefaultAssetPlaceholders());
         return $res;
     }
     

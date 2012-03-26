@@ -2,10 +2,10 @@
 
 require_once(dirname(__FILE__).'/bootstrap.php');
 
-$app = Pmt_PaxMvc::getInstance();
+$app = Pwg_Pwg::getInstance();
 $app->getWebFront()->setSessionSuffix(__FILE__);
 
-class Pmt_Example_HelloWorld extends Pmt_Controller_Aggregate {
+class Pwg_Example_HelloWorld extends Pwg_Controller_Aggregate {
 
     var $timesClicked = 0;
 
@@ -21,7 +21,7 @@ class Pmt_Example_HelloWorld extends Pmt_Controller_Aggregate {
     }
 
 }
-$app->getWebFront()->setTopController('Pmt_Example_HelloWorld');
+$app->getWebFront()->setTopController('Pwg_Example_HelloWorld');
 $app->processRequest();
 
 

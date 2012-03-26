@@ -1,8 +1,8 @@
 <?php
 
-if (!class_exists('Pmt_Application', false)) require(dirname(__FILE__).'/Application.php');
+if (!class_exists('Pwg_Application', false)) require(dirname(__FILE__).'/Application.php');
 
-class Pmt_PaxMvc extends Pmt_Application {
+class Pwg_Pwg extends Pwg_Application {
     
     protected $defaultAssetsPlaceholder = '{PAX}';
     
@@ -16,11 +16,11 @@ class Pmt_PaxMvc extends Pmt_Application {
     }
     
     static function getInstance($id = null) {
-        return Ae_Application::getInstance('Pmt_PaxMvc', $id);
+        return Ae_Application::getInstance('Pwg_Pwg', $id);
     }
     
-    function setPaxMvc(Pmt_PaxMvc $paxMvc) {
-        if ($paxMvc !== $this) throw new Exception("Pmt_PaxMvc::setPaxMvc accepts only it's own instance");
+    function setPwg(Pwg_Pwg $pwg) {
+        if ($paxMvc !== $this) throw new Exception("Pwg_Pwg::setPaxMvc accepts only it's own instance");
     }
 
     function getDefaultAssetPlaceholders() {
@@ -29,9 +29,9 @@ class Pmt_PaxMvc extends Pmt_Application {
     }
 
     /**
-     * @return Pmt_PaxMvc
+     * @return Pwg_Pwg
      */
-    function getPaxMvc() {
+    function getPwg() {
         return $this;
     }
     

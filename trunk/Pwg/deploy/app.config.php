@@ -3,7 +3,7 @@
 $config = array(
     'webUrl' => 'http://nivzer2/paxMvc/',
     'useLocalSessionSavePath' => true,
-    'useComet' => 1,
+    'useComet' => 0,
     'assetPlaceholders' => array('{YUI}' => 'http://nivzer2/yui/build'),
     'outputPrototype' => array('class' => 'Ae_Legacy_Output_Native', 'showOuterHtml' => true),
     'legacyDatabasePrototype' => array(
