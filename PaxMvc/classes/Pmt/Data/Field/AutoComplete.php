@@ -23,6 +23,10 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
      */
     protected $defaultValue = null;
     
+    protected $emptyValue = null;
+    
+    protected $emptyValueIsSet = true;
+    
     //protected $allowNullValues = false;
     
     /**
@@ -51,7 +55,7 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
     
     protected $multipleValuesGlue = false;
 
-    protected $clearTextWhenNotInList = true;
+    protected $clearTextWhenNotInList = false;
     
     protected function doOnGetControlPrototypes(& $prototypes) {
         parent::doOnGetControlPrototypes($prototypes);
@@ -154,27 +158,32 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
                         $subText = false;
                     }
                     $this->triggerEvent('notInList', array('value' => & $subV, 'text' => $this->text, 'subText' => $subText, 'cancel' => & $cancel));
+                    $isNotInList = true;
                     $v[$k] = $subV;
                 }
             }
         } else {
             if (is_null($v)) {
                 $v = $this->defaultValue;
+                $this->value = $v;
                 $this->triggerEvent('notInList', array('value' => & $v, 'text' => $this->text, 'cancel' => & $cancel));
-                $this->isNotInList = true;
+                $isNotInList = true;
             }
         }
-        if (!$cancel) $this->setValue($v, true, $isNotInList && !$this->clearTextWhenNotInList);
+        if (!$cancel) {
+            $this->setValue($v, true, $isNotInList && !$this->clearTextWhenNotInList, true);
+            
+        }
     }
 
-    function setValue($value, $triggerChange = false, $dontUpdateEditor = false) {
-        if ($value !== ($oldValue = $this->value)) {
+    function setValue($value, $triggerChange = false, $dontUpdateEditor = false, $force = false) {
+        $args = func_get_args();
+        if ($value !== ($oldValue = $this->value) || $force) {
             $this->value = $value;
             $this->triggerEvent('valueUpdate', array('value' => $value, 'oldValue' => $oldValue));
             if ($triggerChange) $this->triggerEvent('change', array('value' => $value, 'oldValue' => $oldValue));
-            //$this->setText($this->findText());
-            $this->text = $this->findText();
             if ($this->editor && !$dontUpdateEditor) {
+                $this->text = $this->findText();
                 $this->editor->setText(is_null($this->text)? '' : $this->text);
             }
             else {
@@ -278,7 +287,7 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
         return $res;
     }
     
-    protected function findValue($extact = false, $text = null) {
+    protected function findValue($exact = false, $text = null) {
         if (is_null($text)) {
             $text = $this->text;
             if (strlen($this->multipleValuesSeparator) && !is_array($text)) $text = $this->explode($text);
@@ -287,29 +296,36 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
             $res = array();
             foreach ($text as $textPart) {
                 $res[] = $this->findValue($extact, $textPart);
+                $val = $this->findValue($exact, $textPart);
+                if (!is_null($val)) $res[] = $val;
             }
         } else {
-            $res = null;
-            $lf = $this->getLabelFieldName();
-            if ($this->listSource && strlen($lf) && strlen($this->valueFieldName)) {
-                $c = $this->listSource->createCollection();
-                if (strlen($this->labelExpression)) $qlf = $this->labelExpression; 
-                    else $qlf = $this->listSource->getLegacyDb()->NameQuote($c->getAlias()).'.'.$this->listSource->getLegacyDb()->NameQuote($lf);
+            if (!strlen($text) && $this->emptyValueIsSet) {
+                $res = $this->emptyValue;
+            } else {
+                $res = null;
+                $lf = $this->getLabelFieldName();
+                if ($this->listSource && strlen($lf) && strlen($this->valueFieldName)) {
+                    $c = $this->listSource->createCollection();
+                    if (strlen($this->labelExpression)) $qlf = $this->labelExpression; 
+                        else $qlf = $this->listSource->getAeDb()->NameQuote($c->getAlias()).'.'.$this->listSource->getAeDb()->NameQuote($lf);
 
-                if ($this->replaceQuery($qlf, $text)) {
-                    $c->addWhere($qlf);
-                    $c->setDistinctCount(true); 
-                    if (($c->countRecords() == 1) && ($rec = $c->getNext())) {
-                        $res = $rec->getField($this->valueFieldName);
-                    }
-                    
-                } else {
-                    
-                    if ($extact) $c->addWhere($qlf.' = '.$this->listSource->getLegacyDb()->Quote($text));
-                        else $c->addWhere($qlf.' LIKE '.$this->listSource->getLegacyDb()->Quote($text.'%'));
-                    $c->setLimits(0, 1);
-                    if ($rec = $c->getNext()) {
-                        $res = $rec->getField($this->valueFieldName);
+                    if ($this->replaceQuery($qlf, $text)) {
+                        $c->addWhere($qlf);
+                        $c->setDistinctCount(true); 
+                        if (($c->countRecords() == 1) && ($rec = $c->getNext())) {
+                            $res = $rec->getField($this->valueFieldName);
+                        }
+
+                    } else {
+
+                        if ($exact) $c->addWhere($qlf.' = '.$this->listSource->getAeDb()->Quote($text));
+                            else $c->addWhere($qlf.' LIKE '.$this->listSource->getAeDb()->Quote($text.'%'));
+                        $c->setLimits(0, 1);
+                        if ($rec = $c->getNext()) {
+                            $res = $rec->getField($this->valueFieldName);
+                        }
+
                     }
                     
                 }
@@ -435,12 +451,32 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
         return $this->multipleValuesGlue;
     }
 
-    protected function setClearTextWhenNotInList($clearTextWhenNotInList) {
+    function setClearTextWhenNotInList($clearTextWhenNotInList) {
         $this->clearTextWhenNotInList = $clearTextWhenNotInList;
     }
 
     function getClearTextWhenNotInList() {
         return $this->clearTextWhenNotInList;
+    }
+    
+    function setEmptyValue($emptyValue) {
+        if ($emptyValue !== ($oldEmptyValue = $this->emptyValue)) {
+            $this->emptyValue = $emptyValue;
+            $this->emptyValueIsSet = true;
+        }
+    }
+    
+    function clearEmptyValue() {
+        $this->emptyValue = null;
+        $this->emptyValueIsSet = false;
+    }
+
+    function getEmptyValue() {
+        return $this->emptyValue;
+    }    
+    
+    function setClearEmptyValue($val) {
+        if ((bool) $val) $this->clearEmptyValue();
     }
     
 }

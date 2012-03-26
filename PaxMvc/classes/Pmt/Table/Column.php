@@ -26,6 +26,8 @@ class Pmt_Table_Column extends Pmt_Composite {
     protected $formatter = false;
 
     protected $hidden = false;
+
+    protected $alwaysExport = false;
     
     protected $canToggle = true;    
 
@@ -165,10 +167,14 @@ class Pmt_Table_Column extends Pmt_Composite {
     protected function setFormatter($formatter) {
         $this->formatter = $formatter;
     }
+    
+    const onEvaluate = 'onEvaluate';
 
     function getFormatter() {
         return $this->formatter;
     }
+    
+    const onEvaluate = 'onEvaluate';
 
     /**
      * @return array(aeUid => value) Values of this column for different records 
@@ -182,6 +188,9 @@ class Pmt_Table_Column extends Pmt_Composite {
                 $row = $t->getRow($r);
                 if ($rec = $row->getRecord()) {
                     $val = $rec->getField($this->getFieldName());
+                    if (isset($this->observers[self::onEvaluate])) {
+                        $this->triggerEvent(self::onEvaluate, array('row' => & $row, 'value' => & $val));
+                    }
                     if ($d) $val = $d->apply($val);
                     $res[$rec->getUid()] = $val;
                 }
@@ -211,7 +220,19 @@ class Pmt_Table_Column extends Pmt_Composite {
     function getHidden() {
         return $this->hidden;
     }
+    
+    function getIsExported() {
+        return !$this->hidden || $this->alwaysExport;
+    }
 
+    protected function setAlwaysExport($alwaysExport) {
+        $this->alwaysExport = $alwaysExport;
+    }
+
+    function getAlwaysExport() {
+        return $this->alwaysExport;
+    }    
+    
     function setLabel($label) {
         if (($oldLabel = ($this->label)) !== $label) {
             $this->label = $label;

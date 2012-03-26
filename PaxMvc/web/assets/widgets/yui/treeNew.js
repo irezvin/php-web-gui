@@ -108,19 +108,33 @@ Pmt_Yui_Tree_New.prototype = {
         }
     },
 
+    _reappend: function(node, children) {
+        for (var i = 0, l = children.length; i < l; i++) {
+            children[i].appendTo(node);
+            if (children[i].children) {
+                var tmp = children[i].children;
+                children[i].children = [];
+                this._reappend(children[i], tmp);
+            }
+        }
+    },
+
     renderElement: function() {
         if (!this.yuiTreeView) {
             this.refreshCall = new Pmt_Util.DelayedCall(this._immediateRefresh, null, this, [], this.getDefault('renderDelay', 200), false);
             this._arrangeInsetContainer();
 
-            this.yuiTreeView = new YAHOO.widget.TreeView(this.container, this.nodePrototypes);
+            this.yuiTreeView = new YAHOO.widget.TreeView(this.container, []);
+            
+            var root = this.yuiTreeView.root;
 
             this.yuiTreeView._onClickEvent = this._onClickEvent;
             this.yuiTreeView.createEvent("checkClick", this.tree);
 
-
             this.yuiTreeView.render();
 
+            this._reappend(root, this.nodePrototypes);
+            
             var events = ['clickEvent', 'dblClickEvent', 'expand', 'collapse', 'highlightEvent', 'checkClick'];
             for (var i = 0; i < events.length; i++) {
                 this.yuiTreeView.subscribe(events[i], this.handleYuiEvents, events[i], this);
@@ -219,12 +233,23 @@ Pmt_Yui_Tree_New.prototype = {
         }
     },
 
+    msgSetNodeProperty: function(idPath, propName, propValue) {
+        return this.setNodeProperty(idPath, propName, propValue);
+    },
+
     setNodeProperty: function(idPath, propName, propValue) {
         var n = this.getNodeByPath(idPath);
         if (n) {
-            n.propName = propValue;
+            var setterName = 'set' + Pmt_Util.ucFirst(propName);
+            if (typeof n[setterName] == 'function') n[setterName] (propValue);
+                else n[propName] = propValue;
             this._refresh(n);
+        } else {
         }
+    },
+    
+    msgExecuteNodeMethod: function(idPath, method, args) {
+        return this.executeNodeMethod(idPath, method, args);
     },
 
     executeNodeMethod: function(idPath, method, args) {

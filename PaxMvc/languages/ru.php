@@ -17,6 +17,7 @@ $lang = array(
     'upload_langDownloadFile' => 'Скачать файл',
     'upload_download' => 'Скачать',
     'upload_view' => 'Просмотр',
+    'upload_langMaxUploadSize' => 'Размер файла не должен превышать %s',
     
     'all' => '(Все)',
     'uncategorized' => '(Не классифицированные)',

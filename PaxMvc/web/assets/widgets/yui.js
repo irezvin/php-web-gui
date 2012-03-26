@@ -19,6 +19,7 @@ Pmt_Yui_Paginator.prototype = {
    template: false,
    currentPage: false,
    localization: false,
+   pageLinks: 10,
 
    renderElement: function() {
         var paginatorOptions = {};
@@ -28,6 +29,7 @@ Pmt_Yui_Paginator.prototype = {
             rowsPerPage: this.rowsPerPage,
             totalRecords: this.totalRecords,
             initialPage: this.currentPage + 1,
+            pageLinks: this.pageLinks,
             updateOnChange: true
         });
 

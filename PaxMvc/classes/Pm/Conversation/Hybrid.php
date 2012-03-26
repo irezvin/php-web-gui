@@ -55,7 +55,7 @@ class Pm_Conversation_Hybrid extends Pm_Conversation_Abstract {
     }	
 	
     function hasToProcessWebRequest() {
-    	return isset($_POST['messages']) || isset($_REQUEST['comet']);
+    	return isset($_REQUEST['messages']) || isset($_REQUEST['comet']);
     }
     
     function notifyReset() {
@@ -84,6 +84,7 @@ class Pm_Conversation_Hybrid extends Pm_Conversation_Abstract {
 		        if (strlen(trim($junk))) Pm_Conversation::log("junk output: ".$junk);
 	       }
         } elseif (isset($_REQUEST['comet'])) {
+            while(ob_get_level()) ob_end_clean();
 			$cmt = new Pm_Cmt_Responder();
 			$cmt->start();
 			

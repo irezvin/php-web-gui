@@ -86,6 +86,9 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
 
     protected $visible = true;
     
+    protected $rowClassColumnName = false;
+    
+    protected $allowPassthroughEvents = true;
         
     function hasEditableColumns() {
         $res = false;
@@ -147,7 +150,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
         $data = array();
         foreach ($this->colset->listControls() as $i) {
             $col = $this->colset->getControl($i);
-            if (!$col->getHidden()) {
+            if ($col->getIsExported()) {
                 foreach ($col->getColData() as $k => $v) {
                     $data[$k][$i] = $v; 
                 }
@@ -169,6 +172,14 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     function getColset() {
         return $this->getControl('colset');
     }
+
+    protected function setRowClassColumnName($rowClassColumnName) {
+        $this->rowClassColumnName = $rowClassColumnName;
+    }
+
+    function getRowClassColumnName() {
+        return $this->rowClassColumnName;
+    }    
     
 //  /**
 //   * @return Pmt_Table_Recset
@@ -209,6 +220,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
             'sortMode',
             'selectedIndice',
             'toggleableColumns',
+            'rowClassColumnName',
         ));
         return $res;
     }
@@ -226,13 +238,13 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     
     function getInitializerFn() {
         $res = false;
-            ob_start();
+        ob_start();
 ?>
 <?php       if ($this->hasEditableColumns()) { ?> 
             this.yuiTable.subscribe("cellClickEvent", this.yuiTable.onEventShowCellEditor);
 <?php       } ?>
 <?php
-            $res = new Ae_Js_Var('function() { '.ob_get_clean().'}');
+        $res = new Ae_Js_Var('function() { '.ob_get_clean().'}');
         return $res;
     }
     
@@ -246,38 +258,8 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
         return $res;
     }
     
-    protected function getDataJson() {
-        $res = array();
-//      $cs = $this->getColset();
-//      $fieldList = array();
-//      foreach ($cs->listControls() as $i) {
-//          $column = $cs->getControl($i);
-//          $fieldList[$column->getId()] = $column->getFieldName();
-//      }
-//      
-//      foreach ($this->rows as $row) {
-//          $rec = $row->getRecord();
-//          $aRow = array('__aeUid' => $rec->getUid());
-//          foreach ($fieldList as $colId => $f) {
-//              $aRow[$colId] = $rec->getField($f);
-//          }
-//          $res[] = $aRow;
-//      }
-//      
-////        foreach ($this->getRowset()->listControls() as $i) {
-////            $row = $this->getRowset()->getControl($i);
-////            $rec = $row->getRecord();
-////            $aRow = array('__aeUid' => $rec->getUid());
-////            foreach ($fieldList as $colId => $f) {
-////                $aRow[$colId] = $rec->getField($f);
-////            }
-////            $res[] = $aRow;
-////        }
-        return $res;
-    }
-    
     protected function getDataSource() {
-        $dsParams = array($this->getDataJson(), array(
+        $dsParams = array(array(), array(
             'responseType' => new Ae_Js_Var('YAHOO.util.DataSource.TYPE_JSARRAY'),
             'responseSchema' => array('fields' => array_merge(array('__aeUid'), $this->getColset()->listControls())),
         ));
@@ -1033,7 +1015,6 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     }
     
     function triggerAfterDataCollect($colName, array & $values) {
-        Pm_Conversation::log("$this afterDataCollect");
     	$this->triggerEvent('afterDataCollect', array('column' => $this->getColset()->getControl($colName), 'values' => & $values));
     }
     

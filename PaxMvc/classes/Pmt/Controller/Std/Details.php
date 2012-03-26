@@ -2,7 +2,9 @@
 
 class Pmt_Controller_Std_Details extends Pmt_Controller_MDI_Window {
 
-	protected $storeEvent = 'recordStored';
+	const evtStore = 'recordStored';
+    
+    const evtCancelCreation = 'cancelCreation';
 	
 	protected $primaryKey = false;
 
@@ -25,19 +27,39 @@ class Pmt_Controller_Std_Details extends Pmt_Controller_MDI_Window {
 	protected $dnDetails = false;
 	
 	protected $scheduleClose = false;
+    
+    protected $cancelBeforeSetKey = false;
+    
+    protected $lockCancelEvent = false;
 
 	function setPrimaryKey($primaryKey) {
 		$this->primaryKey = $primaryKey;
 		if ($this->dsDetails && strlen($this->mapperClass)) {
 			$m = $this->getApplication()->getMapper($this->mapperClass);
 			$f = $m->listPkFields();
+		    $restr = array();
 			if (is_array($primaryKey)) {
 				for ($i = 0; $i < count($f); $i++) $restr[$f[$i]] = $primaryKey[$i];
 			} else {
 				$restr[$f[0]] = $primaryKey;
+				if ($primaryKey === false) $restr = array();
+    				else $restr[$f[0]] = $primaryKey;
 			}
+            if ($this->cancelBeforeSetKey && $this->dsDetails->canCancel()) {
+                $this->lockCancelEvent = true;
+                $this->dsDetails->cancel();
+                $this->lockCancelEvent = false;
+            }
 			$this->dsDetails->setRestrictions($restr);
 			if (!$this->dsDetails->isOpen()) $this->dsDetails->open();
+			if (!$this->dsDetails->isOpen()) {
+                $this->dsDetails->open();
+            }
+            Pm_Conversation::log("Restr is ", $restr);
+            if ($this->createOnNoId && !$restr) {
+                Pm_Conversation::log("Lets create; canCreate is ", $this->dsDetails->canCreate());
+                $this->dsDetails->createRecord();
+            }
 		}
 	}
 
@@ -45,6 +67,15 @@ class Pmt_Controller_Std_Details extends Pmt_Controller_MDI_Window {
 		return $this->primaryKey;
 	}
 	
+    
+    function setCancelBeforeSetKey($cancelBeforeSetKey) {
+        $this->cancelBeforeSetKey = $cancelBeforeSetKey;
+    }
+    
+    function getCancelBeforeSetKey() {
+        return $this->cancelBeforeSetKey;
+    }    
+
 	protected function doOnGetControlPrototypes(& $prototypes) {
 		Ae_Util::ms($prototypes, array(
 			'dsDetails' => array(
@@ -100,10 +131,13 @@ class Pmt_Controller_Std_Details extends Pmt_Controller_MDI_Window {
 	}
 	
 	function handleDsDetailsOnCancel() {
-		if (!$this->primaryKey) $this->cancelledRecordCreation = true;
+		if ($this->lockCancelEvent) return;
+        if (!$this->primaryKey) $this->cancelledRecordCreation = true;
 		if (!$this->primaryKey && $this->closeOnCreateCancel) {
 			$this->scheduleClose = true;
 		}
+        $params = array('scheduleClose' => & $this->scheduleClose);
+        $this->triggerEvent(self::evtCancelCreation, $params);
 	}
 	
 	function handleDsDetailsOnCurrentRecord() {
@@ -112,11 +146,14 @@ class Pmt_Controller_Std_Details extends Pmt_Controller_MDI_Window {
 	}
 
 	function handleDsDetailsOnAfterStoreRecord($dsDetails, $eventType, $params) {
-		$this->triggerEvent($this->storeEvent, $params);
+        if ($rec = $this->dsDetails->getCurrentRecord()) {
+            $this->primaryKey = $rec->getPrimaryKey();
+        }
+        Pm_Conversation::log("Store // PK is ", $this->primaryKey);
+		$this->triggerEvent(self::evtStore, $params);
 	}
 	
 	function handleDsDetailsAfterCurrentRecord() {
-		Pm_Conversation::log($this->dsDetails->getRestrictions());
 		if ($this->scheduleClose) {
 			$this->scheduleClose = false;
 			$this->closeWindow(array('cancelRecordCreation' => true));

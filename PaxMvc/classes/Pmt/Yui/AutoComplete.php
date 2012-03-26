@@ -35,7 +35,7 @@ class Pmt_Yui_AutoComplete extends Pmt_Text {
     function getResponse() {
         return $this->response;
     }
-    
+
     function triggerFrontendDataRequest($transactionId, $request) {
         $evt = substr(__FUNCTION__, 15); $evt{0} = strtolower($evt{0}); 
         $this->response = false;

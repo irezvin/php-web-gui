@@ -30,6 +30,16 @@ Pmt_Checklist.prototype = {
             ic.appendChild(this.element);
         }
     },
+    
+    setReadOnly: function(readOnly) {
+        if (readOnly === undefined) readOnly = this.readOnly;
+        this.readOnly = readOnly;
+    },
+    
+    setReadOnly: function(readOnly) {
+        if (readOnly === undefined) readOnly = this.readOnly;
+        this.readOnly = readOnly;
+    },
 
     refresh: function() {
         this.setVisible();
@@ -41,6 +51,7 @@ Pmt_Checklist.prototype = {
         this.setDisabled();
         this.setListOptions();
         this.setSelectedIndices();
+        this.setReadOnly();
         this.setDisabled();
     },
     

@@ -16,7 +16,7 @@ Pmt_Comet = function(strUrl, fnOnData, fnOnDisconnect, instanceId, scope, fnOnBa
         style.left = style.top = "-10000px";
         style.width = style.height = "1px";
         iframe.src = this.strUrl;
-        iframe.document.onload = "window.opener.alert('foobar');";
+        document.body.appendChild(iframe);
         this.iframe = iframe;
     } else {
         this.strUrl = this.strUrl + '&cmtXhr=1';

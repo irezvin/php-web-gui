@@ -24,8 +24,8 @@ class Pmt_Checkbox extends Pmt_Element {
     }
     
     function handleLabelControlClick() {
-        //$this->setChecked(!$this->getChecked());
-        $this->triggerFrontendChange(!$this->getChecked());
+        $this->setChecked(!$this->getChecked(), true);
+        //$this->triggerFrontendChange(!$this->getChecked(), true);
     }
 
     /**
@@ -69,7 +69,7 @@ class Pmt_Checkbox extends Pmt_Element {
         call_user_func_array(array($this, 'triggerEvent'), $args);
     }
     
-    function setChecked($value = null) {
+    function setChecked($value = null, $trigger = false) {
     
         $prop = substr(__FUNCTION__, 3); $prop{0} = strtolower($prop{0}); 
         /*
@@ -77,7 +77,9 @@ class Pmt_Checkbox extends Pmt_Element {
         $this->sendMessage(__FUNCTION__, array($this->$prop));
         */
         if (is_null($value)) $value = $this->$prop; $oldValue = $this->{$prop}; if ((bool) $value !== $this->$prop) {
+            $oldChecked = $this->$prop;
             $this->$prop = (bool) $value; $this->sendMessage(__FUNCTION__, array($this->$prop));
+            if ($trigger) $this->triggerEvent('change', array('oldChecked' => $oldChecked));
         }
     }
 

@@ -44,11 +44,19 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
     function getMapperClass() {
     	return $this->mapperClass;
     }
+
+    protected function doGetFinderPrototype() {
+        return array();
+    }   
+    
+    protected function doGetFinderPrototype() {
+        return array();
+    }
     
     protected function doOnGetControlPrototypes(array & $prototypes) {
     	
     	if ($this->finderClass !== false) {
-    		$finder = Pmt_Autoparams::factory(array(), $this->finderClass);
+    		$finder = Pmt_Autoparams::factory($this->doGetFinderPrototype(), $this->finderClass);
     		if ($this->mapperClass === false) $this->mapperClass = $finder->getMapperClassForCollection();
     		$alias = $finder->getPrimaryAlias();
     	}
@@ -207,14 +215,29 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
     	$this->triggerEvent(Pmt_I_RecordList::evtCreateRecord, array('mapperClass' => $this->getMapperClass()));
     } 	
 	
+    protected function getDataFieldName($column) {
+        $res = $column->getFieldName();
+        return $res;
+    }
+    
+    protected function getDataFieldName($column) {
+        $res = $column->getFieldName();
+        return $res;
+    }
+    
     protected function orderByColumn(Pmt_Table_Column $column, $asc = true) {
-        $fieldName = $column->getFieldName();
+        $fieldName = $this->getDataFieldName($column);       
+        
         $fnd = $this->fltFilter->getFinder();
         $res = false;
-        if (strlen($this->anySortCriterionName) && in_array($this->anySortCriterionName, $fnd->listCriteria())) {
+        if ($fieldName && strlen($this->anySortCriterionName) && in_array($this->anySortCriterionName, $fnd->listCriteria())) {
         	$crit = $fnd->getCriterion($this->anySortCriterionName);
-        	if ($crit->canSortByProperty($fieldName)) {
-        	    if (isset($this->colToPropMap[$fieldName])) $fieldName = $this->colToPropMap[$fieldName];
+        	if (isset($this->colToPropMap[$fieldName])) {
+                $c2p = $fieldName = $this->colToPropMap[$fieldName];
+            } else {
+                $c2p = false;
+            }
+        	if ($c2p || $crit->canSortByProperty($fieldName)) {
         		$crit->setValue(array('propName' => $fieldName, 'direction' => $asc));
         		$this->fltFilter->apply();
         		$res = true;
@@ -256,8 +279,21 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
     		$text = $txtFilter->getText();
     		$cols = Pmt_Composite::findControlChildrenByProperties($this->tblList->getColset(), array('hidden' => false, 'searchable' => true), 'Pmt_Table_Column', false);
     		$props = array();
-    		foreach ($cols as $col) $props[] = $col->getFieldName();
-    		$props = array_diff($props, $crit->listUnsearchableProperties($props));
+            $propsWithMap = array();
+    		foreach ($cols as $col) {
+                $fn = $this->getDataFieldName($col);
+                if (strlen($fn)) {
+                    if (isset($this->colToPropMap[$fn])) {
+                        $propsWithMap[] = $this->colToPropMap[$fn];
+                    } else {
+                        $props[] = $fn;
+                    }
+                }
+            }
+            Pm_Conversation::log("Initial search is ", $props);
+    		$props = array_diff($props, $up = $crit->listUnsearchableProperties($props));
+            Pm_Conversation::log("uns is", $up);
+            $props = array_merge($props, $propsWithMap);
     		if (!count($props) || !strlen($text)) $crit->setValue(null);
     			else $crit->setValue(array('propNames' => $props, 'substring' => $text));
     		$this->fltFilter->apply();

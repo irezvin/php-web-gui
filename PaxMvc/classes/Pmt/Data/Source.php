@@ -66,6 +66,10 @@ class Pmt_Data_Source extends Pmt_Base {
     
     protected $forceRestrictionsOnStore = true;
     
+    protected $navigated = false;
+    
+    protected $isCancel = false;
+    
     /**
      * @var Pmt_Data_Source_Lister
      */
@@ -324,23 +328,34 @@ class Pmt_Data_Source extends Pmt_Base {
     function cancel() {
         if ($this->canCancel()) {
             if ($this->isNew) {
+                $this->navigated = false;
+                $this->isCancel = true;
                 $this->triggerEvent('onCancel');
                 $this->isNew = false;
                 $this->dirty = false;
-                if ($this->oldRecordNo !== false) {
-                    $this->setRecordNo($this->oldRecordNo);
-                    $this->oldRecordNo = false;
-                } else {
-                    $this->gotoFirst();
+                if (!$this->navigated) {
+                    if ($this->oldRecordNo !== false) {
+                        $this->setRecordNo($this->oldRecordNo);
+                        $this->oldRecordNo = false;
+                    } else {
+                        $this->gotoFirst();
+                    }
                 }
+                $this->navigated = false;
             } else {
+                $this->navigated = false;
+                $this->isCancel = true;
                 $this->triggerEvent('onCancel');
-                $this->dirty = false;
-                $this->currentKey = false;
-                $this->currentRecord = false;
-                $rn = $this->getRecordNo();
-                $this->recordNo = false;
-                $this->setRecordNo($rn);
+                if (!$this->navigated) {
+                    $this->dirty = false;
+                    $this->currentKey = false;
+                    $this->currentRecord = false;
+                    $rn = $this->getRecordNo();
+                    $this->recordNo = false;
+                    $this->setRecordNo($rn);
+                }
+                $this->navigated = false;
+                $this->isCancel = false;
             }
         }
     }
@@ -563,11 +578,11 @@ class Pmt_Data_Source extends Pmt_Base {
 //  DataSource: capabilites info    
 
     function canMove() {
-        return !$this->isNew && !$this->dirty;
+        return $this->isCancel || !$this->isNew && !$this->dirty;
     }
     
     function canCreate() {
-        return !$this->readOnly && (!$this->dirty && !$this->isNew);
+        return !$this->readOnly && $this->canMove();
     }
     
     function canEdit() {
@@ -749,6 +764,7 @@ class Pmt_Data_Source extends Pmt_Base {
         if (!$this->isOpen) {
             $this->intOpen();
         }
+        $this->navigated = true;
         $this->triggerEvent('onCurrentRecord');
         $this->triggerEvent('afterCurrentRecord');
     }

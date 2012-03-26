@@ -233,7 +233,9 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
         $this->js = new Ae_Js();
         
         if ($this->conversation->hasToProcessWebRequest()) {
+            ob_start();
             $this->conversation->processWebRequest();
+            $this->_response->content = ob_get_clean();
             $this->_response->noHtml = true;
         } elseif ($this->showHtml) {
         	$this->conversation->notifyPageRender();

@@ -30,6 +30,7 @@ Pmt_Table.prototype = {
     autoEvents: null,
     contextMenu: false,
     _hasToRender: false,
+    rowClassColumnName: null,
 
     _rowClickCall: null,
     
@@ -74,6 +75,24 @@ Pmt_Table.prototype = {
 
     renderElement: function() {
         if (this.container) {
+
+            if (this.rowClassColumnName) {
+                var t = this;
+                this.configs.formatRow = function(elTr, oRecord) {
+                    var classes = oRecord.getData(t.rowClassColumnName);
+                    if (classes) YAHOO.util.Dom.addClass(elTr, classes);
+                    return true;
+                }
+            }
+
+            if (this.rowClassColumnName) {
+                var t = this;
+                this.configs.formatRow = function(elTr, oRecord) {
+                    var classes = oRecord.getData(t.rowClassColumnName);
+                    if (classes) YAHOO.util.Dom.addClass(elTr, classes);
+                    return true;
+                }
+            }
 
             this.yuiTable = new YAHOO.widget.DataTable(this.container, this.columnDefs, this.dataSource, this.configs);
 

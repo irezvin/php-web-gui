@@ -22,6 +22,10 @@ class Pmt_Yui_Paginator extends Pmt_Base implements Pmt_I_Control_Paginator, Pm_
     
     protected $localization = true;
     
+    protected $pageLinks = 10;
+    
+    protected $pageLinks = 10;
+    
     protected $rowsPerPageOptions = array(
         5, 10, 15, 20, 50, 100, 200, 1000
     );
@@ -172,8 +176,19 @@ class Pmt_Yui_Paginator extends Pmt_Base implements Pmt_I_Control_Paginator, Pm_
         	'rowsPerPageOptions',
             'localization',
             'visible',
+            'pageLinks',
         ));
     }
+
+    protected function setPageLinks($pageLinks) {
+        if ($pageLinks !== ($oldPageLinks = $this->pageLinks)) {
+            $this->pageLinks = $pageLinks;
+        }
+    }
+
+    function getPageLinks() {
+        return $this->pageLinks;
+    }    
     
     function jsGetLocalization() {
         if ($this->localization) {
