@@ -8,5 +8,5 @@ $avancorePath = dirname(__FILE__).'/../../../../Avancore3/Avancore';
 
 require_once($avancorePath.'/classes/Ae/Avancore.php');
 Ae_Avancore::getInstance();
-require_once(dirname(__FILE__).'/../../classes/Pmt/PaxMvc.php');
+require_once(dirname(__FILE__).'/../../classes/Pwg/Pwg.php');
 
