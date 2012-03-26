@@ -202,12 +202,16 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
             trigger_error (__FUNCTION__."() makes sense only for Pmt_Data_Tree with useCheckboxes set to true", E_USER_NOTICE);
             return;
         } else {
+            Pm_Conversation::log("Setting checked nodes to", $nodeOrNodesOrIds);
             $items = $this->findNodesByPattern(array('checked' => true), 'Pmt_Yui_Tree_Node_Toggle', true, true);
             $this->setProperty($items, 'checked', false);
             $nodes = $this->getLoadedNodes($nodeOrNodesOrIds, true);
             $this->showNodes($nodes, true);
             foreach ($nodes as $dataNode) {
-                if ($visualNode = $this->findTreeNode($dataNode)) $visualNode->setChecked(true);
+                if ($visualNode = $this->findTreeNode($dataNode)) {
+                    Pm_Conversation::log("Found visual node and set it's checked status");
+                    $visualNode->setChecked(true);
+                }
             }
         }
     }

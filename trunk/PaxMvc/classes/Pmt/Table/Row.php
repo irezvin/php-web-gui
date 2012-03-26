@@ -17,7 +17,7 @@ class Pmt_Table_Row implements Pm_I_RefControl {
     function toJs() {
         $res = array();
         if (($rec = $this->record) && $this->table) {
-            $res = array('__aeUid' => $rec->getUid());
+            $res = array('__aeUid' => $rec->getUid(), '__trClass' => 'foo');
             foreach ($this->table->getShownFieldsList() as $colId => $f) {
                 $res[$colId] = $rec->getField($f);
             }

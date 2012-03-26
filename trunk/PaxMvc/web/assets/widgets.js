@@ -271,6 +271,10 @@ Pmt_Text.prototype = {
 
     changeCall: false,
     
+    getTypeDelay: function() {
+        return this.getDefault('typeDelay', 300);
+    },
+    
     renderElement: function() {
         this.getContainer();
         var ic = this.getInnerContainer();
@@ -285,7 +289,7 @@ Pmt_Text.prototype = {
             while (ic.firstChild) ic.removeChild(ic.firstChild);
             ic.appendChild(this.element);
             
-            this.changeCall = new Pmt_Util.DelayedCall(this.immediateChange, null, this, [], this.getDefault('typeDelay', 300), false);
+            this.changeCall = new Pmt_Util.DelayedCall(this.immediateChange, null, this, [], this.getTypeDelay(), false);
             YAHOO.util.Event.addListener(this.element, 'keyup', this.changeCall.call, null, this.changeCall);
             YAHOO.util.Event.addListener(this.element, 'focus', this.handleElementEnter, null, this);
             YAHOO.util.Event.addListener(this.element, 'blur', this.handleElementExit, null, this);
@@ -838,14 +842,12 @@ Pmt_List.prototype = {
                 var i = 0;
                 for (var o = this.element.firstChild; o; o = o.nextSibling) {
                     if (i++ != index) {
-                        o.removeAttribute('selected');
                         o.selected = false;
                     }
                 }
         }
         var element = this.getOptionElementByIndex(index);
         if (element) {
-            element.setAttribute('selected', 'selected');
             element.selected = true;
         }
         if (this.selectedIndices instanceof Array) {
@@ -857,7 +859,7 @@ Pmt_List.prototype = {
     optionDeselected: function (index) {
         var element = this.getOptionElementByIndex(index);
         if (element) {
-            element.removeAttribute('selected');
+            //element.removeAttribute('selected');
             element.selected = false;
         }
         if (this.selectedIndices instanceof Array) {

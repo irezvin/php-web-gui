@@ -106,6 +106,8 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
     
     // +--------------------- features set-up methods ---------------------+    
     
+    protected $readOnly = false;    
+    
     /**
      * Whether user will be able to select multiple tree items with a checkboxes (instead of one)
      * @param bool $multiple
@@ -349,9 +351,12 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
                     else $this->tvNodes->setCurrentNode($value, true);
             }
             if ($this->lblSelectionLabels) $this->lblSelectionLabels->setHtml($this->getNodeLabels($value));
+            if ($this->popup instanceof Pmt_Yui_Panel) $this->popup->applyAutoSize();
         } else {
         }
-        if ($this->lblHeader) $this->lblHeader->setHtml($this->getNodeLabels($value, true));
+        if ($this->lblHeader) {
+            $this->lblHeader->setHtml($this->getNodeLabels($value, true));
+        }
     }
     
     // -+----------------------- runtime methods -------------------------+
@@ -369,7 +374,10 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
                     $this->popup->setContext($this->popup->getContext());
                     $this->reload();
                     $this->originalValue = $this->getValue();
-                    if ($this->lblSelectionLabels) $this->lblSelectionLabels->setHtml($this->getNodeLabels($this->originalValue));
+                    if ($this->lblSelectionLabels) {
+                        $this->lblSelectionLabels->setHtml($this->getNodeLabels($this->originalValue));
+                        if ($this->popup instanceof Pmt_Yui_Panel) $this->popup->applyAutoSize();
+                    }
                 }
             } 
         }
@@ -408,6 +416,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
             'binder' => array(
                 'dataControlPath' => '..',
                 'dataPropertyName' => 'value',
+                'readOnlyPropertyName' => 'readOnly',
                 'controlChangeEvents' => array('apply'),
             ),
         ));
@@ -528,24 +537,25 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
     }
     
     protected function getNodeLabels($nodeIds, $putEmptyPlaceholderIntoTheLink = false) {
-        Pm_Conversation::log("NodeIds are", $nodeIds);
         if (!is_array($nodeIds)) {
             if ($nodeIds === false || $nodeIds === null) $nodeIds = array();
             else $nodeIds = array($nodeIds);
         }
         $labels = array();
         foreach ($nodeIds as $id) {
-            if ($node = $this->treeProvider->getNode($id, true)) $labels[] = '<a href="##node-'.$node->getNodeId().'">'.$node->getTitle().'</a>';
+            if ($node = $this->treeProvider->getNode($id, true)) {
+                if ($this->readOnly) $labels[] = $node->getTitle();
+                    else $labels[] = '<a href="##node-'.$node->getNodeId().'">'.$node->getTitle().'</a>';
+            }
         }
-        Pm_Conversation::log("Labels are", $labels);
-        if (count($labels)) {
+        if (count($labels) && !$this->readOnly) {
             $res = implode('; ', $labels);
             if ($this->withClearLink) {
                 $res .= " <a href='##-clear-'>{$this->lngClear}</a>";
             }
         } else {
                 $res = $this->lngNothingSelected;
-                if ($putEmptyPlaceholderIntoTheLink) $res = "<a href='##'>{$res}</a>";
+                if ($putEmptyPlaceholderIntoTheLink && !$this->readOnly) $res = "<a href='##'>{$res}</a>";
             }
         
         return $res;
@@ -667,20 +677,22 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
     
     function nodesLabelClick(Pmt_Label $label, $eventType, array $params) {
         
-        if (isset($params['href']) && $params['href'] == '##-clear-') {
-            $this->setValue($this->multiple? array() : false);
-            if ($label === $this->lblHeader) $this->apply();
-        } else {
-            
-            if ($label === $this->lblHeader) 
-                if (!$this->popupVisible) $this->setPopupVisible(true);
-                elseif ($this->popup) $this->popup->focus();
-                
-            if ($this->tvNodes && ($id = $this->getNodeIdFromLabelClick($params))) {
-                $this->tvNodes->showNodes($id);
-                if ($tn = $this->tvNodes->findTreeNodeByDataNode($id)) $tn->scrollIntoView();
-            }
-            
+        if (!$this->readOnly)  {
+            if (isset($params['href']) && $params['href'] == '##-clear-') {
+                $this->setValue($this->multiple? array() : $this->emptyValue);
+                if ($label === $this->lblHeader) $this->apply();
+            } else {
+                if (!$this->readOnly) {
+                    if ($label === $this->lblHeader) 
+                        if (!$this->popupVisible) $this->setPopupVisible(true);
+                        elseif ($this->popup) $this->popup->focus();
+
+                    if ($this->tvNodes && ($id = $this->getNodeIdFromLabelClick($params))) {
+                        $this->tvNodes->showNodes($id);
+                        if ($tn = $this->tvNodes->findTreeNodeByDataNode($id)) $tn->scrollIntoView();
+                    }
+                }
+            }            
         }
     }
     
@@ -697,14 +709,32 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
     }
     
     function treeSelectionChange(Pmt_Data_Tree $treeView, $eventType, $params) {
-        $this->value = $this->getValue();
-        if ($this->lblSelectionLabels) $this->lblSelectionLabels->setHtml($this->getNodeLabels($this->value));
-        if ($this->instantApply) $this->apply();
+        if (!$this->readOnly) {
+            $this->value = $this->getValue();
+            if ($this->lblSelectionLabels) {
+                $this->lblSelectionLabels->setHtml($this->getNodeLabels($this->value));
+                if ($this->popup instanceof Pmt_Yui_Panel) $this->popup->applyAutoSize();
+            }
+            if ($this->instantApply) $this->apply();
+        }
     }
     
     function handleBtnReloadClick() {
         $this->reload();
     }
+    
+    function setReadOnly($readOnly) {
+        if ($readOnly !== ($oldReadOnly = $this->readOnly)) {
+            $this->readOnly = $readOnly;
+              if ($this->lblSelectionLabels) {
+                $this->lblSelectionLabels->setHtml($this->getNodeLabels($this->originalValue));
+            }
+        }
+    }
+
+    function getReadOnly() {
+        return $this->readOnly;
+  }    
     
 }
 

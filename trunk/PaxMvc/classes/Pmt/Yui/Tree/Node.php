@@ -4,8 +4,6 @@ abstract class Pmt_Yui_Tree_Node extends Pmt_Struct_Tree_Node {
 
     private static $LAST_UID = 0;
 
-    
-    
     protected $uid = 0;
     
     protected $data = false;

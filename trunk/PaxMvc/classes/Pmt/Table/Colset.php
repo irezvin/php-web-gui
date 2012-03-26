@@ -6,6 +6,8 @@ class Pmt_Table_Colset extends Pmt_Composite_Display {
     
     protected $allowedChildrenClass = 'Pmt_Table_Column';
     
+    protected $allowPassthroughEvents = true;
+    
     /**
      * @return Pmt_Table
      */

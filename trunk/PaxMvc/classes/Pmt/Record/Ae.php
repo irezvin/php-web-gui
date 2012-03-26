@@ -21,9 +21,17 @@ class Pmt_Record_Ae extends Pmt_Record_Abstract {
     function listFields() {
         return $this->aeModelData->listOwnFields();
     }
-    
+
+    /**
+     * @param string|Ae_I_Getter $fieldName
+     */
     function getField($fieldName) {
-        return $this->aeModelData->getField($fieldName);
+        if (is_string($fieldName) && $this->aeModelData->hasProperty($fieldName)) {
+            $res = $this->aeModelData->getField($fieldName);
+        } else {
+            $res = Ae_Autoparams::getObjectProperty($this->aeModelData, $fieldName);
+        }
+        return $res;
     }
     
     function getData() {
@@ -36,8 +44,16 @@ class Pmt_Record_Ae extends Pmt_Record_Abstract {
         return $this->aeModelData->bind($data);
     }
     
+    /**
+     * @param string|Ae_I_Getter $fieldName
+     */
     function getFieldInfo($fieldName) {
-        return new Pmt_Record_Fieldinfo_Ae($this->aeModelData->getPropertyInfo($fieldName));
+        if (is_string($fieldName) && $this->aeModelData->hasProperty($fieldName)) {
+            $res = new Pmt_Record_Fieldinfo_Ae($this->aeModelData->getPropertyInfo($fieldName, true));
+        } else {
+            $res = new Pmt_Record_Fieldinfo(array('name' => $fieldName, 'caption' => $fieldName));
+        }
+        return $res;
     }
     
     function getErrors() {

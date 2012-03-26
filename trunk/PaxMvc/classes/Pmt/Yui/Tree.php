@@ -104,7 +104,7 @@ class Pmt_Yui_Tree extends Pmt_Element implements Pmt_I_Control_DisplayParent {
 	
 	
 	function msgSetNodeProperty(Pmt_Yui_Tree_Node $node, $propName, $propValue) {
-		$this->sendMessage(__FUNCTION__, array($node->getIndexPath(), $propName, $propValue));
+		$this->sendMessage(__FUNCTION__, $a = array($node->getIndexPath(), $propName, $propValue));
 	}
 	
 	function msgExecuteNodeMethod(Pmt_Yui_Tree_Node $node, $methodName, array $args = array()) {

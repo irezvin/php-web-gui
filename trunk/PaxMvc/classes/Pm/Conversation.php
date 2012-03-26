@@ -85,17 +85,17 @@ class Pm_Conversation extends Pm_Conversation_Abstract {
     }
         
     function hasToProcessWebRequest() {
-    	return isset($_POST['messages']);
+    	return isset($_REQUEST['messages']);
     }
     
     function processWebRequest() {
         ob_start();
         ini_set('html_errors', 0);
-        $msgs = $_POST['messages'];
-        if (!is_array($_POST['messages']) && !strlen($_POST['messages'])) {
+        $msgs = $_REQUEST['messages'];
+        if (!is_array($_REQUEST['messages']) && !strlen($_REQUEST['messages'])) {
         	echo "1"; // check routine
         } else {
-        	Pm_Conversation::log("in: ".urldecode(http_build_query($_POST['messages'])));
+        	Pm_Conversation::log("in: ".urldecode(http_build_query($_REQUEST['messages'])));
         	if (ini_get('magic_quotes_gpc')) $msgs = Ae_Util::stripSlashes($msgs);
 	        $this->setRequestData($msgs);
 	        $response = $this->getResponse();
