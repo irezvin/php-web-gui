@@ -1,29 +1,29 @@
 // add legacy namespaces support
 
-Pmt_Util = Ae_Util; 
+Pwg_Util = Ae_Util; 
 
-Pm_Debug = {
+Pwg_Debug = {
         
     debugTypes: {
         'lifecycle': false
     },
 
-    d: function() {return window.Pm_Debug.debug.apply(window, arguments);},
+    d: function() {return window.Pwg_Debug.debug.apply(window, arguments);},
 
     debug: function(type) {
-        if ((window.Pm_Debug.debugTypes[type] === undefined) || window.Pm_Debug.debugTypes[type])
+        if ((window.Pwg_Debug.debugTypes[type] === undefined) || window.Pwg_Debug.debugTypes[type])
             if (window.console && typeof window.console.log === 'function') console.log.apply (console, arguments);
     }
 };
 
 
-Pmt_Core = function(options) {
+Pwg_Core = function(options) {
 	this.initialize(options);	
 };
 
-Pmt_Core.prototype = {
+Pwg_Core.prototype = {
 	
-	jsClassName: "Pmt_Core",
+	jsClassName: "Pwg_Core",
 	transport : null,
 	id : null,
 	containerId: false,
@@ -46,19 +46,19 @@ Pmt_Core.prototype = {
     },
     
     initialize: function(options) {
-        Pm_Debug.d("lifecycle", 
+        Pwg_Debug.d("lifecycle", 
         			"Creating [" + this.jsClassName 
         				+ "], id: [" + (options.id? options.id : "unknown") 
         				+ "], containerId [" + (options.container? options.container : "unknown")
         				+ "]", [ options ]
         );
     	this.options = options;
-        Pmt_Util.override(this, options);
+        Pwg_Util.override(this, options);
     },
 	
 
     destroy: function() {
-    	Pm_Debug.d("lifecycle", "Destroying [" + this.jsClassName + "], id: [" + (this.id? this.id : " unknown") + "]");
+    	Pwg_Debug.d("lifecycle", "Destroying [" + this.jsClassName + "], id: [" + (this.id? this.id : " unknown") + "]");
         if (typeof(this.doOnDelete) == 'function') {
         	this.doOnDelete();
         }
@@ -109,8 +109,8 @@ Pmt_Core.prototype = {
     
     getDefault: function(property, def) {
     	var res = def;
-    	if (window.Pmt_UiDefaults) {
-    		var p = window.Pmt_UiDefaults;
+    	if (window.Pwg_UiDefaults) {
+    		var p = window.Pwg_UiDefaults;
     		if (p[property] !== undefined && p[property] !== null) res = p[property];
     	}
     	return res;

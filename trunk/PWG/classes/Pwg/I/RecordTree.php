@@ -1,6 +1,6 @@
 <?php
 
-interface Pmt_I_RecordTree extends Pmt_I_RecordList {
+interface Pwg_I_RecordTree extends Pwg_I_RecordList {
     
     const evtCreateRecordChild = 'createRecordChild';
     

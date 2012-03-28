@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_CommandReceiver extends Pmt_Base {
+class Pwg_CommandReceiver extends Pwg_Base {
 
     const ORIGIN_API = 'api';
     const ORIGIN_HISTORY = 'history';
@@ -102,7 +102,7 @@ class Pmt_CommandReceiver extends Pmt_Base {
             self::ORIGIN_INIT,
             self::ORIGIN_ANCHOR,
             self::ORIGIN_USER
-        ))) throw new Exception("Wrong \$origin value; must be one of Pmt_CommandReceiver::ORIGIN_* constants");
+        ))) throw new Exception("Wrong \$origin value; must be one of Pwg_CommandReceiver::ORIGIN_* constants");
         $this->triggerEvent('commandReceived', array('command' => $command, 'origin' => $origin));
     }
 
@@ -122,7 +122,7 @@ class Pmt_CommandReceiver extends Pmt_Base {
         return $this->checkClicksInsideAnchors;
     }
 
-    protected function doOnGetInitializer(Pm_Js_Initializer $initializer) {
+    protected function doOnGetInitializer(Pwg_Js_Initializer $initializer) {
         parent::doOnGetInitializer($initializer);
         $blankUrl = $this->blankUrl;
         if ($blankUrl === false) {        
@@ -133,7 +133,7 @@ class Pmt_CommandReceiver extends Pmt_Base {
                 $blankUrl = "blank.html";
             }
         }
-        $initializer->topHtml['Pmt_CommandReceiver'] = '<iframe id="yuiHistoryFrame" src="'.htmlspecialchars($blankUrl).'" style="position:absolute; top:0; left:0; width:1px; height:1px; visibility:hidden;"></iframe><input id="yuiHistoryInput" type="hidden">';
+        $initializer->topHtml['Pwg_CommandReceiver'] = '<iframe id="yuiHistoryFrame" src="'.htmlspecialchars($blankUrl).'" style="position:absolute; top:0; left:0; width:1px; height:1px; visibility:hidden;"></iframe><input id="yuiHistoryInput" type="hidden">';
     }
     
 }

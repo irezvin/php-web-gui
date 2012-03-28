@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
+class Pwg_Tree_View_Nodes extends Pwg_Tree_View {
     
     /**
      * don't check whether parent of refreshed node had changed
@@ -13,7 +13,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     const TM_DONT_FORCE_VISIBILITY = 1;
     
     /**
-     * if node has moved to invisible/unloaded ancestors, it will be shown (as in Pmt_Tree_View_Nodes::showNodes() with $withAncestors set to TRUE)
+     * if node has moved to invisible/unloaded ancestors, it will be shown (as in Pwg_Tree_View_Nodes::showNodes() with $withAncestors set to TRUE)
      */
     const TM_FORCE_VISIBILITY = 2;
 
@@ -38,12 +38,12 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     const POPULATE_DIRECT_CHILDREN_ONLY = 3;
     
     /**
-     * @var Pmt_I_Tree_Provider
+     * @var Pwg_I_Tree_Provider
      */
     protected $treeProvider = false;
 
     /**
-     * @var Pmt_I_Tree_Node
+     * @var Pwg_I_Tree_Node
      */
     protected $currentNode = false;
     
@@ -80,7 +80,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
         return $res;
     }
     
-    function setTreeProvider(Pmt_I_Tree_Provider $treeProvider) {
+    function setTreeProvider(Pwg_I_Tree_Provider $treeProvider) {
         if ($this->treeProvider && ($this->treeProvider !== $treeProvider))
             throw new Exception("Can set \$treeProvider only once");
             
@@ -88,7 +88,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     }
 
     /**
-     * @return Pmt_I_Tree_Provider
+     * @return Pwg_I_Tree_Provider
      */
     function getTreeProvider() {
         return $this->treeProvider;
@@ -127,7 +127,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     }
 
     /**
-     * @return Pmt_I_Tree_Node
+     * @return Pwg_I_Tree_Node
      */
     function getCurrentNode() {
         return $this->currentNode;
@@ -135,7 +135,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
 
     /**
      * Loads given data node(s) if they are not loaded; shows them up.  
-     * @param $nodeOrNodesOrIds Pmt_I_Tree_Node instance | node id | array of Pmt_I_Tree_Node instances and/or node ids
+     * @param $nodeOrNodesOrIds Pwg_I_Tree_Node instance | node id | array of Pwg_I_Tree_Node instances and/or node ids
      * @param bool $withAncestors Whether to load and show required ancestors (for nodes that otherwise won't be shown) 
      * @param bool $expandAncestors  Whether to make branches of respective nodes expanded (to make these nodes visible for the user)
      * @param int $populateChildren One of self::POPULATE_* constants
@@ -155,7 +155,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
             if (!$p && $withAncestors) $p = $this->createAncestorsBranch($node);
             //if (!p) throw new Exception("Assertion: we should have node parent at this point", E_USER_ERROR);
             if ($p) {
-                if (!$p instanceof Pmt_Tree_Parent) throw new Exception("Some shit is provided instead of Pmt_Tree_Parent: ".$p);
+                if (!$p instanceof Pwg_Tree_Parent) throw new Exception("Some shit is provided instead of Pwg_Tree_Parent: ".$p);
                 $tn = $this->createTreeNode($node, $populateChildren, $p);
                 $tn->expandAncestors();
             } else {
@@ -164,8 +164,8 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     }
     
     /**
-     * Hides given data node(s) and removes corresponding Pmt_Tree_Node's from the tree 
-     * @param $nodeOrNodesOrIds Pmt_I_Tree_Node instance | node id | array of Pmt_I_Tree_Node instances and/or node ids 
+     * Hides given data node(s) and removes corresponding Pwg_Tree_Node's from the tree 
+     * @param $nodeOrNodesOrIds Pwg_I_Tree_Node instance | node id | array of Pwg_I_Tree_Node instances and/or node ids 
      */
     function hideNodes($nodeOrNodesOrIds) {
         $nodes = array_keys($this->extractNodes($nodeOrNodesOrIds, false, false));
@@ -175,15 +175,15 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     }
     
     /**
-     * @param $nodeOrNodesOrIds Pmt_I_Tree_Node instance | node id | array of Pmt_I_Tree_Node instances and/or node ids
+     * @param $nodeOrNodesOrIds Pwg_I_Tree_Node instance | node id | array of Pwg_I_Tree_Node instances and/or node ids
      * @param bool $withChildren Whether node children should also be recursively refreshed
-     * @param int $trackMovement - one of Pmt_Tree_View_Nodes::DONT_TRACK_MOVEMENT | Pmt_Tree_View_Nodes::DONT_FORCE_VISIBILITY | Pmt_Tree_View_Nodes::FORCE_VISIBILITY constants
+     * @param int $trackMovement - one of Pwg_Tree_View_Nodes::DONT_TRACK_MOVEMENT | Pwg_Tree_View_Nodes::DONT_FORCE_VISIBILITY | Pwg_Tree_View_Nodes::FORCE_VISIBILITY constants
      * @param bool $forceNewNodesDisplay Whether to display (with ancestors) nodes that are in $nodeOrNodesOrIds but currenlty not loaded/shown  
      * 
      * Here's how $trackMovement works:
-     * - Pmt_Tree_View_Nodes::TM_DONT_TRACK_MOVEMENT - don't check whether parent of refreshed node had changed
-     * - Pmt_Tree_View_Nodes::TM_DONT_FORCE_VISIBILITY - node is moved to new parent only if that parent is shown; otherwise it's hidden
-     * - Pmt_Tree_View_Nodes::TM_FORCE_VISIBILITY - if node has moved to invisible/unloaded ancestors, it will be shown (as in Pmt_Tree_View_Nodes::showNodes() with $withAncestors set to TRUE) 
+     * - Pwg_Tree_View_Nodes::TM_DONT_TRACK_MOVEMENT - don't check whether parent of refreshed node had changed
+     * - Pwg_Tree_View_Nodes::TM_DONT_FORCE_VISIBILITY - node is moved to new parent only if that parent is shown; otherwise it's hidden
+     * - Pwg_Tree_View_Nodes::TM_FORCE_VISIBILITY - if node has moved to invisible/unloaded ancestors, it will be shown (as in Pwg_Tree_View_Nodes::showNodes() with $withAncestors set to TRUE) 
      */
     function refreshNodes($nodeOrNodesOrIds, $withChildren = true, $trackMovement = self::TM_DONT_FORCE_VISIBILITY, $forceNewNodesDisplay = false) {
         $nodes = $this->extractNodes($nodeOrNodesOrIds, $forceNewNodesDisplay, $forceNewNodesDisplay);
@@ -202,10 +202,10 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
 
     function setCheckedNodes($nodeOrNodesOrIds) {
         if (!$this->withCheckboxes) {
-            trigger_error (__FUNCTION__."() makes sense only for Pmt_Tree_View_Nodes with useCheckboxes set to true", E_USER_NOTICE);
+            trigger_error (__FUNCTION__."() makes sense only for Pwg_Tree_View_Nodes with useCheckboxes set to true", E_USER_NOTICE);
             return;
         } else {
-            $items = $this->findChildrenByProperty('checked', true, 'Pmt_Tree_Node_Toggle', true, true);
+            $items = $this->findChildrenByProperty('checked', true, 'Pwg_Tree_Node_Toggle', true, true);
             $this->setProperty($items, 'checked', false);
             $nodes = $this->getLoadedNodes($nodeOrNodesOrIds, true);
             $this->showNodes($nodes, true);
@@ -218,9 +218,9 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     function getCheckedNodes() {
         $res = array();
         if (!$this->withCheckboxes) {
-            trigger_error (__FUNCTION__."() makes sense only for Pmt_Tree_View_Nodes with useCheckboxes set to true", E_USER_NOTICE);
+            trigger_error (__FUNCTION__."() makes sense only for Pwg_Tree_View_Nodes with useCheckboxes set to true", E_USER_NOTICE);
         } else {
-            $items = $this->findChildrenByProperty('checked', true, 'Pmt_Tree_Node_Toggle', true, true);
+            $items = $this->findChildrenByProperty('checked', true, 'Pwg_Tree_Node_Toggle', true, true);
             foreach ($items as $item) {
                 if ($node = $this->getDataNode($tem)) {
                     $res[$node->getNodeId()] = $node;
@@ -233,9 +233,9 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     function getCheckedIds() {
         $res = array();
         if (!$this->withCheckboxes) {
-            trigger_error (__FUNCTION__."() makes sense only for Pmt_Tree_View_Nodes with useCheckboxes set to true", E_USER_NOTICE);
+            trigger_error (__FUNCTION__."() makes sense only for Pwg_Tree_View_Nodes with useCheckboxes set to true", E_USER_NOTICE);
         } else {
-            $items = $this->findChildrenByProperty('checked', true, 'Pmt_Tree_Node_Toggle', true, true);
+            $items = $this->findChildrenByProperty('checked', true, 'Pwg_Tree_Node_Toggle', true, true);
             foreach ($items as $item) {
                 $res[] = $item->getData();
             }
@@ -244,10 +244,10 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     }
     
     /**
-     * @return Pmt_Tree_Node
+     * @return Pwg_Tree_Node
      */
     function findTreeNodeByDataNode($dataNodeOrId) {
-        if ($dataNodeOrId instanceof Pmt_I_Tree_Node) $id = $dataNodeOrId->getNodeId();
+        if ($dataNodeOrId instanceof Pwg_I_Tree_Node) $id = $dataNodeOrId->getNodeId();
             else $id = $dataNodeOrId;
         $res = $this->getFirstNode($this->findChildrenByProperty('data', $id), false, true);
         return $res;
@@ -255,7 +255,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     
     // +-------------- init-time properties --------------+
     
-    protected function refreshNode(Pmt_I_Tree_Node $node, $withChildren, $trackMovement, $forceNewNodesDisplay) {
+    protected function refreshNode(Pwg_I_Tree_Node $node, $withChildren, $trackMovement, $forceNewNodesDisplay) {
         if (!($visualNode = $this->findTreeNode($node))) $this->showNodes(array($node), true);
         else {
             $currentVisualParent = $visualNode->getParent();
@@ -304,7 +304,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     }
 
     /**
-     * Whether to use Pmt_Tree_Node_Toggle nodes
+     * Whether to use Pwg_Tree_Node_Toggle nodes
      * @param bool $withCheckboxes
      */
     protected function setWithCheckboxes($withCheckboxes) {
@@ -318,11 +318,11 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     // +-------------- internal stuff --------------+
 
     /**
-     * @param Pmt_Tree_Node $visualNode
+     * @param Pwg_Tree_Node $visualNode
      * @param bool $load Load data node if it's not loaded
-     * @return Pmt_I_Tree_Node
+     * @return Pwg_I_Tree_Node
      */
-    protected function getDataNode(Pmt_Tree_Node $visualNode, $load = true) {
+    protected function getDataNode(Pwg_Tree_Node $visualNode, $load = true) {
         $id = $visualNode->getData();
         if (strlen($id) && $id !== '__loadingStub' && $id !== '__showChildrenStub') {
             $res = $this->treeProvider->getNode($id, $load);
@@ -339,7 +339,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
         $allIds = array();
         $nodes = array();
         foreach ($p as $k => $item) {
-            if ($item instanceof Pmt_I_Tree_Node) {
+            if ($item instanceof Pwg_I_Tree_Node) {
                 if (!strlen($id = $item->getNodeId())) throw new Exception("Currently can't use nodes without IDs");
                 $nodes[] = $item;
                 $allIds[$k] = $id;   
@@ -373,7 +373,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
         return $res;
     }
     
-    protected function getNodeId(Pmt_I_Tree_Node $dataNode) {
+    protected function getNodeId(Pwg_I_Tree_Node $dataNode) {
         $res = $dataNode->getNodeId();
         if (!strlen($res)) throw new Exception("Currently nodes without ID are not supported");
         return $res;
@@ -383,7 +383,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
      * @param array $nodes
      * @param $default
      * @param $assertIfMoreThanOne
-     * @return Pmt_Tree_Node
+     * @return Pwg_Tree_Node
      */
     protected function getFirstNode(array $nodes, $default = false, $assertIfMoreThanOne = false) {
         if ($c = count($vs = array_values($nodes))) {
@@ -394,18 +394,18 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     }
     
     /**
-     * @param Pmt_I_Tree_Node $dataNode
-     * @return Pmt_Tree_Node
+     * @param Pwg_I_Tree_Node $dataNode
+     * @return Pwg_Tree_Node
      */
-    protected function findTreeNode(Pmt_I_Tree_Node $dataNode) {
+    protected function findTreeNode(Pwg_I_Tree_Node $dataNode) {
         return $this->getFirstNode($this->findChildrenByProperty('data', $this->getNodeId($dataNode)), false, true);
     }
 
     /**
-     * @param Pmt_I_Tree_Node $dataNode
-     * @return Pmt_Tree_Parent
+     * @param Pwg_I_Tree_Node $dataNode
+     * @return Pwg_Tree_Parent
      */
-    protected function findTreeParentOfDataNode(Pmt_I_Tree_Node $dataNode) {
+    protected function findTreeParentOfDataNode(Pwg_I_Tree_Node $dataNode) {
         $pId = $dataNode->getParentNodeId();
         if (is_null($pId) || ((string) $pId === '0')) $res = $this;
         else {
@@ -415,12 +415,12 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     }
     
     /**
-     * @param Pmt_I_Tree_Node $dataNode
+     * @param Pwg_I_Tree_Node $dataNode
      * @param int $alsoInitializeChildren (self::POPULATE_* constants)
-     * @param Pmt_Tree_Parent $parent  
-     * @return Pmt_Tree_Node
+     * @param Pwg_Tree_Parent $parent  
+     * @return Pwg_Tree_Node
      */
-    protected function createTreeNode(Pmt_I_Tree_Node $dataNode, $alsoInitializeChildren = self::POPULATE_NOTHING, Pmt_Tree_Parent $parent = null) {
+    protected function createTreeNode(Pwg_I_Tree_Node $dataNode, $alsoInitializeChildren = self::POPULATE_NOTHING, Pwg_Tree_Parent $parent = null) {
         if (!($res = $this->findTreeNode($dataNode))) {
             $prototype = $this->treeNodePrototype;
             $prototype['displayOrder'] = $dataNode->getOrdering();
@@ -429,7 +429,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
             if (!$res) {
                 if (!isset($prototype['content'])) $prototype['content'] = $dataNode->getTitle();
                 $prototype['triggerEventOnSoftExpand'] = true; 
-                $res = Pmt_Base::factory($prototype, $this->withCheckboxes? 'Pmt_Tree_Node_Toggle' : 'Pmt_Tree_Node');
+                $res = Pwg_Base::factory($prototype, $this->withCheckboxes? 'Pwg_Tree_Node_Toggle' : 'Pwg_Tree_Node');
             }
             switch ($alsoInitializeChildren) {
                 case self::POPULATE_NOTHING: break;
@@ -446,21 +446,21 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
                     $this->loadAndShowChildren($res, self::POPULATE_RECURSIVE);
                     break;
                     
-                default: throw new Exception("Unknown \$alsoInitializeChildren value; should be one of Pmt_Tree_View_Nodes::POPULATE_* constants");
+                default: throw new Exception("Unknown \$alsoInitializeChildren value; should be one of Pwg_Tree_View_Nodes::POPULATE_* constants");
             }
             if (!is_null($parent)) $parent->addControl($res);
         }
         return $res;
     }
     
-    protected function populateWithStubs(Pmt_Tree_Node $node) {
+    protected function populateWithStubs(Pwg_Tree_Node $node) {
         $data = $this->getDataNode($node);
         if ($data->getChildNodesCount()) {
             $nd = false;
-            if (!$node->listControls()) $node->addControl($nd = new Pmt_Tree_Node(array(
+            if (!$node->listControls()) $node->addControl($nd = new Pwg_Tree_Node(array(
                 'data' => '__loadingStub',
                 'content' => $this->lazyLoadLabel,
-            ))); else $node->addControl(new Pmt_Tree_Node($nd = array(
+            ))); else $node->addControl(new Pwg_Tree_Node($nd = array(
                 'data' => '__showChildrenStub',
                 'content' => $this->showSiblingsLabel,
             )));
@@ -468,18 +468,18 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
         }
     }
     
-    protected function isLoadingStub(Pmt_Tree_Node $node) {
+    protected function isLoadingStub(Pwg_Tree_Node $node) {
         return $node->getData() === '__loadingStub';
     }
     
-    protected function isShowChildrenStub(Pmt_Tree_Node $node) {
+    protected function isShowChildrenStub(Pwg_Tree_Node $node) {
         return $node->getData() === '__showChildrenStub';
     }
     
     /**
-     * @return Pmt_Tree_Node
+     * @return Pwg_Tree_Node
      */
-    protected function findLoadingStub(Pmt_Tree_Node $node) {
+    protected function findLoadingStub(Pwg_Tree_Node $node) {
         $stubs = $node->findChildrenByProperty('data', '__loadingStub', false, true, false);
         if (count($stubs)) $res = $stubs[0];
             else $res = false;
@@ -487,16 +487,16 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     }
     
     /**
-     * @return Pmt_Tree_Node
+     * @return Pwg_Tree_Node
      */
-    protected function findShowChildrenStub(Pmt_Tree_Node $node) {
+    protected function findShowChildrenStub(Pwg_Tree_Node $node) {
         $stubs = $node->findChildrenByProperty('data', '__showChildrenStub', false, true, false);
         if (count($stubs)) $res = $stubs[0];
             else $res = false;
         return $res;
     }
     
-    protected function loadAndShowChildren(Pmt_Tree_Node $visualNode, $childInitMode) {
+    protected function loadAndShowChildren(Pwg_Tree_Node $visualNode, $childInitMode) {
         $dataNode = $this->getDataNode($visualNode, true);
         $childNodes = $this->getLoadedNodes($dataNode->listChildNodes());
         foreach ($childNodes as $childDataNode) {
@@ -508,10 +508,10 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
      * Creates (if they are not already created) nodes for all ancestors of given node
      * Returns node's parent.
      * 
-     * @param Pmt_I_Tree_Node $dataNode
-     * @return Pmt_Tree_Node
+     * @param Pwg_I_Tree_Node $dataNode
+     * @return Pwg_Tree_Node
      */
-    protected function createAncestorsBranch(Pmt_I_Tree_Node $dataNode) {
+    protected function createAncestorsBranch(Pwg_I_Tree_Node $dataNode) {
         $allAncestorIdsFromTopToBottom = array_reverse($dataNode->getAllParentNodeIds(false));
         $ancestors = $this->getLoadedNodes($allAncestorIdsFromTopToBottom);
         $parent = $this;
@@ -526,10 +526,10 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
     }
     
     protected function doGetConstructorName() {
-        return 'Pmt_Tree_View';
+        return 'Pwg_Tree_View';
     }
     
-    function notifyChildClick(Pmt_Tree_Node $child) {
+    function notifyChildClick(Pwg_Tree_Node $child) {
         parent::notifyChildClick($child);
         if ($this->isShowChildrenStub($child)) {
             if ($node = $this->getDataNode($child->getParent(), false)) {
@@ -541,7 +541,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
         }
     }
     
-    function notifyChildExpand(Pmt_Tree_Node $child, $byUser) {
+    function notifyChildExpand(Pwg_Tree_Node $child, $byUser) {
         parent::notifyChildExpand($child);
         if ($byUser || $this->alwaysLoadChildrenOnExpand) {
             if ($this->lazyLoad && ($ls = $this->findLoadingStub($child))) {
@@ -561,7 +561,7 @@ class Pmt_Tree_View_Nodes extends Pmt_Tree_View {
         return $this->alwaysLoadChildrenOnExpand;
     }
 
-    function notifyNodeDestroyed(Pmt_Tree_Node $node) {
+    function notifyNodeDestroyed(Pwg_Tree_Node $node) {
         parent::notifyNodeDestroyed($node);
         if ($this->currentNode && ($data = $this->getDataNode($node))) {
             $nId = $data->getNodeId();

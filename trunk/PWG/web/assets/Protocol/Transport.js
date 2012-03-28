@@ -1,10 +1,10 @@
-Pm_Protocol_Transport = function(options) {
+Pwg_Protocol_Transport = function(options) {
 	
-	if (options && ((typeof options) === 'object')) Pmt_Util.override(this, options);
+	if (options && ((typeof options) === 'object')) Pwg_Util.override(this, options);
 	
 };
 
-Pm_Protocol_Transport.prototype = {
+Pwg_Protocol_Transport.prototype = {
 		
 	protocol: null,
 	

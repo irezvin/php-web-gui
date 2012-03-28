@@ -1,9 +1,9 @@
 <?php
 
-class Pmt_Table_Editor extends Pmt_Base {
+class Pwg_Table_Editor extends Pwg_Base {
     
     /**
-     * @var Pmt_Table_Column
+     * @var Pwg_Table_Column
      */
     protected $column = false;
     
@@ -11,12 +11,12 @@ class Pmt_Table_Editor extends Pmt_Base {
 
     protected $jsEditorOptions = array();
     
-    protected function setColumn(Pmt_Table_Column $column) {
+    protected function setColumn(Pwg_Table_Column $column) {
         $this->column = $column;
     }
     
     /**
-     * @return Pmt_Table_Column
+     * @return Pwg_Table_Column
      */
     function getColumn() {
         return $this->column;

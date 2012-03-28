@@ -2,14 +2,14 @@
 
 /**
  * @deprecated
- * Use Pmt_Application instead
+ * Use Pwg_Application instead
  */
-abstract class Pmt_Legacy_App extends Pmt_Autoparams implements Ae_I_Lang_ResourceProvider {
+abstract class Pwg_Legacy_App extends Pwg_Autoparams implements Ae_I_Lang_ResourceProvider {
     
     protected $currentUserId = false;
     
     /**
-     * @var Pmt_I_User
+     * @var Pwg_I_User
      */
     protected $currentUser = false;
     
@@ -48,7 +48,7 @@ abstract class Pmt_Legacy_App extends Pmt_Autoparams implements Ae_I_Lang_Resour
     
     /**
      * @param string $userId
-     * @return Pmt_I_User
+     * @return Pwg_I_User
      */
     abstract function getUserById($userId);
     
@@ -67,7 +67,7 @@ abstract class Pmt_Legacy_App extends Pmt_Autoparams implements Ae_I_Lang_Resour
         return $this->currentUserId;
     }
 
-    function setCurrentUser(Pmt_I_User $currentUser = null) {
+    function setCurrentUser(Pwg_I_User $currentUser = null) {
         if (!$currentUser) $currentUser = false;
         if ($currentUser !== ($oldCurrentUser = $this->currentUser)) {
             $this->currentUser = $currentUser;
@@ -76,7 +76,7 @@ abstract class Pmt_Legacy_App extends Pmt_Autoparams implements Ae_I_Lang_Resour
     }
 
     /**
-     * @return Pmt_I_User
+     * @return Pwg_I_User
      */
     function getCurrentUser() {
         if ($this->currentUser === false) {
@@ -215,7 +215,7 @@ abstract class Pmt_Legacy_App extends Pmt_Autoparams implements Ae_I_Lang_Resour
     }
     
     function registerLangStrings($noReplace = false) {
-    	Pmt_Lang_Resource::getInstance()->addStrings($this->getLangString());
+    	Pwg_Lang_Resource::getInstance()->addStrings($this->getLangString());
     }
     
 	function getLangHash($langId) {

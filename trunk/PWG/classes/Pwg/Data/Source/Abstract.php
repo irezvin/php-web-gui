@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Data_Source_Abstract extends Pmt_Base {
+class Pwg_Data_Source_Abstract extends Pwg_Base {
 	
     const HOLD_NUMBER = 0;
     const HOLD_KEY = 1;

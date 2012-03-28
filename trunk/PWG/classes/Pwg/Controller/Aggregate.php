@@ -3,7 +3,7 @@
 /**
  *  Aggregate controller to reuse groups of controls
  */
-class Pmt_Controller_Aggregate extends Pmt_Controller {
+class Pwg_Controller_Aggregate extends Pwg_Controller {
     
     protected $prototypesOverride = false;
     
@@ -13,7 +13,7 @@ class Pmt_Controller_Aggregate extends Pmt_Controller {
     
     function listPublicControls() {
         $myVars = array_keys(Ae_Util::getClassVars(get_class($this)));
-        $parentVars = array_keys(Ae_Util::getClassVars('Pmt_Controller'));
+        $parentVars = array_keys(Ae_Util::getClassVars('Pwg_Controller'));
         return array_diff($myVars, $parentVars);
     }
 
@@ -39,7 +39,7 @@ class Pmt_Controller_Aggregate extends Pmt_Controller {
     }
     
     protected function doGetConstructorName() {
-        return 'Pmt_Controller';
+        return 'Pwg_Controller';
     }
     
 }

@@ -1,6 +1,6 @@
 <?php
 
-interface Pmt_I_User {
+interface Pwg_I_User {
 	
 	function getLogin();
 	

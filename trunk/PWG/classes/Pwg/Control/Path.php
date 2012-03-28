@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Control_Path {
+class Pwg_Control_Path {
     
     protected $path = false;
     

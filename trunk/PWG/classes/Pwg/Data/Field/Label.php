@@ -1,9 +1,9 @@
 <?php
 
-class Pmt_Data_Field_Label extends Pmt_Data_Field {
+class Pwg_Data_Field_Label extends Pwg_Data_Field {
 
     /**
-     * @var Pmt_Label
+     * @var Pwg_Label
      */
     public $label = false;
     
@@ -11,7 +11,7 @@ class Pmt_Data_Field_Label extends Pmt_Data_Field {
         parent::doOnGetControlPrototypes($prototypes);
         $p = array(
             'editor' => array(
-                'class' => 'Pmt_Label',
+                'class' => 'Pwg_Label',
             ),
             'binder' => array(
                 'dataPropertyName' => 'html',

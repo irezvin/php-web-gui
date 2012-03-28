@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I_RecordList {
+class Pwg_Controller_Std_List extends Pwg_Controller_MDI_Window implements Pwg_I_RecordList {
 	
 	protected $finderClass = false;
 	
@@ -17,22 +17,22 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
 	protected $colToPropMap = array();
     
     /**
-     * @var Pmt_Data_Source
+     * @var Pwg_Data_Source
      */
     protected $dsData = false;
     
     /**
-     * @var Pmt_Yui_Paginator
+     * @var Pwg_Yui_Paginator
      */
     public $paginator = false;
     
     /**
-     * @var Pmt_Data_Filter
+     * @var Pwg_Data_Filter
      */
     protected $fltFilter = false;
     
     /**
-     * @var Pmt_Table
+     * @var Pwg_Table
      */
     protected $tblList = false;
     
@@ -56,7 +56,7 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
     protected function doOnGetControlPrototypes(array & $prototypes) {
     	
     	if ($this->finderClass !== false) {
-    		$finder = Pmt_Autoparams::factory($this->doGetFinderPrototype(), $this->finderClass);
+    		$finder = Pwg_Autoparams::factory($this->doGetFinderPrototype(), $this->finderClass);
     		if ($this->mapperClass === false) $this->mapperClass = $finder->getMapperClassForCollection();
     		$alias = $finder->getPrimaryAlias();
     	}
@@ -122,13 +122,13 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
             ),
         
             'btnCreate' => array(
-            	'label' => new Pmt_Lang_String('create'),
+            	'label' => new Pwg_Lang_String('create'),
             	'containerIsBlock' => false,
             	'displayParentPath' => '../pnlLayout',
             ),
             
             'btnOpenDetails' => array(
-            	'label' => new Pmt_Lang_String('open_details'),
+            	'label' => new Pwg_Lang_String('open_details'),
             	'containerIsBlock' => false,
             	'displayParentPath' => '../pnlLayout',
             ),
@@ -140,21 +140,21 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
             
             'paginator' => array(
                 'displayParentPath' => '../pnlLayout',
-                'class' => 'Pmt_Yui_Paginator',
+                'class' => 'Pwg_Yui_Paginator',
                 'rowsPerPage' => 10,
                 'dataSourcePath' => '../dsData',
                 'containerIsBlock' => false, 
             ),
         
             'bndList' => array(
-                'class' => 'Pmt_Data_Binder_Records',
+                'class' => 'Pwg_Data_Binder_Records',
                 'dataControlPath' => '../tblList',
                 'dataSourcePath' => '../dsData',
             	'paginatorPath' => '../paginator',
             ),
             
             'tblList' => array(
-                'class' => 'Pmt_Table',
+                'class' => 'Pwg_Table',
                 'displayParentPath' => '../pnlLayout',
                 'columnPrototypes' => $columnPrototypes,
             	//'scrollable' => true,
@@ -172,7 +172,7 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
             	'hasBtnSave' => false,
             	'hasBtnCancel' => false,
             	'hasBtnReload' => true,
-            	'deleteConfirmation' => new Pmt_Lang_String('deleteRecordConfirmation'),
+            	'deleteConfirmation' => new Pwg_Lang_String('deleteRecordConfirmation'),
             ),
             
         ));
@@ -180,7 +180,7 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
         if ($this->finderClass !== false) {
         	Ae_Util::ms($prototypes, array(            
             	'fltFilter' => array(
-            		'class' => 'Pmt_Data_Filter',
+            		'class' => 'Pwg_Data_Filter',
             		'finder' => $finder,
             		'dataSourcePath' => '../dsData',
             	),
@@ -202,17 +202,17 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
     }
     
     function handleDsDataOnDeleteRecord($dataSource, $eventType, $params) {
-    	$this->triggerEvent(Pmt_I_RecordList::evtDeleteRecord, $params);
+    	$this->triggerEvent(Pwg_I_RecordList::evtDeleteRecord, $params);
     }
     
     function handleBtnOpenDetailsClick() {
     	if ($r = $this->dsData->getCurrentRecord()) {
-    		$this->triggerEvent(Pmt_I_RecordList::evtOpenDetails, array('primaryKey' => $r->getPrimaryKey(), 'record' => $r, 'mapperClass' => $this->getMapperClass()));
+    		$this->triggerEvent(Pwg_I_RecordList::evtOpenDetails, array('primaryKey' => $r->getPrimaryKey(), 'record' => $r, 'mapperClass' => $this->getMapperClass()));
     	}
     }
     
     function handleBtnCreateClick() {
-    	$this->triggerEvent(Pmt_I_RecordList::evtCreateRecord, array('mapperClass' => $this->getMapperClass()));
+    	$this->triggerEvent(Pwg_I_RecordList::evtCreateRecord, array('mapperClass' => $this->getMapperClass()));
     } 	
 	
     protected function getDataFieldName($column) {
@@ -225,7 +225,7 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
         return $res;
     }
     
-    protected function orderByColumn(Pmt_Table_Column $column, $asc = true) {
+    protected function orderByColumn(Pwg_Table_Column $column, $asc = true) {
         $fieldName = $this->getDataFieldName($column);       
         
         $fnd = $this->fltFilter->getFinder();
@@ -246,7 +246,7 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
         return $res;
     }
     
-    function handleTblListColumnSortRequest(Pmt_Table $table, $eventType, $params) {
+    function handleTblListColumnSortRequest(Pwg_Table $table, $eventType, $params) {
     	$params['setNewSort'] = $this->orderByColumn($params['column'], $params['sortIsAsc']);
     }
     
@@ -272,12 +272,12 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
     	}
     }
     
-    function handleTxtFilterChange(Pmt_Text $txtFilter) {
+    function handleTxtFilterChange(Pwg_Text $txtFilter) {
     	$fnd = $this->fltFilter->getFinder();
     	if (strlen($this->anySubstringCriterionName) && in_array($this->anySubstringCriterionName, $fnd->listCriteria())) {
     		$crit = $fnd->getCriterion($this->anySubstringCriterionName);
     		$text = $txtFilter->getText();
-    		$cols = Pmt_Composite::findControlChildrenByProperties($this->tblList->getColset(), array('hidden' => false, 'searchable' => true), 'Pmt_Table_Column', false);
+    		$cols = Pwg_Composite::findControlChildrenByProperties($this->tblList->getColset(), array('hidden' => false, 'searchable' => true), 'Pwg_Table_Column', false);
     		$props = array();
             $propsWithMap = array();
     		foreach ($cols as $col) {
@@ -290,9 +290,9 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
                     }
                 }
             }
-            Pm_Conversation::log("Initial search is ", $props);
+            Pwg_Conversation::log("Initial search is ", $props);
     		$props = array_diff($props, $up = $crit->listUnsearchableProperties($props));
-            Pm_Conversation::log("uns is", $up);
+            Pwg_Conversation::log("uns is", $up);
             $props = array_merge($props, $propsWithMap);
     		if (!count($props) || !strlen($text)) $crit->setValue(null);
     			else $crit->setValue(array('propNames' => $props, 'substring' => $text));
@@ -300,12 +300,12 @@ class Pmt_Controller_Std_List extends Pmt_Controller_MDI_Window implements Pmt_I
     	}
     }
 
-    function handleTblListRowDblClick(Pmt_Table $tbl, $et, $params) {
-        if (isset($params['row']) && $params['row'] instanceof Pmt_Table_Row) {
+    function handleTblListRowDblClick(Pwg_Table $tbl, $et, $params) {
+        if (isset($params['row']) && $params['row'] instanceof Pwg_Table_Row) {
             $rec = $params['row']->getRecord();
-            if ($rec instanceof Pmt_Record_Ae) {
+            if ($rec instanceof Pwg_Record_Ae) {
                 $r = $rec->getAeModelData();
-                $this->triggerEvent(Pmt_I_RecordList::evtOpenDetails, array('primaryKey' => $r->getPrimaryKey(), 'record' => $r, 'mapperClass' => $this->getMapperClass()));
+                $this->triggerEvent(Pwg_I_RecordList::evtOpenDetails, array('primaryKey' => $r->getPrimaryKey(), 'record' => $r, 'mapperClass' => $this->getMapperClass()));
             }
         }
     }

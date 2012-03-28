@@ -1,10 +1,10 @@
 PmtStdKeyVars = ['keyCode', 'charCode', 'metaKey', 'shiftKey', 'altKey'];
 
-Pmt_Element = function() {
+Pwg_Element = function() {
 };
 
-Pmt_Element.prototype = {
-	jsClassName: "Pmt_Element",
+Pwg_Element.prototype = {
+	jsClassName: "Pwg_Element",
     visible: true,
     containerId: false,
     observersMap: {},
@@ -13,7 +13,7 @@ Pmt_Element.prototype = {
     element: false,
 
     initialize: function(options) {
-    	Pmt_Core.prototype.initialize.apply(this, arguments);
+    	Pwg_Core.prototype.initialize.apply(this, arguments);
     	this.lazyInitialize1();
     },
 
@@ -46,7 +46,7 @@ Pmt_Element.prototype = {
     },
     
     doOnDelete: function() {
-    	if (this.element) Pmt_Util.deleteNodes(this.element);
+    	if (this.element) Pwg_Util.deleteNodes(this.element);
     },
     
     createAutoEvent: function(autoEvent) {
@@ -124,7 +124,7 @@ Pmt_Element.prototype = {
                 else if (this.element.setAttribute) this.element.setAttribute('style', value);
             } else {
                 if (typeof value === 'object') {
-                    for (var i in value) if (Pmt_Util.hasOwnProperty(value, i))
+                    for (var i in value) if (Pwg_Util.hasOwnProperty(value, i))
                         YAHOO.util.Dom.setStyle(this.element, i, value[i]);
                 }
             }
@@ -154,16 +154,16 @@ Pmt_Element.prototype = {
     
 }
 
-Pmt_Util.extend(Pmt_Element, Pmt_Core);
+Pwg_Util.extend(Pwg_Element, Pwg_Core);
 
-// ------------------------------------------- Pmt_Button ------------------------------------------- //
+// ------------------------------------------- Pwg_Button ------------------------------------------- //
 
-Pmt_Button = function (options) {
+Pwg_Button = function (options) {
     this.initialize(options);    
 }
 
-Pmt_Button.prototype = {
-	jsClassName: "Pmt_Button",
+Pwg_Button.prototype = {
+	jsClassName: "Pwg_Button",
     label: 'button',
     disabled: false,
     attribs: {},
@@ -234,17 +234,17 @@ Pmt_Button.prototype = {
     }
     
 };
-Pmt_Util.extend(Pmt_Button, Pmt_Element);
+Pwg_Util.extend(Pwg_Button, Pwg_Element);
 
 
-// ------------------------------------------- Pmt_Text ------------------------------------------- //
+// ------------------------------------------- Pwg_Text ------------------------------------------- //
 
-Pmt_Text = function (options) {
+Pwg_Text = function (options) {
     this.initialize(options);    
 }
 
-Pmt_Text.prototype = {
-	jsClassName: "Pmt_Text",
+Pwg_Text.prototype = {
+	jsClassName: "Pwg_Text",
     text: '',
     readOnly: false,
     disabled: false,
@@ -289,7 +289,7 @@ Pmt_Text.prototype = {
             while (ic.firstChild) ic.removeChild(ic.firstChild);
             ic.appendChild(this.element);
             
-            this.changeCall = new Pmt_Util.DelayedCall(this.immediateChange, null, this, [], this.getTypeDelay(), false);
+            this.changeCall = new Pwg_Util.DelayedCall(this.immediateChange, null, this, [], this.getTypeDelay(), false);
             YAHOO.util.Event.addListener(this.element, 'keyup', this.changeCall.call, null, this.changeCall);
             YAHOO.util.Event.addListener(this.element, 'focus', this.handleElementEnter, null, this);
             YAHOO.util.Event.addListener(this.element, 'blur', this.handleElementExit, null, this);
@@ -448,7 +448,7 @@ Pmt_Text.prototype = {
     		this.changeCall.contextObject = null;
     		delete this.changeCall;
     	}
-    	Pmt_Element.prototype.doOnDelete.apply(this, arguments);
+    	Pwg_Element.prototype.doOnDelete.apply(this, arguments);
     },
     
     setKeypressFilter: function(keypressFilter) {
@@ -459,7 +459,7 @@ Pmt_Text.prototype = {
         if (this.transport) {
         	if (this.keypressFilter instanceof Array) {
         		if (event.keyCode) { 
-	        		if (Pmt_Util.indexOf(event.keyCode, this.keypressFilter) < 0) return;
+	        		if (Pwg_Util.indexOf(event.keyCode, this.keypressFilter) < 0) return;
 	    			this.changeCall.cancel();
 	    			this.handleEventChange(event);
         		} else return;
@@ -473,16 +473,16 @@ Pmt_Text.prototype = {
     
 }
 
-Pmt_Util.extend(Pmt_Text, Pmt_Element);
+Pwg_Util.extend(Pwg_Text, Pwg_Element);
 
-// ------------------------------------------- Pmt_Checkbox ------------------------------------------- //
+// ------------------------------------------- Pwg_Checkbox ------------------------------------------- //
 
-Pmt_Checkbox = function (options) {
+Pwg_Checkbox = function (options) {
     this.initialize(options);    
 }
 
-Pmt_Checkbox.prototype = {
-	jsClassName: "Pmt_Checkbox",
+Pwg_Checkbox.prototype = {
+	jsClassName: "Pwg_Checkbox",
     checked: false,
     readOnly: false,
     disabled: false,
@@ -559,16 +559,16 @@ Pmt_Checkbox.prototype = {
     }
 }
 
-Pmt_Util.extend(Pmt_Checkbox, Pmt_Element);
+Pwg_Util.extend(Pwg_Checkbox, Pwg_Element);
 
-//------------------------------------------- Pmt_Label ------------------------------------------- //
+//------------------------------------------- Pwg_Label ------------------------------------------- //
 
-Pmt_Label = function (options) {
+Pwg_Label = function (options) {
     this.initialize(options);    
 }
 
-Pmt_Label.prototype = {
-	jsClassName: "Pmt_Label",
+Pwg_Label.prototype = {
+	jsClassName: "Pwg_Label",
     html: '',
     attribs: {},
     style: {},
@@ -590,7 +590,7 @@ Pmt_Label.prototype = {
         if (ic) {
             this.element = ic;
             while (ic.firstChild) ic.removeChild(ic.firstChild);
-            this._clickCall = new Pmt_Util.DelayedCall(this.handleEventClick, null, this, [], this.getDefault('clickDelay', 300), false);
+            this._clickCall = new Pwg_Util.DelayedCall(this.handleEventClick, null, this, [], this.getDefault('clickDelay', 300), false);
         }
     },
 
@@ -632,7 +632,7 @@ Pmt_Label.prototype = {
     		tn = element.tagName.toUpperCase();
     		if (tn == 'A') {
     			if (element.href) {
-    				res = Pmt_Util.getLocalFragment(element.href, false);
+    				res = Pwg_Util.getLocalFragment(element.href, false);
     				if (!res || (!res.slice(0, 2) == '##')) res = false;
     			}
     		}
@@ -707,19 +707,19 @@ Pmt_Label.prototype = {
 
 }
 
-Pmt_Util.extend(Pmt_Label, Pmt_Element);
+Pwg_Util.extend(Pwg_Label, Pwg_Element);
 
 
-//------------------------------------------- Pmt_List ------------------------------------------- //
+//------------------------------------------- Pwg_List ------------------------------------------- //
 
-Pmt_List = function (options) {
+Pwg_List = function (options) {
     this.listOptions = [];
     this.selectedIndices = [];
     this.initialize(options);    
 }
 
-Pmt_List.prototype = {
-	jsClassName: "Pmt_List",
+Pwg_List.prototype = {
+	jsClassName: "Pwg_List",
     attribs: {},
     style: {},
     className : false,
@@ -832,7 +832,7 @@ Pmt_List.prototype = {
         var element = this.getOptionElementByIndex(index);
         if (element && element.parentNode == this.element) element.parentNode.removeChild(element);
         if (this.selectedIndices instanceof Array) {
-            var idx = Pmt_Util.indexOf(index, this.selectedIndices);
+            var idx = Pwg_Util.indexOf(index, this.selectedIndices);
             if (idx >= 0) this.selectedIndices.splice(idx, 1);
         }
     },
@@ -851,7 +851,7 @@ Pmt_List.prototype = {
             element.selected = true;
         }
         if (this.selectedIndices instanceof Array) {
-            var idx = Pmt_Util.indexOf(index, this.selectedIndices);
+            var idx = Pwg_Util.indexOf(index, this.selectedIndices);
             if (idx < 0) this.selectedIndices.push(index);
         }
     },    
@@ -863,7 +863,7 @@ Pmt_List.prototype = {
             element.selected = false;
         }
         if (this.selectedIndices instanceof Array) {
-            var idx = Pmt_Util.indexOf(index, this.selectedIndices);
+            var idx = Pwg_Util.indexOf(index, this.selectedIndices);
             if (idx >= 0) this.selectedIndices.splice(idx, 1);
         }
     },    
@@ -974,7 +974,7 @@ Pmt_List.prototype = {
     handleEventSelectionChange: function(event) {
         var ns = this.getSelectedIndicesFromElement();
         if (this.selectedIndices instanceof Array) {
-            var diff = Pmt_Util.arrayDiff(ns, this.selectedIndices, false);
+            var diff = Pwg_Util.arrayDiff(ns, this.selectedIndices, false);
             if (!diff.length) return; // Don't do anything if there is no change
         }
         this.selectedIndices = ns;
@@ -986,18 +986,18 @@ Pmt_List.prototype = {
 
 };
 
-Pmt_Util.extend(Pmt_List, Pmt_Element);
+Pwg_Util.extend(Pwg_List, Pwg_Element);
 
-// ------------------------------------------- Pmt_Controller ------------------------------------------- //
+// ------------------------------------------- Pwg_Controller ------------------------------------------- //
 
-Pmt_Controller = function (options) {
+Pwg_Controller = function (options) {
     this.initialize(options);    
 }
 
-Pmt_Controller.loadedAssets = [];
+Pwg_Controller.loadedAssets = [];
 
-Pmt_Controller.prototype = {
-	jsClassName: "Pmt_Controller",
+Pwg_Controller.prototype = {
+	jsClassName: "Pwg_Controller",
     id: false,
     transport: false,
 
@@ -1054,7 +1054,7 @@ Pmt_Controller.prototype = {
 			this.transport.pause();
 		}
     	
-    	Pm_Debug.d("lifecycle", "[" + this.id + "] has loaded all necessary scripts and is creating child control(s)...");
+    	Pwg_Debug.d("lifecycle", "[" + this.id + "] has loaded all necessary scripts and is creating child control(s)...");
     	
 		controlCreateFn();
 				
@@ -1093,8 +1093,8 @@ Pmt_Controller.prototype = {
     },
 
     isInLoadedAssets: function(src) {
-        for (var i = 0; i < window.Pmt_Controller.loadedAssets.length; i++) {
-            if (window.Pmt_Controller.loadedAssets[i] === src) {
+        for (var i = 0; i < window.Pwg_Controller.loadedAssets.length; i++) {
+            if (window.Pwg_Controller.loadedAssets[i] === src) {
                 return true;
             }
         }
@@ -1139,7 +1139,7 @@ Pmt_Controller.prototype = {
                 } catch (e) {
                     throw "Exception while loading script " + src + ": " + e;
                 }
-                window.Pmt_Controller.loadedAssets.push(src);
+                window.Pwg_Controller.loadedAssets.push(src);
             } else {
                 var el = document.createElement('SCRIPT');
                 el.setAttribute("type", "text/javascript");
@@ -1161,7 +1161,7 @@ Pmt_Controller.prototype = {
                 css.setAttribute('type', 'text/css');
                 css.innerHTML = content;
                 document.body.appendChild(css);
-                window.Pmt_Controller.loadedAssets.push(src);
+                window.Pwg_Controller.loadedAssets.push(src);
             } else {
                 var el = document.createElement('LINK');
                 el.setAttribute("rel", "stylesheet");
@@ -1176,13 +1176,13 @@ Pmt_Controller.prototype = {
     initializeChildContainer: function(html, afterContainerId, childContainerId) {
     	//console.log(this.id, 'initializing child container', html, afterContainerId);
     	
-    	Pm_Debug.d("lifecycle", "[" + this.id + "] initializing child container for [" + childContainerId + "]" 
+    	Pwg_Debug.d("lifecycle", "[" + this.id + "] initializing child container for [" + childContainerId + "]" 
     			+ (afterContainerId? " after container [" + afterContainerId + "]" : ""), [ html ]);
     	
     	if (childContainerId) {
     		var oldChildContainer = document.getElementById(childContainerId);
     		if (oldChildContainer) {
-    			Pm_Debug.d("lifecycle", "WARN: Deleting obsolete child container ", oldChildContainer);
+    			Pwg_Debug.d("lifecycle", "WARN: Deleting obsolete child container ", oldChildContainer);
     			oldChildContainer.parentNode.removeChild(oldChildContainer);
     		}
     	}
@@ -1222,28 +1222,28 @@ Pmt_Controller.prototype = {
 
 };
 
-Pmt_Util.extend(Pmt_Controller, Pmt_Element);
+Pwg_Util.extend(Pwg_Controller, Pwg_Element);
 
-Pmt_Control_Parent_Functions = {
+Pwg_Control_Parent_Functions = {
 		
-		initializeControl: Pmt_Controller.prototype.initializeControl,
-		isCss: Pmt_Controller.prototype.isCss,
-		isInLoadedAssets: Pmt_Controller.prototype.isInLoadedAssets,
-		hasCss: Pmt_Controller.prototype.hasCss,
-		hasScript: Pmt_Controller.prototype.hasScript,
-		loadScript: Pmt_Controller.prototype.loadScript,
-		loadCss: Pmt_Controller.prototype.loadCss
+		initializeControl: Pwg_Controller.prototype.initializeControl,
+		isCss: Pwg_Controller.prototype.isCss,
+		isInLoadedAssets: Pwg_Controller.prototype.isInLoadedAssets,
+		hasCss: Pwg_Controller.prototype.hasCss,
+		hasScript: Pwg_Controller.prototype.hasScript,
+		loadScript: Pwg_Controller.prototype.loadScript,
+		loadCss: Pwg_Controller.prototype.loadCss
 		
 }
 
-// ------------------------------------------- Pmt_Group ------------------------------------------- //
+// ------------------------------------------- Pwg_Group ------------------------------------------- //
 
-Pmt_Group = function (options) {
+Pwg_Group = function (options) {
     this.initialize(options);
 }
 
-Pmt_Group.prototype = {
-	jsClassName: "Pmt_Group",
+Pwg_Group.prototype = {
+	jsClassName: "Pwg_Group",
     attribs: {},
     style: {},
     className: false,
@@ -1286,21 +1286,21 @@ Pmt_Group.prototype = {
         }
     },
 
-    initializeChildContainer: Pmt_Controller.prototype.initializeChildContainer
+    initializeChildContainer: Pwg_Controller.prototype.initializeChildContainer
 }
 
-Pmt_Util.extend(Pmt_Group, Pmt_Element);
+Pwg_Util.extend(Pwg_Group, Pwg_Element);
 
-// ------------------------------------------- Pmt_Uploader ------------------------------------------- //
+// ------------------------------------------- Pwg_Uploader ------------------------------------------- //
 
 
-Pmt_Uploader = function (options) {
+Pwg_Uploader = function (options) {
     this.initialize(options);
 }
 
-Pmt_Uploader.prototype = {
+Pwg_Uploader.prototype = {
 	
-    jsClassName: "Pmt_Uploader",
+    jsClassName: "Pwg_Uploader",
 
     readOnly: false,
 
@@ -1309,4 +1309,4 @@ Pmt_Uploader.prototype = {
     }
 }
 
-Pmt_Util.extend(Pmt_Uploader, Pmt_Label);
+Pwg_Util.extend(Pwg_Uploader, Pwg_Label);

@@ -1,11 +1,11 @@
 <?php
 
-class Pmt_Data_Filter extends Pmt_Base {
+class Pwg_Data_Filter extends Pwg_Base {
 
-    protected $holdMode = Pmt_Data_Source::HOLD_NUMBER;
+    protected $holdMode = Pwg_Data_Source::HOLD_NUMBER;
     
     /**
-     * @var Pmt_Data_Source
+     * @var Pwg_Data_Source
      */
     protected $dataSource = false;
 
@@ -20,7 +20,7 @@ class Pmt_Data_Filter extends Pmt_Base {
     protected $finderDefaults = array();
     
     /**
-     * @var Pmt_Finder
+     * @var Pwg_Finder
      */
     protected $finder = false;
 
@@ -99,9 +99,9 @@ class Pmt_Data_Filter extends Pmt_Base {
         if ($this->dataSource) {
             $o =  $this->dataSource->isOpen();
             if ($o) {
-                if ($this->holdMode === Pmt_Data_Source::HOLD_NUMBER) {
+                if ($this->holdMode === Pwg_Data_Source::HOLD_NUMBER) {
                     $holdNo = $this->dataSource->getRecordNo();
-                } elseif ($this->holdMode === Pmt_Data_Source::HOLD_KEY) {
+                } elseif ($this->holdMode === Pwg_Data_Source::HOLD_KEY) {
                     $holdNo = $this->dataSource->getRecordNo();
                     $holdKey = $this->dataSource->getCurrentRecord()? $this->dataSource->getCurrentRecord()->getPrimaryKey() : false;
                 }
@@ -129,9 +129,9 @@ class Pmt_Data_Filter extends Pmt_Base {
             $this->dataSource->setExtraJoins($joins);
             $this->dataSource->setHaving($having);
             if ($o) {
-                if ($this->holdMode === Pmt_Data_Source::HOLD_NUMBER) {
+                if ($this->holdMode === Pwg_Data_Source::HOLD_NUMBER) {
                     $this->dataSource->setRecordNo($holdNo);
-                } elseif ($this->holdMode === Pmt_Data_Source::HOLD_KEY) {
+                } elseif ($this->holdMode === Pwg_Data_Source::HOLD_KEY) {
                     if ($holdKey !== false) {
                         $recNo = $this->dataSource->locateRecordByPrimaryKey($holdKey);
                         if ($recNo === false) $recNo = $holdNo;
@@ -149,7 +149,7 @@ class Pmt_Data_Filter extends Pmt_Base {
         $this->associations['dataSource'] = $dataSourcePath;
     }
     
-    function setDataSource(Pmt_Data_Source $dataSource = null) {
+    function setDataSource(Pwg_Data_Source $dataSource = null) {
         if ($dataSource !== ($oldDataSource = $this->dataSource)) {
             $this->dataSource = $dataSource;
             if ($this->initDefaultsFromDataSource) {
@@ -163,7 +163,7 @@ class Pmt_Data_Filter extends Pmt_Base {
     }
 
     /**
-     * @return Pmt_Data_Source
+     * @return Pwg_Data_Source
      */
     function getDataSource() {
         return $this->dataSource;
@@ -253,11 +253,11 @@ class Pmt_Data_Filter extends Pmt_Base {
     }
 
     /**
-     * @return Pmt_Finder
+     * @return Pwg_Finder
      */
     function getFinder() {
         if ($this->finder === false) {
-            if (strlen($this->finderClass)) $this->finder = Pmt_Autoparams::factory($this->finderDefaults, $this->finderClass);
+            if (strlen($this->finderClass)) $this->finder = Pwg_Autoparams::factory($this->finderDefaults, $this->finderClass);
         }
         return $this->finder;
     }   
@@ -327,7 +327,7 @@ class Pmt_Data_Filter extends Pmt_Base {
     }
     
     /**
-     * @param int $holdMode Pmt_Data_Source::HOLD_NUMBER | Pmt_Data_Source::HOLD_KEY 
+     * @param int $holdMode Pwg_Data_Source::HOLD_NUMBER | Pwg_Data_Source::HOLD_KEY 
      */
     function setHoldMode($holdMode) {
         $this->holdMode = $holdMode;

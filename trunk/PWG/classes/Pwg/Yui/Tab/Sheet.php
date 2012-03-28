@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Yui_Tab_Sheet extends Pmt_Group {
+class Pwg_Yui_Tab_Sheet extends Pwg_Group {
     
     protected $title = false;
 
@@ -60,7 +60,7 @@ class Pmt_Yui_Tab_Sheet extends Pmt_Group {
     }
     
     function doGetConstructorName() {
-        return 'Pmt_Group';
+        return 'Pwg_Group';
     }
     
 //    function hasJsObject() {

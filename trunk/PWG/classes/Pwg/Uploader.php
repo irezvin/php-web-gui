@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Uploader extends Pmt_Label {
+class Pwg_Uploader extends Pwg_Label {
     
     /**
      * @var Ae_Upload_Controller

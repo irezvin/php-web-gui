@@ -5,7 +5,7 @@
  * Shows their template.
  * Handles their events. Automatically binds events "handle<ControlId><EventName>" to corresponding events of corresponding controls 
  */
-class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
+class Pwg_Controller extends Pwg_Composite_Display implements Pwg_I_Controller {
 
     protected $delegatePrototypes = array();
     
@@ -17,12 +17,12 @@ class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
     protected $delegateExterns = false;
     
     /**
-     * @var Pmt_I_Web_Front 
+     * @var Pwg_I_Web_Front 
      */
     protected $webFront = false;
     
     /**
-     * @var Pm_Thread
+     * @var Pwg_Thread
      */
     protected $thread = false;
 
@@ -34,15 +34,15 @@ class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
     	$this->sendMessage(__FUNCTION__, array(new Ae_Js_Val($javascript)));
     }
     
-//  Pmt_Composite
+//  Pwg_Composite
     
-    function createControl(array $prototype, $id = false, $baseClass = 'Pmt_Base') {
+    function createControl(array $prototype, $id = false, $baseClass = 'Pwg_Base') {
         $res = parent::createControl($prototype, $id, $baseClass);
         $this->observeControl($res, false, false, true);
         return $res;
     }
     
-//  Pmt_I_Control
+//  Pwg_I_Control
 
     /**
      * Adds Control to the Controller's jurisdiction.
@@ -52,13 +52,13 @@ class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
      * Adds control to $this->controls[] array and calls sets it's setController() setter to $this.
      * Subscribes control to Conversation of this Controller 
      *
-     * @param Pmt_I_Control $control 
+     * @param Pwg_I_Control $control 
      * @param array|bool $eventMap (eventName => methodName); if false, control's eventMap property will be used
      * @param bool $setAsParent Also set control's parent to this Controller
      * @param bool $autoMatch Whether to perform auto-matching of event names 
-     * @return Pmt_I_Control
+     * @return Pwg_I_Control
      */
-    function observeControl(Pmt_I_Control $control, $eventMap = false, $setAsParent = false, $autoMatch = true) {
+    function observeControl(Pwg_I_Control $control, $eventMap = false, $setAsParent = false, $autoMatch = true) {
         if ($eventMap === false) $eventMap = $control->getEventMap();
         
         foreach ($eventMap as $event => $method) {
@@ -83,7 +83,7 @@ class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
             foreach (array_keys($this->delegateExterns[$id]) as $delegateId) 
                 $this->delegates[$delegateId]->addObservable($control, $id, $eventMap);  
         
-        if ($autoMatch) foreach (Pmt_Base::getClassMethodsWithCache($this) as $m)
+        if ($autoMatch) foreach (Pwg_Base::getClassMethodsWithCache($this) as $m)
             if (!strncasecmp($m, $s = 'handle'.$id, $idl + 6)) { // matches handle<ControlId><EventName>?
                 if (strlen($evt = substr($m, $idl + 6))) { // extract event name
                     $evt{0} = strtolower($evt{0});
@@ -95,12 +95,12 @@ class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
         if ($setAsParent) $this->addControl($control);
     }
     
-    protected function autoObserve (Pm_I_Observable $observable, $idForAutoMatch = false, array $eventMap = array()) {
+    protected function autoObserve (Pwg_I_Observable $observable, $idForAutoMatch = false, array $eventMap = array()) {
         foreach ($eventMap as $event => $method) if (method_exists($this, $method)) {
             $observable->observe($event, $this, $method);
         }
         
-        if ($idForAutoMatch !== false) foreach (Pmt_Base::getClassMethodsWithCache($this) as $m)
+        if ($idForAutoMatch !== false) foreach (Pwg_Base::getClassMethodsWithCache($this) as $m)
             if (!strncmp($m, $s = 'handle'.ucfirst($idForAutoMatch), strlen($s))) { // matches handle<ControlId><EventName>?
                 if (strlen($evt = substr($m, strlen($s)))) { // extract event name
                     $evt{0} = strtolower($evt{0});
@@ -109,14 +109,14 @@ class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
             }
     }
     
-    function addControl(Pmt_I_Control $control) {
+    function addControl(Pwg_I_Control $control) {
         $res = parent::addControl($control);
         $id = $control->getId();
         if (isset($this->$id)) $this->$id = $control;
         return $res;
     }
     
-    function handleEvent(Pm_I_Observable $observable, $eventType, $params = array()) {
+    function handleEvent(Pwg_I_Observable $observable, $eventType, $params = array()) {
     }
 
     function showHeadElements() {
@@ -136,7 +136,7 @@ class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
         return array('widgets.js', 'pax.css');
     }
     
-    function setConversation(Pm_I_Conversation $conversation) {
+    function setConversation(Pwg_I_Conversation $conversation) {
         if ($this->conversation !== $conversation) {
             $this->conversation = $conversation;
             if (is_object($this->conversation))
@@ -145,23 +145,23 @@ class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
         parent::setConversation($conversation);
     }
 
-    function setWebFront(Pm_I_Web_Front $webFront) {
+    function setWebFront(Pwg_I_Web_Front $webFront) {
         $this->webFront = $webFront;
     }
     
-    function setThread(Pm_Thread $thread) {
+    function setThread(Pwg_Thread $thread) {
         $this->thread = $thread;    
     }
     
     /**
-     * @return Pm_Thread
+     * @return Pwg_Thread
      */
     function getThread() {
         return $this->thread;
     }
 
     /**
-     * @return Pm_I_Web_Front 
+     * @return Pwg_I_Web_Front 
      */
     function getWebFront() {
         $res = $this->webFront;
@@ -182,7 +182,7 @@ class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
         $this->delegateExterns = array();
         foreach ($this->delegatePrototypes as $id => $p) {
             $p['controller'] = $this;
-            $this->delegates[$id] = Pmt_Autoparams::factory($p, 'Pmt_Controller_Delegate');
+            $this->delegates[$id] = Pwg_Autoparams::factory($p, 'Pwg_Controller_Delegate');
             $this->refAdd($this->delegates[$id]);
             $externMap = $this->delegates[$id]->getExternMap();
             foreach ($externMap as $delegateId => $myId) {
@@ -194,7 +194,7 @@ class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
     
     /**
      * @param string $id
-     * @return Pmt_Controller_Delegate
+     * @return Pwg_Controller_Delegate
      */
     protected function getDelegate($id) {
         if (in_array($id, $this->delegates)) $res = $this->delegates[$id];
@@ -233,18 +233,18 @@ class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
     }
     
     protected function doGetConstructorName() {
-        return 'Pmt_Controller';
+        return 'Pwg_Controller';
     }
     
     protected function sendWindowControlMessage($action, array $params = array()) {
         $params['action'] = $action;
-        return $this->triggerEvent(Pmt_I_MDIWindow::evtWindowControlMessage, $params);
+        return $this->triggerEvent(Pwg_I_MDIWindow::evtWindowControlMessage, $params);
     }
     
     
 //    function canInitializeFront() {
 //        $res = parent::canInitializeFront();
-//        Pm_Conversation::log("$this", array(
+//        Pwg_Conversation::log("$this", array(
 //            '!frontInitialized' => !$this->frontInitialized,
 //            '!$this->frontInitialization' => !$this->frontInitialization,
 //            '!$this->hasContainer()' => !$this->hasContainer(),
@@ -257,7 +257,7 @@ class Pmt_Controller extends Pmt_Composite_Display implements Pmt_I_Controller {
 //            '!$this->conversation->isPageRender()' => $this->conversation && !$this->conversation->isPageRender(),
 //            '$this->parent' => (bool) $this->parent, 
 //        ));
-//        Pm_Conversation::log("Res is ", $res);
+//        Pwg_Conversation::log("Res is ", $res);
 //        return $res;
 //    }
     

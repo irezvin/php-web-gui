@@ -1,4 +1,4 @@
-Pmt_Yui_DataSource = function(options) {
+Pwg_Yui_DataSource = function(options) {
     var config = options.config || {};
     this.transport = options.transport;
     this.id = options.id;
@@ -6,7 +6,7 @@ Pmt_Yui_DataSource = function(options) {
     this.constructor.superclass.constructor.call(this, {}, config);
 };
 
-YAHOO.lang.extend(Pmt_Yui_DataSource, YAHOO.util.DataSourceBase, {
+YAHOO.lang.extend(Pwg_Yui_DataSource, YAHOO.util.DataSourceBase, {
 
     transport: false,
     id: false,
@@ -41,4 +41,4 @@ YAHOO.lang.extend(Pmt_Yui_DataSource, YAHOO.util.DataSourceBase, {
 
 });
 
-YAHOO.lang.augmentObject(Pmt_Yui_DataSource, YAHOO.util.DataSource);
+YAHOO.lang.augmentObject(Pwg_Yui_DataSource, YAHOO.util.DataSource);

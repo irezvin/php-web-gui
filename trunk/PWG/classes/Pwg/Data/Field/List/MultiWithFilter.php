@@ -1,18 +1,18 @@
 <?php
-class Pmt_Data_Field_List_MultiWithFilter extends Pmt_Data_Field_List {
+class Pwg_Data_Field_List_MultiWithFilter extends Pwg_Data_Field_List {
 
     /**
-     * @var Pmt_Text
+     * @var Pwg_Text
      */
     public $filter = false;
     
     /**
-     * @var Pmt_Checkbox
+     * @var Pwg_Checkbox
      */
     public $cbShowAll = false;
     
     /**
-     * @var Pmt_Label
+     * @var Pwg_Label
      */
     public $lblShowAll = false;
 
@@ -59,7 +59,7 @@ class Pmt_Data_Field_List_MultiWithFilter extends Pmt_Data_Field_List {
                 'displayParentPath' => '../panel',
                 'containerIsBlock' => false,
                 'size' => 12,
-                'class' => 'Pmt_Text',
+                'class' => 'Pwg_Text',
             ),
             
             'lblShowAll' => array(

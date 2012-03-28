@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Observer {
+class Pwg_Composite extends Pwg_Base implements Pwg_I_Control_Parent, Pwg_I_Observer {
 
     protected $controls = false;
 
@@ -16,7 +16,7 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
     
     protected $nextControlClassIgnore = false;
 
-    //  Pmt_Composite
+    //  Pwg_Composite
 
     protected function getControlPrototypes() {
         return $this->controlPrototypes;
@@ -57,13 +57,13 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
     /**
      * @param string $id
      * @param array $prototype
-     * @return Pmt_I_Control
+     * @return Pwg_I_Control
      */
     function createControl(array $prototype, $id = false, $baseClass = false) {
         if ($baseClass === false) {
             if ($this->defaultChildrenClass !== false) $baseClass = $this->defaultChildrenClass;
             elseif ($this->allowedChildrenClass !== false) $baseClass = $this->allowedChildrenClass;
-            else $baseClass = 'Pmt_Base';
+            else $baseClass = 'Pwg_Base';
         }
 
         if ($id !== false) {
@@ -74,16 +74,16 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
         }
             
         if (!isset($prototype['class']) && strlen($id)) {
-            foreach (Pmt_Base::getClassMap() as $px => $class) {
+            foreach (Pwg_Base::getClassMap() as $px => $class) {
                 if (!strncmp($id, $px, strlen($px))) { $prototype['class'] = $class; break; }
             }
         }
         $class = isset($prototype['class']) && strlen($prototype['class'])? $prototype['class'] : $baseClass;
         
-        if ($class === 'Pmt_Base') trigger_error("Cannot retrieve class name to instantiate control ".$prototype['id'], E_USER_WARNING);
+        if ($class === 'Pwg_Base') trigger_error("Cannot retrieve class name to instantiate control ".$prototype['id'], E_USER_WARNING);
         
         $res = new $class ($prototype);
-        if (!$res instanceof Pmt_I_Control) throw new Exception ('{$class} does not implement Pmt_I_Control');
+        if (!$res instanceof Pwg_I_Control) throw new Exception ('{$class} does not implement Pwg_I_Control');
         $this->addControl($res);
         return $res;
     }
@@ -92,7 +92,7 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
     	$this->nextControlClassIgnore = true;
     }
     
-    function addControl(Pmt_I_Control $control) {
+    function addControl(Pwg_I_Control $control) {
         if ($this->nextControlClassIgnore) {
         	$this->nextControlClassIgnore = false;
         } else {
@@ -107,7 +107,7 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
         return $control;
     }
 
-    function deleteControl(Pmt_I_Control $control) {
+    function deleteControl(Pwg_I_Control $control) {
         if (isset($this->controls[$id = $control->getId()]) && ($this->controls[$id] === $control)) {
             $control->destroy();
             // TODO: implement control deletion
@@ -116,7 +116,7 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
         }
     }
 
-    //  Pmt_I_Control_Parent
+    //  Pwg_I_Control_Parent
 
     function listControls() {
         if ($this->controls === false) $this->createControls();
@@ -125,7 +125,7 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
 
     /**
      * @param string $id
-     * @return Pmt_I_Control
+     * @return Pwg_I_Control
      */
     function getControl($id) {
         if (!in_array($id, $this->listControls())) {
@@ -136,7 +136,7 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
 
     /**
      * @param string $responderId
-     * @return Pmt_I_Control
+     * @return Pwg_I_Control
      */
     function getControlByResponderId($responderId) {
         $res = false;
@@ -146,7 +146,7 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
                 if ($con->getResponderId() == $responderId) {
                     $res = $con;
                     break;
-                } elseif ($con instanceof Pmt_I_Control_Parent) {
+                } elseif ($con instanceof Pwg_I_Control_Parent) {
                     if ($res = $con->getControlByResponderId) break;
                     else $res = false;
                 }
@@ -164,7 +164,7 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
 
     // Overrides
 
-    function setConversation(Pm_I_Conversation $conversation) {
+    function setConversation(Pwg_I_Conversation $conversation) {
         parent::setConversation($conversation);
         $childControls = array();
         $this->listControls();
@@ -177,7 +177,7 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
     }
 
     /**
-     * @return Pm_Js_Initializer
+     * @return Pwg_Js_Initializer
      */
     function getInitializer() {
         $res = parent::getInitializer();
@@ -222,12 +222,12 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
     /**
      * @param string $eventType Can be '__controlNameEvent' where '__' is double-underscore and controlName is name of control in listControlsWithPassthroughEvents() list and Event is event name of that control  
      */
-    function observe($eventType, Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function observe($eventType, Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         if ($this->allowPassthroughEvents && ($pe = $this->detectPassthroughEvent($eventType))) {
             if ($c = $this->getControl($pe[0])) {
                 $c->observe($pe[1], $this, 'passEventThrough');
             } else {
-                Pm_Conversation::log("Warning: passthrough target for event '{$eventType}' not found by {$this} (searched for control '{$pe[0]}').");
+                Pwg_Conversation::log("Warning: passthrough target for event '{$eventType}' not found by {$this} (searched for control '{$pe[0]}').");
             }
         } 
         parent::observe($eventType, $observer, $methodName, $extraParams);
@@ -257,22 +257,22 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
         return $res;
     }
     
-    function unobserve($eventType, Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function unobserve($eventType, Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         if ($this->allowPassthroughEvents && ($pe = $this->detectPassthroughEvent($eventType))) {
             if ($c = $this->getControl($pe[0])) return $c->unobserve($pe[1], $this, 'passEventThrough');
-                else Pm_Conversation::log("Warning: passthrough target for event '{$eventType}' not found by {$this}.");
+                else Pwg_Conversation::log("Warning: passthrough target for event '{$eventType}' not found by {$this}.");
         } else 
             return parent::unobserve($eventType, $observer, $methodName, $extraParams);
     }
     
-    function passEventThrough(Pmt_I_Control $control, $eventType, array $params = array()) {
-        if (isset($params['__passthroughSource']) && $params['__passthroughSource'] instanceof Pmt_I_Control)
+    function passEventThrough(Pwg_I_Control $control, $eventType, array $params = array()) {
+        if (isset($params['__passthroughSource']) && $params['__passthroughSource'] instanceof Pwg_I_Control)
             $id = $params['__passthroughSource']->getId();
         else    
             $id = $control->getId();
             
         $params['__passthroughSource'] = $this;
-        return Pmt_Impl_Observable::triggerEvent($control, $this->observers, '__'.ucfirst($id).ucfirst($eventType), $params);
+        return Pwg_Impl_Observable::triggerEvent($control, $this->observers, '__'.ucfirst($id).ucfirst($eventType), $params);
     }
     
     //  ------------------- Template methods -------------------
@@ -283,13 +283,13 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
     //  ------------------- Dynamic control creation support -----------------
 
     /**
-     * @return Pm_I_Web_Front
+     * @return Pwg_I_Web_Front
      */
     protected function getNearestWebFront() {
         $res = false;
         $p = $this;
         while ($p) {
-            if ($p instanceof Pmt_I_Controller && ($wf = $p->getWebFront())) {
+            if ($p instanceof Pwg_I_Controller && ($wf = $p->getWebFront())) {
                 $res = $wf;
                 break;
             }
@@ -298,7 +298,7 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
         return $res;
     }
     
-    function initializeChildObject(Pmt_I_Control $child) {
+    function initializeChildObject(Pwg_I_Control $child) {
         $assets = $child->getAssetLibs();
         $assetUrls = array();
         if (count($assets)) {
@@ -334,7 +334,7 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
     
     protected function doOnDestroy() {
         foreach (array_keys($this->controls) as $i) {
-            if (isset($this->controls[$i]) && ($this->controls[$i] instanceof Pmt_I_Control))
+            if (isset($this->controls[$i]) && ($this->controls[$i] instanceof Pwg_I_Control))
                 $this->controls[$i]->destroy();
         }
         parent::doOnDestroy();
@@ -355,8 +355,8 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
      * @param $recursive Search in parents of composite controls (not only matching controls are being searched, but all composite children)
      * @return array
      * 
-     * Pmt_Composite::getProperty static method is used retrieve property values (it uses getters with names like get<PropName>). 
-     * @see Pmt_Composite::getProperty
+     * Pwg_Composite::getProperty static method is used retrieve property values (it uses getters with names like get<PropName>). 
+     * @see Pwg_Composite::getProperty
      */
     function findChildrenByProperty($propName, $propValue, $baseClass = false, $strict = false, $recursive = true) {
         return $this->findChildrenByProperties(array($propName => $propValue), $baseClass, $strict, $recursive);
@@ -371,32 +371,32 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
      * @param $recursive Search in parents of composite controls (not only matching controls are being searched, but all composite children)
      * @return array
      * 
-     * Pmt_Composite::getProperty static method is used retrieve property values (it uses getters with names like get<PropName>). 
-     * @see Pmt_Composite::getProperty
+     * Pwg_Composite::getProperty static method is used retrieve property values (it uses getters with names like get<PropName>). 
+     * @see Pwg_Composite::getProperty
      */
     function findChildrenByProperties(array $nameVals, $baseClass = false, $strict = false, $recursive = true) {
         return self::findControlChildrenByProperties($this, $nameVals, $baseClass, $strict, $recursive);
     }
     
     /**
-     * @param Pmt_I_Control_Parent $control Parent of controls to search in
+     * @param Pwg_I_Control_Parent $control Parent of controls to search in
      * @param array $nameVals   Array (name => val, name => val) mask of values to compare (if there are several pairs, all properties should match them)
      * @param string $baseClass Name of base class to filter results (if FALSE, results of all classes will be returned) 
      * @param $strict Use strict comparison of property values
      * @param $recursive Search in parents of composite controls (not only matching controls are being searched, but all composite children)
      * @return array
      * 
-     * Pmt_Composite::getProperty static method is used retrieve property values (it uses getters with names like get<PropName>). 
-     * @see Pmt_Composite::getProperty
+     * Pwg_Composite::getProperty static method is used retrieve property values (it uses getters with names like get<PropName>). 
+     * @see Pwg_Composite::getProperty
      */
-    static function findControlChildrenByProperties(Pmt_I_Control_Parent $control, array $nameVals, $baseClass = false, $strict = false, $recursive = true) {
+    static function findControlChildrenByProperties(Pwg_I_Control_Parent $control, array $nameVals, $baseClass = false, $strict = false, $recursive = true) {
         $res = array();
         foreach ($control->listControls() as $c) {
             $con = $control->getControl($c);
             if (($baseClass === false) || ($con instanceof $baseClass)) {
                 $match = true;
                 foreach ($nameVals as $k => $v) {
-                    $val = Pmt_Base::getProperty($con, $k);
+                    $val = Pwg_Base::getProperty($con, $k);
                     if ($strict && ($v !== $val) || !$strict && ($v != $val)) {
                         $match = false;
                         break;
@@ -404,7 +404,7 @@ class Pmt_Composite extends Pmt_Base implements Pmt_I_Control_Parent, Pm_I_Obser
                 }
                 if ($match) $res[] = $con;
             }
-            if ($recursive && $con instanceof Pmt_I_Control_Parent) {
+            if ($recursive && $con instanceof Pwg_I_Control_Parent) {
                 $res = array_merge($res, self::findControlChildrenByProperties($con, $nameVals, $baseClass, $strict, $recursive));
             }
         }

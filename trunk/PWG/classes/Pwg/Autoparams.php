@@ -1,4 +1,4 @@
 <?php
 
-abstract class Pmt_Autoparams extends Ae_Autoparams {
+abstract class Pwg_Autoparams extends Ae_Autoparams {
 }

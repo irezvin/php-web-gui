@@ -1,6 +1,6 @@
 <?php
 
-interface Pm_I_Web_Front {
+interface Pwg_I_Web_Front {
     
     /**
      * Should map incomplete JS or CSS path to URL where resource is actually located according to object's presets.
@@ -9,7 +9,7 @@ interface Pm_I_Web_Front {
      * - 'http://foo/bar.js',
      * - 'widgets.css'
      * 
-     * Most time these are the strings returned by Pmt_I_Control::getAssetLibs()
+     * Most time these are the strings returned by Pwg_I_Control::getAssetLibs()
      * 
      * @param string $jsOrCssLinkWithPlaceholders
      */

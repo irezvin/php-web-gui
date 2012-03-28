@@ -1,14 +1,14 @@
 <?php
 
-interface Pmt_I_Control_Paginator {
+interface Pwg_I_Control_Paginator {
     
-    function observeOffsetChanged(Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function observeOffsetChanged(Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
     
-    function observeLimitChanged(Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function observeLimitChanged(Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
     
-    function unobserveOffsetChanged(Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function unobserveOffsetChanged(Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
     
-    function unobserveLimitChanged(Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function unobserveLimitChanged(Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
     
     function getOffset();
 

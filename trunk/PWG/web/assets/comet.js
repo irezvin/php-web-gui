@@ -1,14 +1,14 @@
 /**
- * Pmt_Comet is based on Pmt_Comet class by Andrea Giammarchi (webreflection.blogspot.com)
+ * Pwg_Comet is based on Pwg_Comet class by Andrea Giammarchi (webreflection.blogspot.com)
  * Mit Style License
  */
-Pmt_Comet = function(strUrl, fnOnData, fnOnDisconnect, instanceId, scope, fnOnBadResponse)  {
-    if (instanceId === undefined) instanceId = ++ Pmt_Comet._lastInstance;
-    Pmt_Comet._instances[instanceId] = this;
+Pwg_Comet = function(strUrl, fnOnData, fnOnDisconnect, instanceId, scope, fnOnBadResponse)  {
+    if (instanceId === undefined) instanceId = ++ Pwg_Comet._lastInstance;
+    Pwg_Comet._instances[instanceId] = this;
     this.instanceId = instanceId;
     this.scope = scope;
     this.strUrl = strUrl.concat(strUrl.indexOf("?") < 0 ? "?" : "&", "cmtInstanceId=", this.instanceId, "&", Math.random());
-    if (Pmt_Comet._useIframe) {
+    if (Pwg_Comet._useIframe) {
         var iframe  = document.createElement("iframe"), style = iframe.style;
         style.position = "absolute";
         style.visibility = "visible";
@@ -26,13 +26,13 @@ Pmt_Comet = function(strUrl, fnOnData, fnOnDisconnect, instanceId, scope, fnOnBa
     if ((typeof fnOnBadResponse) == 'function') this.onBadResponse = fnOnBadResponse;
 }
 
-Pmt_Comet._instances = [];
-Pmt_Comet._lastInstance = 0;
-Pmt_Comet._useIframe = /\b(msie|opera)\b/i.test(navigator.userAgent);
-Pmt_Comet.head = '------ [cometData] ------';
+Pwg_Comet._instances = [];
+Pwg_Comet._lastInstance = 0;
+Pwg_Comet._useIframe = /\b(msie|opera)\b/i.test(navigator.userAgent);
+Pwg_Comet.head = '------ [cometData] ------';
 
-Pmt_Comet.sendDataToInstance = function(instanceId, data) {
-    var instance = Pmt_Comet._instances[instanceId];
+Pwg_Comet.sendDataToInstance = function(instanceId, data) {
+    var instance = Pwg_Comet._instances[instanceId];
     if (instance) {
     	if (instance.scope) instance.onData.call(instance.scope, data);
     		else instance.onData(data);
@@ -43,17 +43,17 @@ Pmt_Comet.sendDataToInstance = function(instanceId, data) {
 };
 
 
-Pmt_Comet.makeQuery = function(data, paramName, stripLeadingAmpersand) {
+Pwg_Comet.makeQuery = function(data, paramName, stripLeadingAmpersand) {
         var res = '';
         if (data instanceof Array) {
             for (var i = 0; i < data.length; i++) {
-                res = res + Pmt_Comet.makeQuery(data[i], paramName? paramName + '[' + i + ']' : i);
+                res = res + Pwg_Comet.makeQuery(data[i], paramName? paramName + '[' + i + ']' : i);
             }
         } else {
             if ((typeof data) == 'object') {
                 for (var i in data) {
-                	if (Pmt_Util.hasOwnProperty(data, i)) {
-                		res = res + Pmt_Comet.makeQuery(data[i], paramName? paramName + '[' + i + ']' : i);
+                	if (Pwg_Util.hasOwnProperty(data, i)) {
+                		res = res + Pwg_Comet.makeQuery(data[i], paramName? paramName + '[' + i + ']' : i);
                 	}
                 }
             } else {
@@ -65,14 +65,14 @@ Pmt_Comet.makeQuery = function(data, paramName, stripLeadingAmpersand) {
 };
 
 
-Pmt_Comet.disconnectInstance = function(instanceId) {
-    var instance = Pmt_Comet._instances[instanceId];
+Pwg_Comet.disconnectInstance = function(instanceId) {
+    var instance = Pwg_Comet._instances[instanceId];
     if (instance) {
         instance.disconnect();
     }
 }
 
-Pmt_Comet.prototype = {
+Pwg_Comet.prototype = {
     instanceId : null,
     strUrl: null,
     iframe: null,
@@ -95,15 +95,15 @@ Pmt_Comet.prototype = {
 
             var self = this;
 
-            if (Pmt_Comet._useIframe) {
+            if (Pwg_Comet._useIframe) {
 
-                this.onreadystatechange = function() {Pmt_Comet.prototype._onreadystatechange.call(self);}
+                this.onreadystatechange = function() {Pwg_Comet.prototype._onreadystatechange.call(self);}
                 window.attachEvent? 
                 		window.attachEvent("onreadystatechange", this.onreadystatechange)
                 		: window.addEventListener("readystatechange", this.onreadystatechange, false);
                 
 
-                this.onbeforeunload = function(){Pmt_Comet.prototype._disconnect(self);}
+                this.onbeforeunload = function(){Pwg_Comet.prototype._disconnect(self);}
                 
                 window.attachEvent? 
                 		window.attachEvent("onbeforeunload", this.onbeforeunload)
@@ -126,12 +126,12 @@ Pmt_Comet.prototype = {
                             //eval(responseText.replace(script, "$1"));
                             t.appendResponse(responseText);
                         } else {
-                            Pmt_Comet.prototype._onreadystatechange.call({readyState:"loaded"});
+                            Pwg_Comet.prototype._onreadystatechange.call({readyState:"loaded"});
                         }
                     }
                 };
                 this.xhr = xhr;
-                this.onbeforeunload = function() {Pmt_Comet.prototype._disconnect(self);};
+                this.onbeforeunload = function() {Pwg_Comet.prototype._disconnect(self);};
                 window.addEventListener("beforeunload", this.onbeforeunload, false);
             	window.setTimeout(function(){xhr.send(null);}, 0);
             }
@@ -149,10 +149,10 @@ Pmt_Comet.prototype = {
     
     appendResponse: function(responseText) {
     	if (!this._messageLength) {
-    		var h = Pmt_Comet.head.substr(this._headSkip, Pmt_Comet.head.length), l = h.length;
+    		var h = Pwg_Comet.head.substr(this._headSkip, Pwg_Comet.head.length), l = h.length;
     		if (responseText.length < l) {
     			l = responseText.length;
-    			h = Pmt_Comet.head.substr(this._headSkip, l);
+    			h = Pwg_Comet.head.substr(this._headSkip, l);
     			this._headSkip += l;
     		} else {
     			this._headSkip = 0;
@@ -201,8 +201,8 @@ Pmt_Comet.prototype = {
             	if (this.scope) this.onDisconnect.call(this.scope);
             		else this.onDisconnect();
             }
-            Pmt_Comet.prototype._disconnect(this);
-            Pmt_Comet._instances[this.instanceId] = false;
+            Pwg_Comet.prototype._disconnect(this);
+            Pwg_Comet._instances[this.instanceId] = false;
             if(typeof CollectGarbage == "function")
                 CollectGarbage();
         }
@@ -210,7 +210,7 @@ Pmt_Comet.prototype = {
     },
 
     _disconnect: function(instance) {
-        if (Pmt_Comet._useIframe) {
+        if (Pwg_Comet._useIframe) {
             var iframe  = instance.iframe;
             if(iframe && iframe.parentNode){
                 window.detachEvent?

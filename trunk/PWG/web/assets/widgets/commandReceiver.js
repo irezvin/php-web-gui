@@ -1,11 +1,11 @@
-window.Pmt_CommandReceiver = function(options) {
+window.Pwg_CommandReceiver = function(options) {
 
-    window.Pmt_Core.apply(this, arguments);
+    window.Pwg_Core.apply(this, arguments);
 	
 };
 
 
-Pmt_Util.augment(window.Pmt_CommandReceiver, {
+Pwg_Util.augment(window.Pwg_CommandReceiver, {
 	ORIGIN_API: 'api',
 	ORIGIN_HISTORY: 'history',
 	ORIGIN_USER: 'user',
@@ -19,10 +19,10 @@ Pmt_Util.augment(window.Pmt_CommandReceiver, {
 
 	handleStateChange: function(state, origin) {
 		if (!state) {
-			var s = Pmt_Util.toString(document.location.hash);
+			var s = Pwg_Util.toString(document.location.hash);
 			if (s.length > 1) state = s.slice(1);
 		}
-		var pcr = window.Pmt_CommandReceiver;
+		var pcr = window.Pwg_CommandReceiver;
 	    if (!origin) origin = pcr.ORIGIN_API;
 	    for (var i = 0; i < pcr.registry.length; i++) {
 	        pcr.registry[i].receiveCommand(state, pcr.ORIGIN_HISTORY);
@@ -30,7 +30,7 @@ Pmt_Util.augment(window.Pmt_CommandReceiver, {
 	},
 
 	receiveCommand: function(command) {
-	    var pcr = window.Pmt_CommandReceiver;
+	    var pcr = window.Pwg_CommandReceiver;
 	    for (var i = 0; i < pcr.registry.length; i++) {
 	        pcr.registry[i].receiveCommand(command);
 	    }
@@ -40,7 +40,7 @@ Pmt_Util.augment(window.Pmt_CommandReceiver, {
 
 if (YAHOO.util.Event && YAHOO.util.History) {
     YAHOO.util.Event.onDOMReady(function() {
-        var pcr = window.Pmt_CommandReceiver;
+        var pcr = window.Pwg_CommandReceiver;
         var initialState = YAHOO.util.History.getBookmarkedState("pcrState");
         YAHOO.util.History.register("pcrState", "", pcr.handleStateChange);
         // timeout allows other modules to register before history initialization
@@ -51,14 +51,14 @@ if (YAHOO.util.Event && YAHOO.util.History) {
             );
             if ((typeof initialState === 'string') && initialState.length) pcr.handleStateChange(initialState, pcr.ORIGIN_INIT);
             else {
-            	var s = Pmt_Util.toString(document.location.hash);
+            	var s = Pwg_Util.toString(document.location.hash);
             	if (s.length > 1) pcr.handleStateChange(s.slice(1), pcr.ORIGIN_INIT);
             }
         }, 300);
     });
 }
 
-window.Pmt_CommandReceiver.prototype = {
+window.Pwg_CommandReceiver.prototype = {
 		
 	/**
 	 * @var bool
@@ -96,8 +96,8 @@ window.Pmt_CommandReceiver.prototype = {
 	
 	calcWindowId: function(windowId) {
 		if (windowId === undefined) windowId = this.windowId;
-		var sWindowId = Pmt_Util.toString(windowId);
-		var sWindowGroupId = Pmt_Util.toString(this.windowGroupId);
+		var sWindowId = Pwg_Util.toString(windowId);
+		var sWindowGroupId = Pwg_Util.toString(this.windowGroupId);
 		if (sWindowId.length && sWindowGroupId.length) sWindowId = sWindowGroupId.length + '_' + sWindowId;
 		return sWindowId;
 	},
@@ -110,7 +110,7 @@ window.Pmt_CommandReceiver.prototype = {
         var sWnd = window.open(url, windowName);
 //        YAHOO.util.Event.on(sWnd, 'load', function() {
 //            console.log("Loaded");
-//            if (this.Pmt_CommandReceiver) this.Pmt_CommandReceiver.receiveCommand(command);
+//            if (this.Pwg_CommandReceiver) this.Pwg_CommandReceiver.receiveCommand(command);
 //        });
 	},
     
@@ -119,7 +119,7 @@ window.Pmt_CommandReceiver.prototype = {
     },
     
     stripHash: function(command) {
-        var sCommand = Pmt_Util.toString(command);
+        var sCommand = Pwg_Util.toString(command);
         var sepPos = sCommand.indexOf('__', 0);
         var res = sCommand;
         if (sepPos >= 0) res = sCommand.slice(sepPos + 2);
@@ -127,12 +127,12 @@ window.Pmt_CommandReceiver.prototype = {
     },
 
     receiveCommand: function(commandWithOptionalHash, origin) {
-        if (!origin) origin = window.Pmt_CommandReceiver.ORIGIN_API;
+        if (!origin) origin = window.Pwg_CommandReceiver.ORIGIN_API;
         var commandWithoutHash = this.stripHash(commandWithOptionalHash);
-        if ((commandWithoutHash === commandWithOptionalHash) && (origin === window.Pmt_CommandReceiver.ORIGIN_HISTORY))
-        	origin = window.Pmt_CommandReceiver.ORIGIN_USER;
+        if ((commandWithoutHash === commandWithOptionalHash) && (origin === window.Pwg_CommandReceiver.ORIGIN_HISTORY))
+        	origin = window.Pwg_CommandReceiver.ORIGIN_USER;
         
-        var sCommandPrefix = Pmt_Util.toString(this.commandPrefix);
+        var sCommandPrefix = Pwg_Util.toString(this.commandPrefix);
         var res = false
         if (!sCommandPrefix.length || (commandWithoutHash.indexOf(sCommandPrefix) === 0)) {
             res = true;
@@ -150,12 +150,12 @@ window.Pmt_CommandReceiver.prototype = {
     },
 
     initialize: function(options) {
-        window.Pmt_Core.prototype.initialize.apply(this, arguments);
+        window.Pwg_Core.prototype.initialize.apply(this, arguments);
         if (options.doHandleCommand && (typeof options.doHandleCommand === 'function')) 
         		this.doHandleCommand = options.doHandleCommand;
-        if (Pmt_Util.toString(this.windowId).length) this.setWindowId();
+        if (Pwg_Util.toString(this.windowId).length) this.setWindowId();
         this.setTreatAnchorsAsCommands();
-        window.Pmt_CommandReceiver.registry.push(this);
+        window.Pwg_CommandReceiver.registry.push(this);
     },
     
     setTreatAnchorsAsCommands: function(value) {
@@ -178,7 +178,7 @@ window.Pmt_CommandReceiver.prototype = {
                 if ((typeof href === 'string') && (href.slice(0, 1) === '#')) {
                         if (!this.anchorPrefix.length || (href.indexOf(this.anchorPrefix) === 1)) {
                                 //console.log("Found command", href);
-                                if (this.receiveCommand(href.slice(1 + this.anchorPrefix.length), window.Pmt_CommandReceiver.ORIGIN_ANCHOR)) {
+                                if (this.receiveCommand(href.slice(1 + this.anchorPrefix.length), window.Pwg_CommandReceiver.ORIGIN_ANCHOR)) {
                                         YAHOO.util.Event.stopEvent(event);
                                 }
                         }
@@ -189,4 +189,4 @@ window.Pmt_CommandReceiver.prototype = {
 	
 };
 
-Pmt_Util.extend (Pmt_CommandReceiver, Pmt_Core);
+Pwg_Util.extend (Pwg_CommandReceiver, Pwg_Core);

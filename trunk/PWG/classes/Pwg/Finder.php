@@ -4,5 +4,5 @@
  * @deprecated
  * Use Ae_Finder
  */
-class Pmt_Finder extends Ae_Finder {
+class Pwg_Finder extends Ae_Finder {
 }

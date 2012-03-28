@@ -1,11 +1,11 @@
 <?php
 
-class Pmt_Data_Field_DateTime extends Pmt_Data_Field_Date {
+class Pwg_Data_Field_DateTime extends Pwg_Data_Field_Date {
 
     protected $labelText = false;
     
     /**
-     * @var Pmt_Yui_Calendar_PopupWithTime
+     * @var Pwg_Yui_Calendar_PopupWithTime
      */
     public $editor = false;
 
@@ -13,7 +13,7 @@ class Pmt_Data_Field_DateTime extends Pmt_Data_Field_Date {
         parent::doOnGetControlPrototypes($prototypes);
         $p = array(
             'editor' => array(
-                'class' => 'Pmt_Yui_Calendar_PopupWithTime',
+                'class' => 'Pwg_Yui_Calendar_PopupWithTime',
             ),
             'binder' => array(
                 'debug' => true,

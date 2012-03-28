@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Checkbox extends Pmt_Element {
+class Pwg_Checkbox extends Pwg_Element {
     
     protected $checked = false;
     
@@ -11,11 +11,11 @@ class Pmt_Checkbox extends Pmt_Element {
     protected $disabled = false;
     
     /**
-     * @var Pmt_Label 
+     * @var Pwg_Label 
      */ 
     protected $labelControl = false;
 
-    function setLabelControl(Pmt_Label $labelControl = null) {
+    function setLabelControl(Pwg_Label $labelControl = null) {
         if ($labelControl !== ($oldLabelControl = $this->labelControl)) {
             if ($oldLabelControl) $oldLabelControl->unobserve('click', $this, 'handleLabelControlClick');
             $this->labelControl = $labelControl;
@@ -29,7 +29,7 @@ class Pmt_Checkbox extends Pmt_Element {
     }
 
     /**
-     * @return Pmt_Label
+     * @return Pwg_Label
      */
     function getLabelControl() {
         return $this->labelControl;
@@ -50,7 +50,7 @@ class Pmt_Checkbox extends Pmt_Element {
         $oldChecked = $this->checked? 1 : 0;
         $this->checked = $checked;
         $evt = substr(__FUNCTION__, 15); $evt{0} = strtolower($evt{0});
-        //Pm_Conversation::log("oldChecked is ", $oldChecked, " new checked is ", $this->checked); 
+        //Pwg_Conversation::log("oldChecked is ", $oldChecked, " new checked is ", $this->checked); 
         if ($oldChecked !== $checked) $this->triggerEvent($evt, array('oldChecked' => $oldChecked));
     }
     
@@ -116,7 +116,7 @@ class Pmt_Checkbox extends Pmt_Element {
         return $this->$prop;
     }
     
-//  Template methods of Pmt_Base
+//  Template methods of Pwg_Base
 
     protected function doListPassthroughParams() {
         return array_merge(parent::doListPassthroughParams(), array('checked', 'readOnly', 'disabled')); 

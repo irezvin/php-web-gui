@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Yui_Panel extends Pmt_Panel {
+class Pwg_Yui_Panel extends Pwg_Panel {
     
     protected $width = null;
 
@@ -282,7 +282,7 @@ class Pmt_Yui_Panel extends Pmt_Panel {
      * [contextElementOrId, overlayCorner, contextCorner, arrayOfTriggerEvents (optional)]
      * 
      * - overlayCorner and contextCorner should have one of values 'tl'|'tr'|'bl'|'br'
-     * - contextElementOrId can be either a string or a Pmt_Base instance (it's container ID will be used)
+     * - contextElementOrId can be either a string or a Pwg_Base instance (it's container ID will be used)
      */
     function setContext($context) {
         if (true || ($context !== ($oldContext = $this->context))) { 
@@ -358,7 +358,7 @@ class Pmt_Yui_Panel extends Pmt_Panel {
     }
     
     protected function doGetConstructorName() {
-        return 'Pmt_Yui_Panel';
+        return 'Pwg_Yui_Panel';
     }
     
     protected function doGetAssetLibs() {
@@ -440,10 +440,10 @@ class Pmt_Yui_Panel extends Pmt_Panel {
             $res = $this->context;
             if (isset($res[0]) && is_object($res[0])) {
                 $base = $res[0];
-                if ($base instanceof Pmt_Control_Path) {
+                if ($base instanceof Pwg_Control_Path) {
                     $base = $this->getControlByPath($base->getPath());
                 }
-                if ($base instanceof Pmt_Base) $res[0] = $base->getContainerId();
+                if ($base instanceof Pwg_Base) $res[0] = $base->getContainerId();
             }
         }
         return $res;

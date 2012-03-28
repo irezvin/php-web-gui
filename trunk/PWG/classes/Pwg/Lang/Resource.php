@@ -7,5 +7,5 @@
  * 
  * @author Nivzer
  */
-final class Pmt_Lang_Resource extends Ae_Lang_Resource {
+final class Pwg_Lang_Resource extends Ae_Lang_Resource {
 }

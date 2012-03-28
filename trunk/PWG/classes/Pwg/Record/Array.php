@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Record_Array extends Pmt_Record_Abstract {
+class Pwg_Record_Array extends Pwg_Record_Abstract {
 
     protected $data = array();
     
@@ -25,10 +25,10 @@ class Pmt_Record_Array extends Pmt_Record_Abstract {
     }
     
     /**
-     * @return Pmt_I_Record_Field 
+     * @return Pwg_I_Record_Field 
      */
     function getFieldInfo($fieldName) {
-        return new Pmt_Record_Fieldinfo(array('name' => $fieldName));
+        return new Pwg_Record_Fieldinfo(array('name' => $fieldName));
     }
     
     function getErrors() {

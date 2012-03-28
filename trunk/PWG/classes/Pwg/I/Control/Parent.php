@@ -1,20 +1,20 @@
 <?php
 
-interface Pmt_I_Control_Parent {
+interface Pwg_I_Control_Parent {
     
-//  Pmt_I_Control_Parent
+//  Pwg_I_Control_Parent
     
     function listControls();
 
     /**
      * @params string $id
-     * @return Pmt_I_Control
+     * @return Pwg_I_Control
      */
     function getControl($id);
     
     /**
      * @param string $responderId
-     * @return Pmt_I_Control 
+     * @return Pwg_I_Control 
      */
     function getControlByResponderId($responderId);
     
@@ -23,9 +23,9 @@ interface Pmt_I_Control_Parent {
      */
     function getControlsResponderIdPrefix();
     
-    function addControl(Pmt_I_Control $control);
+    function addControl(Pwg_I_Control $control);
 
-    function initializeChildObject(Pmt_I_Control $control);
+    function initializeChildObject(Pwg_I_Control $control);
     
 }
 

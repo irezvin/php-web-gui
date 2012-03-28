@@ -1,6 +1,6 @@
 <?php
 
-class Pm_Conversation extends Pm_Conversation_Abstract {
+class Pwg_Conversation extends Pwg_Conversation_Abstract {
 
     protected $useNewProtocol = true;
     
@@ -55,12 +55,12 @@ class Pm_Conversation extends Pm_Conversation_Abstract {
                 $s = '';
                 foreach ($args as $arg) {
                     if (is_scalar($arg)) $s .= strlen($s)? '; '.$arg : $arg; else {
-                        Pm_Conversation::log($s);
+                        Pwg_Conversation::log($s);
                         $s = '';
-                        Pm_Conversation::log($arg);
+                        Pwg_Conversation::log($arg);
                     }
                 }
-                if (strlen($s)) Pm_Conversation::log($s);
+                if (strlen($s)) Pwg_Conversation::log($s);
             } else {
                 if (defined('USE_FIREPHP') && USE_FIREPHP) {
                     FirePHP::getInstance(true)->log($message);
@@ -95,15 +95,15 @@ class Pm_Conversation extends Pm_Conversation_Abstract {
         if (!is_array($_POST['messages']) && !strlen($_POST['messages'])) {
         	echo "1"; // check routine
         } else {
-        	Pm_Conversation::log("in: ".urldecode(http_build_query($_POST['messages'])));
+        	Pwg_Conversation::log("in: ".urldecode(http_build_query($_POST['messages'])));
         	if (ini_get('magic_quotes_gpc')) $msgs = Ae_Util::stripSlashes($msgs);
 	        $this->setRequestData($msgs);
 	        $response = $this->getResponse();
 	        $r = $this->js->toJs($response);
-	        if ($this->logOutMessages) Pm_Conversation::log("out: ".$r);
+	        if ($this->logOutMessages) Pwg_Conversation::log("out: ".$r);
 	        $junk = ob_get_clean();
 	        echo $r = $this->js->toJs($response);
-	        if (strlen(trim($junk))) Pm_Conversation::log("junk output: ".$junk);
+	        if (strlen(trim($junk))) Pwg_Conversation::log("junk output: ".$junk);
        }
     }
     
@@ -123,9 +123,9 @@ class Pm_Conversation extends Pm_Conversation_Abstract {
     function getInitJavascript() {
 		ob_start();
         if ($this->useNewProtocol) {
-		    $initializer = new Ae_Js_Call('Pm_Protocol', array(array(
+		    $initializer = new Ae_Js_Call('Pwg_Protocol', array(array(
 		      'serverUrl' => $this->baseUrl,
-		      'transport' => new Ae_Js_Call('Pm_Protocol_AjaxTransport', array(
+		      'transport' => new Ae_Js_Call('Pwg_Protocol_AjaxTransport', array(
 		      ), true))     
 		    ), true);
 ?>
@@ -133,7 +133,7 @@ class Pm_Conversation extends Pm_Conversation_Abstract {
 <?php 
 		} else {
 ?>
-		window.<?php echo $this->jsId; ?> = new Pm_Transport(<?php echo $this->js->toJs($this->baseUrl); ?>);
+		window.<?php echo $this->jsId; ?> = new Pwg_Transport(<?php echo $this->js->toJs($this->baseUrl); ?>);
 <?php 
 		}
 		return ob_get_clean();

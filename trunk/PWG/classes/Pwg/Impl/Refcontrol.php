@@ -1,6 +1,6 @@
 <?php
 
-final class Pm_Impl_Refcontrol {
+final class Pwg_Impl_Refcontrol {
 
 /*
  
@@ -8,7 +8,7 @@ final class Pm_Impl_Refcontrol {
 
 
 
-//  +-------------- Pm_I_Refcontrol implementation ---------------+
+//  +-------------- Pwg_I_Refcontrol implementation ---------------+
 
     protected $refReg = array();
 
@@ -18,13 +18,13 @@ final class Pm_Impl_Refcontrol {
         return $res;
     }
     
-    function refHas($otherObject) { return Pm_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
+    function refHas($otherObject) { return Pwg_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
     
-    function refAdd($otherObject) { return Pm_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
+    function refAdd($otherObject) { return Pwg_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
     
-    function refRemove($otherObject) { $v = $this->refGetSelfVars(); return Pm_Impl_Refcontrol::refRemove($this, $otherObject, $v, false); }
+    function refRemove($otherObject) { $v = $this->refGetSelfVars(); return Pwg_Impl_Refcontrol::refRemove($this, $otherObject, $v, false); }
 
-    function refNotifyDestroying() { return Pm_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
+    function refNotifyDestroying() { return Pwg_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
 
 //  +-------------------------------------------------------------+ 
  
@@ -46,7 +46,7 @@ final class Pm_Impl_Refcontrol {
         
 //      var_dump("Adding ".' ('.get_class($otherObject).')');
         if (is_object($otherObject)) {
-            if ($otherObject instanceof Pm_I_Refcontrol) { 
+            if ($otherObject instanceof Pwg_I_Refcontrol) { 
                 if (!self::refHas($otherObject, $refReg)) $refReg[] = $otherObject; 
                 if (!$otherObject->refHas($thisObject)) $otherObject->refAdd($thisObject); 
 //                $refReg[] = $otherObject;
@@ -75,13 +75,13 @@ final class Pm_Impl_Refcontrol {
                 self::refCleanArray($otherObject, $selfVars[$varName]);
              }
         }
-        if (!$nonSymmetrical && ($otherObject instanceof Pm_I_Refcontrol && $otherObject->refHas($thisObject)))
+        if (!$nonSymmetrical && ($otherObject instanceof Pwg_I_Refcontrol && $otherObject->refHas($thisObject)))
             $otherObject->refRemove($thisObject, true);
     }
     
     static function refNotifyDestroying($thisObject, array & $refReg) {
         foreach (array_keys($refReg) as $k) if (isset($refReg[$k])) {
-            if ($refReg[$k] instanceof Pm_I_Refcontrol) {
+            if ($refReg[$k] instanceof Pwg_I_Refcontrol) {
                 $tmp = $refReg[$k];
                 unset($refReg[$k]);
                 $tmp->refRemove($thisObject, true);

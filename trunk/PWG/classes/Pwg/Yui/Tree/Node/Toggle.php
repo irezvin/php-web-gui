@@ -1,6 +1,6 @@
 <?php 
 
-class Pmt_Yui_Tree_Node_Toggle extends Pmt_Yui_Tree_Node_Text {
+class Pwg_Yui_Tree_Node_Toggle extends Pwg_Yui_Tree_Node_Text {
     
     protected $checked = false;
 

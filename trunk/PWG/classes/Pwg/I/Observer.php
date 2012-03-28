@@ -1,10 +1,10 @@
 <?php
 
-interface Pm_I_Observer {
+interface Pwg_I_Observer {
 
-//  Pm_I_Observer   
+//  Pwg_I_Observer   
     
-//    function handleEvent(Pm_I_Observable $observable, $eventType, $params = array());
+//    function handleEvent(Pwg_I_Observable $observable, $eventType, $params = array());
 
 }
 

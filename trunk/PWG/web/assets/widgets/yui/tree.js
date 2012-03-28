@@ -1,9 +1,9 @@
-Pmt_Tree_Node = function(options) {
+Pwg_Tree_Node = function(options) {
     this.children = new Array();
     this.initialize(options);
 };
 
-Pmt_Tree_Node.placeNode = function(parentYuiTreeNode, yuiTreeNode, displayOrder) {
+Pwg_Tree_Node.placeNode = function(parentYuiTreeNode, yuiTreeNode, displayOrder) {
     var isFirst = true;
     var firstChild = null;
     var found = null;
@@ -33,8 +33,8 @@ Pmt_Tree_Node.placeNode = function(parentYuiTreeNode, yuiTreeNode, displayOrder)
 
 };
 
-Pmt_Tree_Node.prototype = {
-    jsClassName: "Pmt_Tree_Node",
+Pwg_Tree_Node.prototype = {
+    jsClassName: "Pwg_Tree_Node",
     
     className: null,
     content: null,
@@ -76,10 +76,10 @@ Pmt_Tree_Node.prototype = {
             if (this.children[i] === treeNode) this.children.splice(i, 1);
         }
         if (this.yuiTreeNode && treeNode.yuiTreeNode && this.yuiTreeNode !== treeNode.yuiTreeNode.parent) {
-            Pmt_Tree_Node.placeNode(treeNode.yuiTreeNode, this.yuiTreeNode, this.displayOrder);
+            Pwg_Tree_Node.placeNode(treeNode.yuiTreeNode, this.yuiTreeNode, this.displayOrder);
             var tv = this.getYuiTreeView();if (tv) tv.refresh(treeNode.hasToScrollIntoView? treeNode: null);
         } else {
-            Pmt_Util.pushWithOrder(this.children, treeNode, 'displayOrder');
+            Pwg_Util.pushWithOrder(this.children, treeNode, 'displayOrder');
         }
     },
 
@@ -118,7 +118,7 @@ Pmt_Tree_Node.prototype = {
             else parentNode = null;
         }
         var res = new c (treeNodeConfig, parentNode);
-        if (parentNode) Pmt_Tree_Node.placeNode(parentNode, res, this.displayOrder);
+        if (parentNode) Pwg_Tree_Node.placeNode(parentNode, res, this.displayOrder);
         if (parentNode) {
             //parentNode.refresh();
             if (parentNode && parentNode.tree) {
@@ -306,15 +306,15 @@ Pmt_Tree_Node.prototype = {
 
 }
 
-Pmt_Util.extend(Pmt_Tree_Node, Pmt_Element);
-Pmt_Util.augment(Pmt_Tree_Node.prototype, Pmt_Control_Parent_Functions);
+Pwg_Util.extend(Pwg_Tree_Node, Pwg_Element);
+Pwg_Util.augment(Pwg_Tree_Node.prototype, Pwg_Control_Parent_Functions);
 
-Pmt_Tree_View = function(options) {
+Pwg_Tree_View = function(options) {
     this.initialize(options);
 }
 
-Pmt_Tree_View.prototype = {
-    jsClassName: "Pmt_Tree_View",
+Pwg_Tree_View.prototype = {
+    jsClassName: "Pwg_Tree_View",
     container: false,
     id: false,
     
@@ -343,7 +343,7 @@ Pmt_Tree_View.prototype = {
         if (this.yuiTreeView && (root = this.yuiTreeView.getRoot()) && treeNode.yuiTreeNode) {
             if (treeNode.yuiTreeNode.parent !== this.yuiTreeView.root) {
                 //treeNode.yuiTreeNode.appendTo(root);
-                Pmt_Tree_Node.placeNode(root, treeNode.yuiTreeNode, treeNode.displayOrder);
+                Pwg_Tree_Node.placeNode(root, treeNode.yuiTreeNode, treeNode.displayOrder);
             }
             for (var i = this.children.length - 1; i >= 0; i--) {
                 if (this.children[i] === treeNode) this.children.splice(i, 1);
@@ -390,7 +390,7 @@ Pmt_Tree_View.prototype = {
             }
             this.yuiTreeView.removeChildren(this.yuiTreeView.getRoot());
             this.yuiTreeView.render();
-            this.delayedRefreshCall = new Pmt_Util.DelayedCall(this.immediateRefresh, undefined, this, [], 0.1, false);
+            this.delayedRefreshCall = new Pwg_Util.DelayedCall(this.immediateRefresh, undefined, this, [], 0.1, false);
         }
     },
 
@@ -504,5 +504,5 @@ Pmt_Tree_View.prototype = {
     }   
 }
 
-Pmt_Util.extend(Pmt_Tree_View, Pmt_Element);
-Pmt_Util.augment(Pmt_Tree_View.prototype, Pmt_Control_Parent_Functions);
+Pwg_Util.extend(Pwg_Tree_View, Pwg_Element);
+Pwg_Util.augment(Pwg_Tree_View.prototype, Pwg_Control_Parent_Functions);

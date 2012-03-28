@@ -1,4 +1,4 @@
-Pmt_UiDefaults.override({
+Pwg_UiDefaults.override({
 	
 	pollDelay: 100,
 	

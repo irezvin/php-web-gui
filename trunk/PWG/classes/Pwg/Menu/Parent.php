@@ -1,14 +1,14 @@
 <?php
 
-abstract class Pmt_Menu_Parent extends Pmt_Composite_Display {
+abstract class Pwg_Menu_Parent extends Pwg_Composite_Display {
     
     protected $allowPassthroughEvents = true;
     
-    protected $allowedChildrenClass = 'Pmt_Menu_Item';
+    protected $allowedChildrenClass = 'Pwg_Menu_Item';
     
-    protected $defaultChildrenClass = 'Pmt_Menu_Item';
+    protected $defaultChildrenClass = 'Pwg_Menu_Item';
     
-    protected $allowedDisplayChildrenClass = 'Pmt_Menu_Item';
+    protected $allowedDisplayChildrenClass = 'Pwg_Menu_Item';
 
     protected $disabled = false;
 
@@ -85,7 +85,7 @@ abstract class Pmt_Menu_Parent extends Pmt_Composite_Display {
     
     /**
      * @param string $id
-     * @return Pmt_Menu
+     * @return Pwg_Menu
      */
     function getControl($id) {
         return parent::getControl($id);
@@ -119,11 +119,11 @@ abstract class Pmt_Menu_Parent extends Pmt_Composite_Display {
     
     function hasJsObject() { return true; }
     
-    function notifyChildClick(Pmt_Menu_Item $child) {
+    function notifyChildClick(Pwg_Menu_Item $child) {
         $this->triggerEvent('childClick', array('child' => $child));
     }
     
-    function observe($eventType, Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function observe($eventType, Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         if ($eventType === 'childClick') $this->observeChildClicks = true;
         return parent::observe($eventType, $observer, $methodName, $extraParams);
     }

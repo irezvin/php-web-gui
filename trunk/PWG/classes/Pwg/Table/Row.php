@@ -1,14 +1,14 @@
 <?php
 
-class Pmt_Table_Row implements Pm_I_RefControl {
+class Pwg_Table_Row implements Pwg_I_RefControl {
 
     /**
-     * @var Pmt_Table
+     * @var Pwg_Table
      */
     protected $table = false;
     
     /**
-     * @var Pmt_I_Record
+     * @var Pwg_I_Record
      */
     protected $record = false;
     
@@ -26,7 +26,7 @@ class Pmt_Table_Row implements Pm_I_RefControl {
         return $res;
     }
     
-    function __construct(Pmt_Table $table, Pmt_I_Record $record = null) {
+    function __construct(Pwg_Table $table, Pwg_I_Record $record = null) {
         $this->table = $table;
         $this->refAdd($table);
         if ($record !== false) {
@@ -34,14 +34,14 @@ class Pmt_Table_Row implements Pm_I_RefControl {
         }
     }
     
-    function setRecord(Pmt_I_Record $record) {
+    function setRecord(Pwg_I_Record $record) {
         $this->record = $record;
         if ($this->table) $this->table->notifyRowUpdated($this);
         $this->table->redrawRows(array($this));
     }
     
     /**
-     * @return Pmt_I_Record
+     * @return Pwg_I_Record
      */
     function getRecord() {
         return $this->record;
@@ -86,7 +86,7 @@ class Pmt_Table_Row implements Pm_I_RefControl {
         return $this->table->redrawRows(array($this));
     }
     
-//  +-------------- Pm_I_Refcontrol implementation ---------------+
+//  +-------------- Pwg_I_Refcontrol implementation ---------------+
 
     protected $refReg = array();
 
@@ -96,13 +96,13 @@ class Pmt_Table_Row implements Pm_I_RefControl {
         return $res;
     }
     
-    function refHas($otherObject) { return Pm_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
+    function refHas($otherObject) { return Pwg_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
     
-    function refAdd($otherObject) { return Pm_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
+    function refAdd($otherObject) { return Pwg_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
     
-    function refRemove($otherObject, $nonSymmetrical = false) { $v = $this->refGetSelfVars(); return Pm_Impl_Refcontrol::refRemove($this, $otherObject, $v, false, $nonSymmetrical); }
+    function refRemove($otherObject, $nonSymmetrical = false) { $v = $this->refGetSelfVars(); return Pwg_Impl_Refcontrol::refRemove($this, $otherObject, $v, false, $nonSymmetrical); }
 
-    function refNotifyDestroying() { return Pm_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
+    function refNotifyDestroying() { return Pwg_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
 
 //  +-------------------------------------------------------------+ 
     

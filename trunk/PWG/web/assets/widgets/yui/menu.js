@@ -1,10 +1,10 @@
-Pmt_Menu_Item = function (options) {
+Pwg_Menu_Item = function (options) {
     this.createSetters();
     this.initialize(options);
 }
 
-Pmt_Menu_Item.prototype = {
-	jsClassName: "Pmt_Menu_Item",
+Pwg_Menu_Item.prototype = {
+	jsClassName: "Pwg_Menu_Item",
     attribs: {},
     style: {},
     classname: false,
@@ -40,7 +40,7 @@ Pmt_Menu_Item.prototype = {
 
     createSetters: function() {
         for (var i = 0; i < this.setters.length; i++) {
-            var setterName = 'set' + Pmt_Util.ucFirst(this.setters[i]);
+            var setterName = 'set' + Pwg_Util.ucFirst(this.setters[i]);
             if (this[setterName] === undefined) {
                 this[setterName] = function(propName) {
                     return function(value) {
@@ -70,7 +70,7 @@ Pmt_Menu_Item.prototype = {
                 sm = new smc(tmpDiv, smCfg);
                 sm.ITEM_TYPE = this.submenuIsHorizontal? YAHOO.widget.MenuBarItem : YAHOO.widget.MenuItem;
                 sm.render();
-                Pmt_Yui_Util.fixMenuDisplay(sm);
+                Pwg_Yui_Util.fixMenuDisplay(sm);
                 this.yuiMenuItem.cfg.setProperty('submenu', sm);
             }
             if (
@@ -142,7 +142,7 @@ Pmt_Menu_Item.prototype = {
     refresh: function() {
     },
 
-    initializeChildContainer: Pmt_Controller.prototype.initializeChildContainer,
+    initializeChildContainer: Pwg_Controller.prototype.initializeChildContainer,
     
     doOnDelete: function() {
     	if (this.yuiMenuItem && this.yuiMenuItem.cfg.getProperty('submenu')) {
@@ -167,16 +167,16 @@ Pmt_Menu_Item.prototype = {
 
 }
 
-Pmt_Util.extend(Pmt_Menu_Item, Pmt_Element);
-Pmt_Util.augment(Pmt_Menu_Item.prototype, Pmt_Control_Parent_Functions);
+Pwg_Util.extend(Pwg_Menu_Item, Pwg_Element);
+Pwg_Util.augment(Pwg_Menu_Item.prototype, Pwg_Control_Parent_Functions);
 
-Pmt_Menu = function (options) {
+Pwg_Menu = function (options) {
     this.createSetters();
     this.initialize(options);
 }
 
-Pmt_Menu.prototype = {
-	jsClassName: "Pmt_Menu",
+Pwg_Menu.prototype = {
+	jsClassName: "Pwg_Menu",
     container: false,
     element : false,
     id: false,
@@ -226,7 +226,7 @@ Pmt_Menu.prototype = {
 
     createSetters: function() {
         for (var i = 0; i < this.setters.length; i++) {
-            var setterName = 'set' + Pmt_Util.ucFirst(this.setters[i]);
+            var setterName = 'set' + Pwg_Util.ucFirst(this.setters[i]);
             if (this[setterName] === undefined) {
                 this[setterName] = function(propName) {
                     return function(value) {
@@ -279,16 +279,16 @@ Pmt_Menu.prototype = {
             }
             this.createMenu(c);
             this.yuiMenu.render();
-        	Pmt_Yui_Util.fixMenuDisplay(this.yuiMenu);
+        	Pwg_Yui_Util.fixMenuDisplay(this.yuiMenu);
             for (var i = 0; i < this.children.length; i++) this.children[i].renderElement();
-            this.delayedRender = new Pmt_Util.DelayedCall(this.yuiMenu.render, null, this.yuiMenu, [], 150, false);
+            this.delayedRender = new Pwg_Util.DelayedCall(this.yuiMenu.render, null, this.yuiMenu, [], 150, false);
         }
     },
 
     refresh: function() {
     },
 
-    initializeChildContainer: Pmt_Controller.prototype.initializeChildContainer,
+    initializeChildContainer: Pwg_Controller.prototype.initializeChildContainer,
     
     doOnDelete: function() {
     	if (this.yuiMenu) {
@@ -299,5 +299,5 @@ Pmt_Menu.prototype = {
     }
 }
 
-Pmt_Util.extend(Pmt_Menu, Pmt_Element);
-Pmt_Util.augment(Pmt_Menu.prototype, Pmt_Control_Parent_Functions);
+Pwg_Util.extend(Pwg_Menu, Pwg_Element);
+Pwg_Util.augment(Pwg_Menu.prototype, Pwg_Control_Parent_Functions);

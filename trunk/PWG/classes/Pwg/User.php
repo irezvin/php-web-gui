@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_User extends Pmt_Autoparams implements Pmt_I_User {
+class Pwg_User extends Pwg_Autoparams implements Pwg_I_User {
 	
     protected $login = false;
     

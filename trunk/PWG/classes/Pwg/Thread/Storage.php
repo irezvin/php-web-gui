@@ -1,6 +1,6 @@
 <?php
 
-class Pm_Thread_Storage_File extends Pmt_Autoparams implements Pm_I_Thread_Storage {
+class Pwg_Thread_Storage_File extends Pwg_Autoparams implements Pwg_I_Thread_Storage {
     
     protected $dirName = false;
     

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Pmt_Label is able to display HTML and handle clicks inside certain elements of it's html.
+ * Pwg_Label is able to display HTML and handle clicks inside certain elements of it's html.
  * 
  * It handles all clicks on elements with HREF attribute in form "##<string>" on the server.
  * For example:
@@ -17,7 +17,7 @@
  * Such feature is extremely useful for providing simple user interactions.
  */
 
-class Pmt_Label extends Pmt_Element {
+class Pwg_Label extends Pwg_Element {
 
     protected $html = '';
     

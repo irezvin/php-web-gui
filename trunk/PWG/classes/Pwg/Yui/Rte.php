@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Yui_Rte extends Pmt_Element {
+class Pwg_Yui_Rte extends Pwg_Element {
     
     protected $height = 300;
 

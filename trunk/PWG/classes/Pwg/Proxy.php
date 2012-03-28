@@ -2,7 +2,7 @@
 
 //if (!class_exists)
 
-class Pm_Proxy implements Pm_I_Responder {
+class Pwg_Proxy implements Pwg_I_Responder {
     
     
     

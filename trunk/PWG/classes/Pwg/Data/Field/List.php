@@ -1,14 +1,14 @@
 <?php
 
-class Pmt_Data_Field_List extends Pmt_Data_Field {
+class Pwg_Data_Field_List extends Pwg_Data_Field {
     
     /**
-     * @var Pmt_List
+     * @var Pwg_List
      */
     public $editor = false;
 
     /**
-     * @var Pmt_Data_Binder_LookupList
+     * @var Pwg_Data_Binder_LookupList
      */
     public $binder = false;
     
@@ -18,10 +18,10 @@ class Pmt_Data_Field_List extends Pmt_Data_Field {
         parent::doOnGetControlPrototypes($prototypes);
         $p = array(
             'editor' => array(
-                'class' => 'Pmt_List', 
+                'class' => 'Pwg_List', 
             ),
             'binder' => array(
-                'class' => 'Pmt_Data_Binder_LookupList',
+                'class' => 'Pwg_Data_Binder_LookupList',
                 'controlChangeEvents' => array('selectionChange'),
                 'dataPropertyName' => 'selectedValue',
                 'listPropertyName' => 'optionsAsArray',

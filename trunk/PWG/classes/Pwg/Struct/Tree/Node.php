@@ -1,11 +1,11 @@
 <?php
 
-class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
+class Pwg_Struct_Tree_Node extends Pwg_Autoparams implements Pwg_I_Refcontrol {
     
     const idPathSeparator = '_';
     
     /**
-     * @var Pmt_Struct_Tree_Node 
+     * @var Pwg_Struct_Tree_Node 
      */
     protected $parentNode = null;
     
@@ -22,7 +22,7 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
     protected $displayOrder = false;
 
     
-    // ------------- Pm_I_Refcontrol implementation -------- 
+    // ------------- Pwg_I_Refcontrol implementation -------- 
     
 
     protected $refReg = array();
@@ -33,18 +33,18 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
         return $res;
     }
     
-    function refHas($otherObject) { return Pm_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
+    function refHas($otherObject) { return Pwg_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
     
-    function refAdd($otherObject) { return Pm_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
+    function refAdd($otherObject) { return Pwg_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
     
-    function refRemove($otherObject, $nonSymmetrical = false) { $v = $this->refGetSelfVars(); return Pm_Impl_Refcontrol::refRemove($this, $otherObject, $v, false, $nonSymmetrical); }
+    function refRemove($otherObject, $nonSymmetrical = false) { $v = $this->refGetSelfVars(); return Pwg_Impl_Refcontrol::refRemove($this, $otherObject, $v, false, $nonSymmetrical); }
 
-    function refNotifyDestroying() { return Pm_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
+    function refNotifyDestroying() { return Pwg_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
     
-    // ------------- /Pm_I_Refcontrol implementation -------- 
+    // ------------- /Pwg_I_Refcontrol implementation -------- 
     
     
-    protected function checkClass(Pmt_Struct_Tree_Node $node = null) {
+    protected function checkClass(Pwg_Struct_Tree_Node $node = null) {
     	if ($node && strlen($this->nodeBaseClass) && !($node instanceof $this->nodeBaseClass))
     		trigger_error("Node {$node->id} isn't an instance of class '{$this->nodeBaseClass}' (but is instance of class '".get_class($node)."')", E_USER_ERROR);
     }
@@ -71,7 +71,7 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
     	return $res;
     }
     
-    final function setParentNode(Pmt_Struct_Tree_Node $parentNode = null, Pmt_Struct_Tree_Node $placeBeforeNode = null, $suppressWarnings = false) {
+    final function setParentNode(Pwg_Struct_Tree_Node $parentNode = null, Pwg_Struct_Tree_Node $placeBeforeNode = null, $suppressWarnings = false) {
         $this->checkClass($parentNode);
     	if ($parentNode !== ($oldParentNode = $this->parentNode)) {
             $this->parentNode = $parentNode;
@@ -82,11 +82,11 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
     }
     
     /** Template method */
-    protected function doOnSetParentNode(Pmt_Struct_Tree_Node $oldParentNode = null) {
+    protected function doOnSetParentNode(Pwg_Struct_Tree_Node $oldParentNode = null) {
     }
 
     /**
-     * @return Pmt_Struct_Tree_Node
+     * @return Pwg_Struct_Tree_Node
      */
     function getParentNode() {
         return $this->parentNode;
@@ -94,9 +94,9 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
 
     function listNodes() {
         if ($this->nodes === false) {
-            $this->nodes = array_values(Pmt_Autoparams::factoryCollection(
+            $this->nodes = array_values(Pwg_Autoparams::factoryCollection(
                 $this->nodePrototypes, 
-                strlen($this->nodeBaseClass)? $this->nodeBaseClass : 'Pmt_Struct_Tree_Node',
+                strlen($this->nodeBaseClass)? $this->nodeBaseClass : 'Pwg_Struct_Tree_Node',
                 array(),
                 'id',
                 false
@@ -117,7 +117,7 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
     	return $res;
     }
 
-    function getNodeIndex(Pmt_Struct_Tree_Node $node = null) {
+    function getNodeIndex(Pwg_Struct_Tree_Node $node = null) {
         if (is_null($node)) {
             $res = 0;
             if ($this->parentNode) $res = $this->parentNode->getNodeIndex($this);
@@ -152,7 +152,7 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
         else return $index;
     }
     
-    final function removeNode(Pmt_Struct_Tree_Node $node, $suppressWarning = false) {
+    final function removeNode(Pwg_Struct_Tree_Node $node, $suppressWarning = false) {
     	if (($i = $this->getNodeIndex($node)) !== false) {
     		array_splice($this->nodes, $i, 1);
     		$this->doOnNodeRemoved($node, $i);
@@ -163,13 +163,13 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
     	return $node;
     }
     
-    protected function doOnNodeRemoved(Pmt_Struct_Tree_Node $node, $index) {
+    protected function doOnNodeRemoved(Pwg_Struct_Tree_Node $node, $index) {
     }
     
     /**
-     * @return Pmt_Struct_Tree_Node
+     * @return Pwg_Struct_Tree_Node
      */
-    function getNextChild(Pmt_Struct_Tree_Node $node, $suppressWarning = false) {
+    function getNextChild(Pwg_Struct_Tree_Node $node, $suppressWarning = false) {
     	$idx = $this->getNodeIndex($node);
     	if ($idx === false) {
     		if (!$suppressWarning) trigger_error("Node #{$node->id} isn't child of node #{$this->id}", E_USER_NOTICE);
@@ -181,7 +181,7 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
     	return $res;
     }
     
-    final function insertNode(Pmt_Struct_Tree_Node $node, Pmt_Struct_Tree_Node  $beforeNode = null, $suppressWarnings = false) {
+    final function insertNode(Pwg_Struct_Tree_Node $node, Pwg_Struct_Tree_Node  $beforeNode = null, $suppressWarnings = false) {
         $this->checkClass($node);
     	$ni = $this->getNodeIndex($node);
     	if (is_null($beforeNode)) {
@@ -201,7 +201,7 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
         } else {
         	$idx = count($this->nodes);
         }
-        if (($node instanceof Pmt_Yui_Tree_Node_Text) && ($node->getLabel() == 'Дубининская')) {
+        if (($node instanceof Pwg_Yui_Tree_Node_Text) && ($node->getLabel() == 'Дубининская')) {
         }
         if ($ni !== ($idx - 1)) {
         	if ($ni !== false) {
@@ -224,7 +224,7 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
     }
 
     
-    final function moveNode(Pmt_Struct_Tree_Node $node, $newIndex, $suppressWarnings = false) {
+    final function moveNode(Pwg_Struct_Tree_Node $node, $newIndex, $suppressWarnings = false) {
     	$index = $this->getNodeIndex($node);
         if ($index === false) {
         		if (!$suppressWarnings)
@@ -242,10 +242,10 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
         return $res;
     }
     
-    protected function doOnInsertNode(Pmt_Struct_Tree_Node $node, $index) {
+    protected function doOnInsertNode(Pwg_Struct_Tree_Node $node, $index) {
     }
     
-    protected function doOnMoveNode(Pmt_Struct_Tree_Node $node, $oldIndex, $newIndex) {
+    protected function doOnMoveNode(Pwg_Struct_Tree_Node $node, $oldIndex, $newIndex) {
     }
     
     protected function setNodePrototypes(array $nodePrototypes) {
@@ -264,11 +264,11 @@ class Pmt_Struct_Tree_Node extends Pmt_Autoparams implements Pm_I_Refcontrol {
     protected function doOnDestroy() {
     }
 
-    function findNodesByPattern(array $pattern = array(), $baseClass = 'Pmt_Struct_Tree_Node', $recursive = true, $strict = false) {
+    function findNodesByPattern(array $pattern = array(), $baseClass = 'Pwg_Struct_Tree_Node', $recursive = true, $strict = false) {
         $res = array();
         foreach ($this->listNodes() as $i) {
             $n = $this->getNode($i);
-            if ($n instanceof $baseClass && (Pmt_Autoparams::itemMatchesPattern($n, $pattern, $strict))) $res[] = $n;
+            if ($n instanceof $baseClass && (Pwg_Autoparams::itemMatchesPattern($n, $pattern, $strict))) $res[] = $n;
             if ($recursive) $res = array_merge($res, $n->findNodesByPattern($pattern, $baseClass, $recursive, $strict));
         }
         return $res;

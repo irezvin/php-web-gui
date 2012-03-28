@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Yui_Calendar_Popup extends Pmt_Controller_Aggregate implements Pmt_I_Calendar {
+class Pwg_Yui_Calendar_Popup extends Pwg_Controller_Aggregate implements Pwg_I_Calendar {
 
 	protected $allowPassthroughEvents = true;
 	
@@ -37,32 +37,32 @@ class Pmt_Yui_Calendar_Popup extends Pmt_Controller_Aggregate implements Pmt_I_C
     protected $maskToUpdate = false;
 
 	/**
-	 * @var Pmt_Text
+	 * @var Pwg_Text
 	 */
 	protected $edit = false;
 	
 	/**
-	 * @var Pmt_Button
+	 * @var Pwg_Button
 	 */
 	protected $button = false;
 	
 	/**
-	 * @var Pmt_Yui_Panel
+	 * @var Pwg_Yui_Panel
 	 */
 	protected $panel = false;
 	
 	/**
-	 * @var Pmt_Yui_Calendar
+	 * @var Pwg_Yui_Calendar
 	 */
 	protected $calendar = false;
 	
 	/**
-	 * @var Pmt_Label
+	 * @var Pwg_Label
 	 */
 	protected $lblYear = false;
 	
 	/**
-	 * @var Pmt_List
+	 * @var Pwg_List
 	 */
 	protected $lstMonths = false;
 	
@@ -77,26 +77,26 @@ class Pmt_Yui_Calendar_Popup extends Pmt_Controller_Aggregate implements Pmt_I_C
     protected $pageMonth = false;
 	
     function __construct(array $options = array()) {
-    	$this->preConfig['panel']['header'] = new Pmt_Lang_String('calendar_popup_default_label');
+    	$this->preConfig['panel']['header'] = new Pwg_Lang_String('calendar_popup_default_label');
     	parent::__construct($options);
     }
 	
 	/**
-	 * @return Pmt_Button
+	 * @return Pwg_Button
 	 */
 	function getButton() {
 		return $this->getControl('button');
 	}
 	
 	/**
-	 * @return Pmt_Yui_Panel
+	 * @return Pwg_Yui_Panel
 	 */
 	function getPanel() {
 		return $this->getControl('panel');
 	}
 	
 	/**
-	 * @var Pmt_Calendar
+	 * @var Pwg_Calendar
 	 */
 	function getCalendar() {
 		return $this->getControl('calendar');
@@ -104,7 +104,7 @@ class Pmt_Yui_Calendar_Popup extends Pmt_Controller_Aggregate implements Pmt_I_C
 	
 	protected function doOnGetControlPrototypes(& $prototypes) {
 	    
-		$months = explode("|", new Pmt_Lang_String('locale_months_long'));
+		$months = explode("|", new Pwg_Lang_String('locale_months_long'));
 		$options = array();
 		
 		for ($i = 1; $i <= 12; $i++) $options[] = array(
@@ -114,39 +114,39 @@ class Pmt_Yui_Calendar_Popup extends Pmt_Controller_Aggregate implements Pmt_I_C
 	    
 	    Ae_Util::ms($prototypes, array(
 			'edit' => array(
-				'class' => 'Pmt_Text',
+				'class' => 'Pwg_Text',
 				'containerIsBlock' => false,
 				'size' => 10,
 			),  
 			'button' => array(
-				'class' => 'Pmt_Button',
-				'label' => new Pmt_Lang_String('calendar_popup_default_button'),
+				'class' => 'Pwg_Button',
+				'label' => new Pwg_Lang_String('calendar_popup_default_button'),
 				'containerIsBlock' => false,
 			),
 			'panel' => array(
-				'class' => 'Pmt_Yui_Panel',
-				'context' => array(new Pmt_Control_Path('../button'), 'tl', 'bl'),
+				'class' => 'Pwg_Yui_Panel',
+				'context' => array(new Pwg_Control_Path('../button'), 'tl', 'bl'),
 				'closeOnOutsideClick' => true,
 				'draggable' => false,
 				'autoSize' => false,
 			),
 			'pnlPanelContent' => array(
-			    'class' => 'Pmt_Panel',
+			    'class' => 'Pwg_Panel',
 			    'displayParentPath' => '../panel',
 			    'template' => ('<div class="calheader">{lblYear} {lstMonths}</div>{calendar}'),
 			),			
 			'calendar' => array(
-				'class' => 'Pmt_Yui_Calendar',
+				'class' => 'Pwg_Yui_Calendar',
 				'displayParentPath' => '../pnlPanelContent',
 				'closeButton' => false,
 			),
 			'lblYear' => array(
-			    'class' => 'Pmt_Label',
+			    'class' => 'Pwg_Label',
 			    'displayParentPath' => '../pnlPanelContent',
 			    'containerIsBlock' => false,
 			),
 			'lstMonths' => array(
-			    'class' => 'Pmt_List',
+			    'class' => 'Pwg_List',
 			    'options' => $options,
 				'displayParentPath' => '../pnlPanelContent',
 				'containerIsBlock' => false,
@@ -187,7 +187,7 @@ class Pmt_Yui_Calendar_Popup extends Pmt_Controller_Aggregate implements Pmt_I_C
 		return $res;
 	}
 	
-	// +-------------------------------- Pmt_I_Calendar implementation ---------------------------------+
+	// +-------------------------------- Pwg_I_Calendar implementation ---------------------------------+
 	
     function setMultiple($multiple) {
         $this->passthroughSet('calendar', 'multiple', $multiple);
@@ -250,7 +250,7 @@ class Pmt_Yui_Calendar_Popup extends Pmt_Controller_Aggregate implements Pmt_I_C
         return $this->passthroughGet('calendar', 'phpDateFormat');
     }	
     
-    // ------------------------ end of Pmt_I_Calendar implementation ---------------------------
+    // ------------------------ end of Pwg_I_Calendar implementation ---------------------------
 	
 	function setLabel($label) {
 		$this->passthroughSet('panel', 'header', $label);
@@ -355,7 +355,7 @@ class Pmt_Yui_Calendar_Popup extends Pmt_Controller_Aggregate implements Pmt_I_C
 
     protected function doAfterControlsCreated() {
         parent::doAfterControlsCreated();
-        Pm_Conversation::log("PageDate of {$this->calendar} is ", $this->calendar->getPageDate());
+        Pwg_Conversation::log("PageDate of {$this->calendar} is ", $this->calendar->getPageDate());
         $this->applyPageDate();
     }
     
@@ -390,7 +390,7 @@ class Pmt_Yui_Calendar_Popup extends Pmt_Controller_Aggregate implements Pmt_I_C
     
     function handleLstMonthsSelectionChange() {
         $v = $this->lstMonths->getSelectedValue();
-        Pm_Conversation::log("Selected value is ", $v);
+        Pwg_Conversation::log("Selected value is ", $v);
         $month = Ae_Util::date($this->calendar->getPageDate(), 'm');
         if ($month !== false) {
             $newMonth = ''.$v;

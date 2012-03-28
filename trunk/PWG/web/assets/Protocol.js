@@ -1,4 +1,4 @@
-Pm_Protocol = function (options) {
+Pwg_Protocol = function (options) {
 
     if (window.YAHOO && window.YAHOO.util && window.YAHOO.util.Element)
     window.YAHOO.util.Element.prototype.DEFAULT_HTML_SETTER = function(value, key) {
@@ -18,27 +18,27 @@ Pm_Protocol = function (options) {
 	this._inbox = [];
 	this._outbox = [];
 	
-	if (options && ((typeof options) === 'object')) Pmt_Util.override(this, options);
+	if (options && ((typeof options) === 'object')) Pwg_Util.override(this, options);
 	
-	this._displayStatusDc = new Pmt_Util.DelayedCall(this.setDisplayStatus, null, this, [], 500, false);
+	this._displayStatusDc = new Pwg_Util.DelayedCall(this.setDisplayStatus, null, this, [], 500, false);
 	
 	this._initialize();
 	
 };
 
-Pm_Protocol.DISPLAY_STATUS_NORMAL = 'normal';
-Pm_Protocol.DISPLAY_STATUS_BUSY = 'busy';
-Pm_Protocol.DISPLAY_STATUS_WAIT = 'wait';
+Pwg_Protocol.DISPLAY_STATUS_NORMAL = 'normal';
+Pwg_Protocol.DISPLAY_STATUS_BUSY = 'busy';
+Pwg_Protocol.DISPLAY_STATUS_WAIT = 'wait';
 
-Pm_Protocol.ERROR_SERVER_UNAVAILABLE = 'serverUnavailable';
-Pm_Protocol.ERROR_UNPARSABLE_RESPONSE = 'unparsableResponse';
-Pm_Protocol.ERROR_CLIENT_EXCEPTION = 'clientException';
-Pm_Protocol.ERROR_TRANSPORT_ERROR = 'transportError';
-Pm_Protocol.ERROR_SERVER_EXCEPTION = 'serverException';
+Pwg_Protocol.ERROR_SERVER_UNAVAILABLE = 'serverUnavailable';
+Pwg_Protocol.ERROR_UNPARSABLE_RESPONSE = 'unparsableResponse';
+Pwg_Protocol.ERROR_CLIENT_EXCEPTION = 'clientException';
+Pwg_Protocol.ERROR_TRANSPORT_ERROR = 'transportError';
+Pwg_Protocol.ERROR_SERVER_EXCEPTION = 'serverException';
 
-Pm_Protocol.PauseException = {pauseException: true};
+Pwg_Protocol.PauseException = {pauseException: true};
 
-Pm_Protocol.prototype = {
+Pwg_Protocol.prototype = {
 		
 	/**
 	 * Default response delay of controls' delayed calls (can be 0 for immediate calls) 
@@ -55,7 +55,7 @@ Pm_Protocol.prototype = {
 	lastMsgId: 0,
 	
 	/**
-	 * Transport object (descendant of Pm_Protocol_Transport)
+	 * Transport object (descendant of Pwg_Protocol_Transport)
 	 */
 	transport: null,
 
@@ -83,7 +83,7 @@ Pm_Protocol.prototype = {
 	 */
 	_queueSeparator: {queueSeparator: true},
 	
-	_displayStatus: Pm_Protocol.DISPLAY_STATUS_NORMAL,
+	_displayStatus: Pwg_Protocol.DISPLAY_STATUS_NORMAL,
 	
 	_errorDiv: null,
 	
@@ -95,7 +95,7 @@ Pm_Protocol.prototype = {
 	_displayStatusDc: null,
 	
 	/**
-	 * @param displayStatus one of Pm_Protocol.DISPLAY_STATUS_* constants 
+	 * @param displayStatus one of Pwg_Protocol.DISPLAY_STATUS_* constants 
 	 */
 	setDisplayStatus: function(displayStatus, force, immediate) {
 		
@@ -117,15 +117,15 @@ Pm_Protocol.prototype = {
 	//			de.removeClassName(this.classNameNormalCursor);
 				
 				switch (this._displayStatus) {
-					case Pm_Protocol.DISPLAY_STATUS_NORMAL:
+					case Pwg_Protocol.DISPLAY_STATUS_NORMAL:
 	                    YAHOO.util.Dom.addClass(de, this.classNameNormalCursor);
 						//de.addClassName(this.classNameNormalCursor);
 						break;
-					case Pm_Protocol.DISPLAY_STATUS_BUSY:
+					case Pwg_Protocol.DISPLAY_STATUS_BUSY:
 						//de.addClassName(this.classNameBusyCursor);
 	                    YAHOO.util.Dom.addClass(de, this.classNameBusyCursor);
 						break;
-					case Pm_Protocol.DISPLAY_STATUS_WAIT:
+					case Pwg_Protocol.DISPLAY_STATUS_WAIT:
 						//de.addClassName(this.classNamePauseCursor);
 	                    YAHOO.util.Dom.addClass(de, this.classNamePauseCursor);
 						break;
@@ -158,7 +158,7 @@ Pm_Protocol.prototype = {
 			msg = this._inbox[0];
 			if (msg === this._queueSeparator) {
 				this._inbox.splice(0, 1);
-				for (var i in this._affectedObservers) if (Pmt_Util.hasOwnProperty(this._affectedObservers, i)) {
+				for (var i in this._affectedObservers) if (Pwg_Util.hasOwnProperty(this._affectedObservers, i)) {
 					if (typeof this._affectedObservers[i].notifyMessageQueueEnd == 'function')
 						this._affectedObservers[i].notifyMessageQueueEnd();
 				}
@@ -168,7 +168,7 @@ Pm_Protocol.prototype = {
 					this._processInboundMessage(msg);
 					this._inbox.splice(0, 1);
 				} catch (e) {
-					if (e === Pm_Protocol.PauseException) {
+					if (e === Pwg_Protocol.PauseException) {
 						this._isPause = true;
 						this._updateStatus();
 					} else {
@@ -198,7 +198,7 @@ Pm_Protocol.prototype = {
 			found = false;
 		
 		for (var i = this._outbox.length - 1; (i >= 0) && mi.length; i--) {
-			if ((idx = Pmt_Util.indexOf(this._outbox[i].msgId, mi)) >= 0) {
+			if ((idx = Pwg_Util.indexOf(this._outbox[i].msgId, mi)) >= 0) {
 				this._outbox.splice(i, 1);
 				mi.splice(idx, 1);
 				found = true;
@@ -228,7 +228,7 @@ Pm_Protocol.prototype = {
 	},
 	
 	broadcast: function(methodName, params) {
-        for (var i in this._observers) if (Pmt_Util.hasOwnProperty(this._observers, i)) {
+        for (var i in this._observers) if (Pwg_Util.hasOwnProperty(this._observers, i)) {
             if (typeof(this._observers[i][methodName]) == 'function') this._observers[i][methodName](params);
         }
 	},
@@ -244,7 +244,7 @@ Pm_Protocol.prototype = {
 	},
 	
 	showError: function(message) {
-    	this.setDisplayStatus(Pm_Protocol.DISPLAY_STATUS_NORMAL) ;
+    	this.setDisplayStatus(Pwg_Protocol.DISPLAY_STATUS_NORMAL) ;
     	
         if (!this._errorDiv) {
             this._errorDiv = document.createElement('div');
@@ -297,7 +297,7 @@ Pm_Protocol.prototype = {
 	},
 	
 	_initialize: function() {
-    	if (!this.transport) this.transport = new Pm_Protocol_AjaxTransport({protocol: this});
+    	if (!this.transport) this.transport = new Pwg_Protocol_AjaxTransport({protocol: this});
     		else this.transport.protocol = this;
     	this.transport.notifyProtocolInitialized();
 	},
@@ -316,7 +316,7 @@ Pm_Protocol.prototype = {
 	
 	pause: function() {
 		if (this._isPause) return;
-		throw Pm_Protocol.PauseException;
+		throw Pwg_Protocol.PauseException;
 	},
 	
 	resume: function() {
@@ -325,11 +325,11 @@ Pm_Protocol.prototype = {
 	},
 	
 	_updateStatus: function() {
-		if (this._isPause) this.setDisplayStatus(Pm_Protocol.DISPLAY_STATUS_WAIT);
+		if (this._isPause) this.setDisplayStatus(Pwg_Protocol.DISPLAY_STATUS_WAIT);
 		else {
-			if (this._inbox.length || this._outbox.length || this.transport.isRequestPending()) this.setDisplayStatus(Pm_Protocol.DISPLAY_STATUS_BUSY);
+			if (this._inbox.length || this._outbox.length || this.transport.isRequestPending()) this.setDisplayStatus(Pwg_Protocol.DISPLAY_STATUS_BUSY);
 			else {
-				this.setDisplayStatus(Pm_Protocol.DISPLAY_STATUS_NORMAL);
+				this.setDisplayStatus(Pwg_Protocol.DISPLAY_STATUS_NORMAL);
 			}
 		}
 	},

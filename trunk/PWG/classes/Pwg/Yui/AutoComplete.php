@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Yui_AutoComplete extends Pmt_Text {
+class Pwg_Yui_AutoComplete extends Pwg_Text {
     
     protected $defaultResponse = array();
     

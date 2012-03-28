@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Menu extends Pmt_Menu_Parent {
+class Pwg_Menu extends Pwg_Menu_Parent {
         
     protected $isHorizontal = false;
     

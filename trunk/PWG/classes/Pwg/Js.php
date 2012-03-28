@@ -4,7 +4,7 @@
  * @deprecated
  * Use Ae_Js
  */
-class Pm_Js extends Ae_Js {
+class Pwg_Js extends Ae_Js {
     
     function toJson($value, $indent = 0, $indentStep = 4, $newLines = true, $withNumericKeys = false) {
         return Ae_Js::lrToJs($value, $indent, $indentStep, $newLines, $withNumericKeys, $this);

@@ -1,4 +1,4 @@
-Pmt_Yui_Calendar = function(options) {
+Pwg_Yui_Calendar = function(options) {
 
     this.configProps = [
         'minDate', 'maxDate', 'navigator', 'pages', 'dateClasses', 'pageDate'
@@ -7,11 +7,11 @@ Pmt_Yui_Calendar = function(options) {
     this.autoEvents = [];
 
     this.dateClasses = new Array;
-    Pmt_Element.call(this, options);
+    Pwg_Element.call(this, options);
     this.initialize(options);
 }
 
-Pmt_Yui_Calendar.prototype = {
+Pwg_Yui_Calendar.prototype = {
     id: false,
     configProps: null,
     autoEvents: null,
@@ -92,7 +92,7 @@ Pmt_Yui_Calendar.prototype = {
     setSelectedValue: function(selectedValue, dontRender) {
         if (selectedValue === undefined) selectedValue = this.selectedValue;
             else this.selectedValue = selectedValue;
-        this.selectedValue = Pmt_Util.toArray(this.selectedValue);
+        this.selectedValue = Pwg_Util.toArray(this.selectedValue);
 
         if (this.yuiCalendar) {
             this.lockMessages();
@@ -110,7 +110,7 @@ Pmt_Yui_Calendar.prototype = {
 		YAHOO.widget.Calendar.prototype.renderCellDefault.call(this, date, cell);
         var d = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
         if (this.dateClasses && this.dateClasses[d]) {
-            var a = Pmt_Util.toArray(this.dateClasses[d]);
+            var a = Pwg_Util.toArray(this.dateClasses[d]);
             for (var i = a.length - 1; i >= 0; i--) YAHOO.util.Dom.addClass(cell, a[i]);
         }
     },
@@ -181,7 +181,7 @@ Pmt_Yui_Calendar.prototype = {
         };
 
         if (this.localizationData !== null && (typeof this.localizationData == 'object')) {
-            Pmt_Util.override(calendarOptions, this.localizationData);
+            Pwg_Util.override(calendarOptions, this.localizationData);
         }
 
         var calClass = YAHOO.widget.Calendar;
@@ -200,8 +200,8 @@ Pmt_Yui_Calendar.prototype = {
             if (this[p] !== null && this[p] !== false) calendarOptions[p] = this[p];
         }
 
-        this._selCall = new Pmt_Util.DelayedCall(this.handleCalendarSelection, null, this, [], this.getDefault('clickDelay', 300), false);
-        this._pageCall = new Pmt_Util.DelayedCall(this.handleCalendarPage, null, this, [], this.getDefault('clickDelay', 300), false);
+        this._selCall = new Pwg_Util.DelayedCall(this.handleCalendarSelection, null, this, [], this.getDefault('clickDelay', 300), false);
+        this._pageCall = new Pwg_Util.DelayedCall(this.handleCalendarPage, null, this, [], this.getDefault('clickDelay', 300), false);
         
         this.yuiCalendar = new calClass(this.id, ic, calendarOptions);
 		
@@ -221,7 +221,7 @@ Pmt_Yui_Calendar.prototype = {
         this.yuiCalendar.hasNextPrevButtons = this.hasNextPrevButtons;
         this.yuiCalendar.render = this._myRender;
         if (!this.showHeader) this.yuiCalendar.renderHeader = function(html) {return html;};
-		this._renderCall = new Pmt_Util.DelayedCall(this.yuiCalendar.render, null, this.yuiCalendar, [], this.getDefault('renderDelay', 50), false);
+		this._renderCall = new Pwg_Util.DelayedCall(this.yuiCalendar.render, null, this.yuiCalendar, [], this.getDefault('renderDelay', 50), false);
         this.setDateClasses(this.dateClasses, false);
         this.callRender();
         this.yuiCalendar.changePageEvent.subscribe(this.callPageCall, null, this);
@@ -265,4 +265,4 @@ Pmt_Yui_Calendar.prototype = {
 
 }
 
-Pmt_Util.extend(Pmt_Yui_Calendar, Pmt_Element);
+Pwg_Util.extend(Pwg_Yui_Calendar, Pwg_Element);

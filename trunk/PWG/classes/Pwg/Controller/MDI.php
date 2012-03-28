@@ -1,9 +1,9 @@
 <?php
 
-class Pmt_Controller_MDI extends Pmt_Controller {
+class Pwg_Controller_MDI extends Pwg_Controller {
 
 	/**
-	 * @var array ('opener' => $Pmt_Controller, 'target' => $Pmt_Controller)
+	 * @var array ('opener' => $Pwg_Controller, 'target' => $Pwg_Controller)
 	 */
 	protected $openers = array();
 	
@@ -17,7 +17,7 @@ class Pmt_Controller_MDI extends Pmt_Controller {
 	);
 	    
     /**
-     * @var Pmt_Menu
+     * @var Pwg_Menu
      */
     protected $menu = false;
     
@@ -41,12 +41,12 @@ class Pmt_Controller_MDI extends Pmt_Controller {
         parent::doAfterControlsCreated();
     }
 
-    protected function setApp(Pmt_Legacy_App $app) {
+    protected function setApp(Pwg_Legacy_App $app) {
         $this->app = $app;
     }
 
     /**
-     * @return Pmt_Legacy_App
+     * @return Pwg_Legacy_App
      */
     function getApp() {
         return $this->app;
@@ -65,30 +65,30 @@ class Pmt_Controller_MDI extends Pmt_Controller {
     	
         $res = array(
             'menu' => array(
-                    'class' => 'Pmt_Menu',
+                    'class' => 'Pwg_Menu',
                     'isHorizontal' => true,
                     'position' => 'static',
                     'controlPrototypes' => array(
-                        'system' => array('caption' => new Pmt_Lang_String('system'),
+                        'system' => array('caption' => new Pwg_Lang_String('system'),
                             'controlPrototypes' => array(
-                                'reset' => array('caption' => new Pmt_Lang_String('reload'), 'url' => $this->getWebFront()->getResetUrl()),
-                                'exit' => array('caption' => new Pmt_Lang_String('exit'), 'disabled' => true),
-                                'about' => array('caption' => new Pmt_Lang_String('about', array('suffix' => '...'))),
+                                'reset' => array('caption' => new Pwg_Lang_String('reload'), 'url' => $this->getWebFront()->getResetUrl()),
+                                'exit' => array('caption' => new Pwg_Lang_String('exit'), 'disabled' => true),
+                                'about' => array('caption' => new Pwg_Lang_String('about', array('suffix' => '...'))),
                             ),
                         ),
                         'service' => array(
-                            'caption' => new Pmt_Lang_String('service'),
+                            'caption' => new Pwg_Lang_String('service'),
                             'controlPrototypes' => array(
-                                'serviceBackups' => array('caption' => new Pmt_Lang_String('backups', array('suffix' => '...')),),
+                                'serviceBackups' => array('caption' => new Pwg_Lang_String('backups', array('suffix' => '...')),),
                             ),
                         ),
                         'window' => array(
-                            'caption' => new Pmt_Lang_String('window'),
+                            'caption' => new Pwg_Lang_String('window'),
                             'controlPrototypes' => array(
-                                array('caption' => new Pmt_Lang_String('close'), 'disabled' => true),
-                                array('caption' => new Pmt_Lang_String('collapse'), 'disabled' => true),
-                                array('caption' => new Pmt_Lang_String('expand'), 'disabled' => true),
-                                array('caption' => new Pmt_Lang_String('list', array('suffix' => '...')), 'disabled' => true),                              
+                                array('caption' => new Pwg_Lang_String('close'), 'disabled' => true),
+                                array('caption' => new Pwg_Lang_String('collapse'), 'disabled' => true),
+                                array('caption' => new Pwg_Lang_String('expand'), 'disabled' => true),
+                                array('caption' => new Pwg_Lang_String('list', array('suffix' => '...')), 'disabled' => true),                              
                             ),
                         ),
                     ),
@@ -100,10 +100,10 @@ class Pmt_Controller_MDI extends Pmt_Controller {
     /**
      * Creates and activates new panel containing a controller.
      * 
-     * @return Pmt_Controller
+     * @return Pwg_Controller
      * 
      * @param string $controllerClass       Class of the controller
-     * @param array $windowOptions          Properties of Pmt_Yui_Panel containing the controller (if we have to create it)
+     * @param array $windowOptions          Properties of Pwg_Yui_Panel containing the controller (if we have to create it)
      * @param array $controllerOptions      Properties that will be assigned to created controller instance (if we have to create it)
      * @param bool|array $activateIfExists  FALSE, TRUE or array of controller options to search 
      *      FALSE = always create new window and controller; 
@@ -129,7 +129,7 @@ class Pmt_Controller_MDI extends Pmt_Controller {
 
         $winOptions = Ae_Util::m($this->getWindowDefaults(), $windowOptions);
         $winOptions['id'] = $winId;
-        $window = Pmt_Base::factory($winOptions, 'Pmt_Yui_Panel');
+        $window = Pwg_Base::factory($winOptions, 'Pwg_Yui_Panel');
         $this->windows[$idSfx] = $window; 
         $this->addControl($window);
         
@@ -150,8 +150,8 @@ class Pmt_Controller_MDI extends Pmt_Controller {
         $window->observe('close', $this, 'processWindowClose');
         $window->observe('focus', $this, 'processWindowFocus');
                 
-        $controller->observe(Pmt_I_MDIWindow::evtClose, $this, 'processControllerClose');
-        $controller->observe(Pmt_I_MDIWindow::evtWindowControlMessage, $this, 'handleWindowControlMessage');
+        $controller->observe(Pwg_I_MDIWindow::evtClose, $this, 'processControllerClose');
+        $controller->observe(Pwg_I_MDIWindow::evtWindowControlMessage, $this, 'handleWindowControlMessage');
         $window->focus();
         if (method_exists($controller, 'updateHeader')) $controller->updateHeader();
         
@@ -173,20 +173,20 @@ class Pmt_Controller_MDI extends Pmt_Controller {
         );
     }
     
-    protected function doOnCreateWindow(Pmt_Panel $window, Pmt_Controller $controller)  {
+    protected function doOnCreateWindow(Pwg_Panel $window, Pwg_Controller $controller)  {
             
-		if ($controller instanceof Pmt_I_RecordList) {
-			$controller->observe(Pmt_I_RecordList::evtOpenDetails, $this, 'handlerChildOpenDetails');
-			$controller->observe(Pmt_I_RecordList::evtCreateRecord, $this, 'handlerChildCreateRecord');
+		if ($controller instanceof Pwg_I_RecordList) {
+			$controller->observe(Pwg_I_RecordList::evtOpenDetails, $this, 'handlerChildOpenDetails');
+			$controller->observe(Pwg_I_RecordList::evtCreateRecord, $this, 'handlerChildCreateRecord');
 		}
 		
     }
     
     /**
-     * Searches Pmt_Yui_Panel instances that contain controllers with matching class and properties
+     * Searches Pwg_Yui_Panel instances that contain controllers with matching class and properties
      * @param string $controllerClass
      * @param array  $controllerProperties - specifiy matches for controller properties - as in Ae_Autoparams::findItems
-     * @return array of Pmt_Yui_Panel
+     * @return array of Pwg_Yui_Panel
      */
     function findWindowsWithController($controllerClass, array $controllerProperties = array()) {
         $res = array();
@@ -200,17 +200,17 @@ class Pmt_Controller_MDI extends Pmt_Controller {
     }
     
     /**
-     * @param Pmt_Controller $controller
-     * @return Pmt_Yui_Panel
+     * @param Pwg_Controller $controller
+     * @return Pwg_Yui_Panel
      */
-    function findWindowByController(Pmt_Controller $controller) {
+    function findWindowByController(Pwg_Controller $controller) {
         foreach ($this->windows as $k => $w) {
             if ($controller->getDisplayParent() === $w) return $w;
         }
         return null;
     }
     
-    function findControllerByWindow(Pmt_Yui_Panel $window) {
+    function findControllerByWindow(Pwg_Yui_Panel $window) {
         foreach ($this->controllers as $k => $c) {
             if ($window === $c->getDisplayParent()) return $c;
         }
@@ -222,10 +222,10 @@ class Pmt_Controller_MDI extends Pmt_Controller {
      * It can prevent detroying of window and controller by explicitly returning FALSE.
      * Either $window or $controller can be null, but not both.
      */
-    protected function doOnWindowClose(Pmt_Yui_Panel $window = null, Pmt_Controller $controller = null) {
+    protected function doOnWindowClose(Pwg_Yui_Panel $window = null, Pwg_Controller $controller = null) {
     }
     
-    function processWindowClose(Pmt_Yui_Panel $window) {
+    function processWindowClose(Pwg_Yui_Panel $window) {
         $c = $this->findControllerByWindow($window);
         if ($this->doOnWindowClose($window, $c) !== false) {
             if ($c) $c->destroy();
@@ -234,7 +234,7 @@ class Pmt_Controller_MDI extends Pmt_Controller {
         $window->destroy();
     }
     
-    function closeWindow(Pmt_Controller $controller) {
+    function closeWindow(Pwg_Controller $controller) {
         $window = $this->findWindowByController($controller);
         if ($this->doOnWindowClose($window, $controller) !== false) {
             if ($window) {
@@ -244,27 +244,27 @@ class Pmt_Controller_MDI extends Pmt_Controller {
         }
     }
     
-    function processControllerClose(Pmt_Controller $controller) {
+    function processControllerClose(Pwg_Controller $controller) {
         $this->closeWindow($controller);
     }
     
     function handleMenu__System__AboutClick() {
-        $this->createWindowWithController('Pmt_Controller_Std_About', array(
+        $this->createWindowWithController('Pwg_Controller_Std_About', array(
             'resizeable' => false,
             'closeOnOutsideClick' => true,
         ), array(), true);
     }
     
-    function handleWindowControlMessage(Pmt_Controller $src, $eventType, $params) {
+    function handleWindowControlMessage(Pwg_Controller $src, $eventType, $params) {
         if (isset($params['action']) && strlen($action = $params['action'])) {
             if ($wnd = $this->findWindowByController($src)) {
                 switch ($action) {
-                    case Pmt_I_MDIWindow::wcmClose:
+                    case Pwg_I_MDIWindow::wcmClose:
                         $this->processControllerClose($src, 'close', array());
                         break;
                         
                     case 'setHeader':
-                    case Pmt_I_MDIWindow::wcmUpdateHeader: 
+                    case Pwg_I_MDIWindow::wcmUpdateHeader: 
                         if (isset($params['value'])) 
                             $wnd->setHeader($params['value']); 
                         break;
@@ -275,11 +275,11 @@ class Pmt_Controller_MDI extends Pmt_Controller {
         }
     } 
     
-    function processWindowFocus(Pmt_Yui_Panel $window) {
+    function processWindowFocus(Pwg_Yui_Panel $window) {
     }
     
-    function handleMenu__Service__ServiceBackupsClick(Pmt_Menu_Item $menuItem) {
-        $this->createWindowWithController('Pmt_Controller_Std_Backups', array(
+    function handleMenu__Service__ServiceBackupsClick(Pwg_Menu_Item $menuItem) {
+        $this->createWindowWithController('Pwg_Controller_Std_Backups', array(
             'modal' => true,
             'fixedCenter' => true,
             'width' => 882,
@@ -290,7 +290,7 @@ class Pmt_Controller_MDI extends Pmt_Controller {
         true);
     }
 
-	function setOpener(Pmt_Controller $target, Pmt_Controller $opener) {
+	function setOpener(Pwg_Controller $target, Pwg_Controller $opener) {
 		foreach ($this->openers as $k => $v) {
 			if (!isset($v['opener']) || !isset($v['target'])) unset($this->openers[$k]);
 			elseif ($v['target'] == $target) {
@@ -302,9 +302,9 @@ class Pmt_Controller_MDI extends Pmt_Controller {
 	}
 	
 	/**
-	 * @return Pmt_Controller
+	 * @return Pwg_Controller
 	 */
-	function findOpener(Pmt_Controller $target) {
+	function findOpener(Pwg_Controller $target) {
 		foreach ($this->openers as $k => $v) {
 			if (!isset($v['opener']) || !isset($v['target'])) unset($this->openers[$v]);
 			elseif ($v['target'] == $target) return $v['opener'];
@@ -340,11 +340,11 @@ class Pmt_Controller_MDI extends Pmt_Controller {
 			$controllerParams = Ae_Util::m(array('primaryKey' => $params['primaryKey']), $controllerParams);
 			$this->doOnCreateDetailsWindow($detailsClass, $controllerParams, $windowParams);
 			if ($detailsClass) {
-			    Pm_Conversation::log('Profiling to...', PAX_TMP_PATH);
+			    Pwg_Conversation::log('Profiling to...', PAX_TMP_PATH);
 //			    ini_set('xdebug.profiler_output_dir', PAX_TMP_PATH);
 //			    ini_set('xdebug.profiler_output_name', 'create-'.$detailsClass.'-log.out');
 //			    ini_set('xdebug.profiler_enable', 1);
-//			    Pm_Conversation::log(ini_get('xdebug.profiler_enable'));
+//			    Pwg_Conversation::log(ini_get('xdebug.profiler_enable'));
 				$det = $this->createWindowWithController($detailsClass, $windowParams, $controllerParams);
 //				ini_set('xdebug.profiler_enable', 0);
 				$this->setOpener($det, isset($params['opener'])? $params['opener'] : $controller);

@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Record_Fieldinfo implements Pmt_I_Record_Fieldinfo {
+class Pwg_Record_Fieldinfo implements Pwg_I_Record_Fieldinfo {
     
     public $name = false;
     

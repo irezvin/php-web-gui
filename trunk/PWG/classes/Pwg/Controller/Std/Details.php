@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Controller_Std_Details extends Pmt_Controller_MDI_Window {
+class Pwg_Controller_Std_Details extends Pwg_Controller_MDI_Window {
 
 	const evtStore = 'recordStored';
     
@@ -17,12 +17,12 @@ class Pmt_Controller_Std_Details extends Pmt_Controller_MDI_Window {
 	protected $cancelledRecordCreation = false;
 	
 	/**
-	 * @var Pmt_Data_Source
+	 * @var Pwg_Data_Source
 	 */
 	protected $dsDetails = false;
 
 	/**
-	 * @var Pmt_Data_Navigator
+	 * @var Pwg_Data_Navigator
 	 */
 	protected $dnDetails = false;
 	
@@ -55,9 +55,9 @@ class Pmt_Controller_Std_Details extends Pmt_Controller_MDI_Window {
 			if (!$this->dsDetails->isOpen()) {
                 $this->dsDetails->open();
             }
-            Pm_Conversation::log("Restr is ", $restr);
+            Pwg_Conversation::log("Restr is ", $restr);
             if ($this->createOnNoId && !$restr) {
-                Pm_Conversation::log("Lets create; canCreate is ", $this->dsDetails->canCreate());
+                Pwg_Conversation::log("Lets create; canCreate is ", $this->dsDetails->canCreate());
                 $this->dsDetails->createRecord();
             }
 		}
@@ -149,7 +149,7 @@ class Pmt_Controller_Std_Details extends Pmt_Controller_MDI_Window {
         if ($rec = $this->dsDetails->getCurrentRecord()) {
             $this->primaryKey = $rec->getPrimaryKey();
         }
-        Pm_Conversation::log("Store // PK is ", $this->primaryKey);
+        Pwg_Conversation::log("Store // PK is ", $this->primaryKey);
 		$this->triggerEvent(self::evtStore, $params);
 	}
 	

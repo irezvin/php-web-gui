@@ -1,6 +1,6 @@
 <?php
 
-class Pm_Js_Initializer {
+class Pwg_Js_Initializer {
     
     var $jsLib = false;
     

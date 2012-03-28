@@ -1,9 +1,9 @@
-Pmt_Checklist = function (options) {
+Pwg_Checklist = function (options) {
     this.initialize(options);    
 }
 
-Pmt_Checklist.prototype = {
-	jsClassName: "Pmt_Checklist",
+Pwg_Checklist.prototype = {
+	jsClassName: "Pwg_Checklist",
     attribs: {},
     style: {},
     className : false,
@@ -272,10 +272,10 @@ Pmt_Checklist.prototype = {
     
     doOnDelete: function() {
     	this.clearListOptions();
-    	Pmt_Element.prototype.doOnDelete.apply(this, arguments);
+    	Pwg_Element.prototype.doOnDelete.apply(this, arguments);
     }
 
 };
 
 
-Pmt_Util.extend(Pmt_Checklist, Pmt_Element);
+Pwg_Util.extend(Pwg_Checklist, Pwg_Element);

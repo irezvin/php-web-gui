@@ -7,5 +7,5 @@
  * 
  * @author Nivzer
  */
-final class Pmt_Lang_ResourceProvider_Dir extends Ae_Lang_ResourceProvider_Dir {
+final class Pwg_Lang_ResourceProvider_Dir extends Ae_Lang_ResourceProvider_Dir {
 }

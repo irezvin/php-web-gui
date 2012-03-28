@@ -1,6 +1,6 @@
 <?php
 
-interface Pmt_I_MDIWindow extends Pm_I_Observable {
+interface Pwg_I_MDIWindow extends Pwg_I_Observable {
 	
 	// events
 	

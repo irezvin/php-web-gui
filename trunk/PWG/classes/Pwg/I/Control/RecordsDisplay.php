@@ -1,12 +1,12 @@
 <?php
 
-interface Pmt_I_Control_RecordsDisplay extends Pmt_I_Control {
+interface Pwg_I_Control_RecordsDisplay extends Pwg_I_Control {
 
 //  function beginUpdate();
 //  
 //  function endUpdate();
     
-//  Pmt_I_Control_RecordsDisplay    
+//  Pwg_I_Control_RecordsDisplay    
 
 	function setRecordPrototype(Ae_Model_Object $record = null);
 	
@@ -53,31 +53,31 @@ interface Pmt_I_Control_RecordsDisplay extends Pmt_I_Control {
     /**
      * Is triggered when user selects some record by the control and getCurrentRecord() changes
      */
-    function observeRecordSelected (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function observeRecordSelected (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
 
-    function unobserveRecordSelected (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function unobserveRecordSelected (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
     
     /**
      * Is triggered when user edits selected record
      */
-    function observeRecordEdited (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function observeRecordEdited (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
     
-    function unobserveRecordEdited (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function unobserveRecordEdited (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
 
     /**
      * Is triggered when user adds new record
      *
      */
-    function observeRecordCreated (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function observeRecordCreated (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
     
-    function unobserveRecordCreated (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function unobserveRecordCreated (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
 
     /**
      * Is triggered when user tries to remove a record
      */
-    function observeRecordRemoved (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function observeRecordRemoved (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
     
-    function unobserveRecordRemoved (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function unobserveRecordRemoved (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
     
 }
 

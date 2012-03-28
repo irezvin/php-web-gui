@@ -1,31 +1,31 @@
 <?php
 
-class Pmt_Data_Field extends Pmt_Controller_Aggregate {
+class Pwg_Data_Field extends Pwg_Controller_Aggregate {
     
     protected $allowPassthroughEvents = true;
     
     /**
-     * @var Pmt_Data_Binder
+     * @var Pwg_Data_Binder
      */
     public $binder = false;
     
     /**
-     * @var Pmt_Label
+     * @var Pwg_Label
      */
     public $label = false;
 
     /**
-     * @var Pmt_Label
+     * @var Pwg_Label
      */
     public $error = false;
 
     /**
-     * @var Pmt_I_Control
+     * @var Pwg_I_Control
      */
     public $editor = false;
     
     /**
-     * @var Pmt_Panel
+     * @var Pwg_Panel
      */
     public $panel = false;
     
@@ -52,16 +52,16 @@ class Pmt_Data_Field extends Pmt_Controller_Aggregate {
     
     protected function doOnGetControlPrototypes(& $prototypes) {
         $p = array(
-            'editor' => array('class' => 'Pmt_Text', 'displayParentPath' => '../panel', 'containerIsBlock' => false),
-            'label' => array('class' => 'Pmt_Label', 'displayParentPath' => '../panel', 'containerIsBlock' => false),
-            'error' => array('class' => 'Pmt_Label', 'displayParentPath' => '../panel', 'className' => 'errorMsg'),
-            'binder' => array('class' => 'Pmt_Data_Binder', 
+            'editor' => array('class' => 'Pwg_Text', 'displayParentPath' => '../panel', 'containerIsBlock' => false),
+            'label' => array('class' => 'Pwg_Label', 'displayParentPath' => '../panel', 'containerIsBlock' => false),
+            'error' => array('class' => 'Pwg_Label', 'displayParentPath' => '../panel', 'className' => 'errorMsg'),
+            'binder' => array('class' => 'Pwg_Data_Binder', 
                 'errorControlPath' => '../error', 'errorPropertyName' => 'html', 
                 'dataControlPath' => '../editor', 
                 'labelControlPath' => '../label', 'labelPropertyName' => 'html',
                 
             ),
-            'panel' => array('class' => 'Pmt_Panel', 'template' => "{label} {editor} {error}"),
+            'panel' => array('class' => 'Pwg_Panel', 'template' => "{label} {editor} {error}"),
         );
         if (!$this->withLabel) {
             unset($p['label']);
@@ -149,7 +149,7 @@ class Pmt_Data_Field extends Pmt_Controller_Aggregate {
     }
 
     /**
-     * @return Pmt_Data_Source
+     * @return Pwg_Data_Source
      */
     function getDataSource() {
         return $this->binder? $this->binder->getDataSource() : $this->dataSource;

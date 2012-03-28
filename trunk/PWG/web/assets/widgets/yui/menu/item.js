@@ -1,9 +1,9 @@
-Pmt_Menu_Item = function() {
+Pwg_Menu_Item = function() {
     
 }
 
-Pmt_Menu_Item.factory = function(prototype) {
-    var constructor = Pmt_Menu_Item;
+Pwg_Menu_Item.factory = function(prototype) {
+    var constructor = Pwg_Menu_Item;
     if ((typeof prototype.constructor) == 'string' && (typeof window[prototype.constructor]) == 'function') {
         constructor = window[prototype.constructor];
     } else {
@@ -13,9 +13,9 @@ Pmt_Menu_Item.factory = function(prototype) {
     return res;
 }
 
-Pmt_Menu_Item.prototype = {
+Pwg_Menu_Item.prototype = {
 
-	jsClassName: "Pmt_Menu_Item",
+	jsClassName: "Pwg_Menu_Item",
     attribs: {},
     style: {},
     classname: false,
@@ -58,7 +58,7 @@ Pmt_Menu_Item.prototype = {
 
     createSetters: function() {
         for (var i = 0; i < this.setters.length; i++) {
-            var setterName = 'set' + Pmt_Util.ucFirst(this.setters[i]);
+            var setterName = 'set' + Pwg_Util.ucFirst(this.setters[i]);
             if (this[setterName] === undefined) {
                 this[setterName] = function(propName) {
                     return function(value) {
@@ -88,7 +88,7 @@ Pmt_Menu_Item.prototype = {
                 sm = new smc(tmpDiv, smCfg);
                 sm.ITEM_TYPE = this.submenuIsHorizontal? YAHOO.widget.MenuBarItem : YAHOO.widget.MenuItem;
                 sm.render();
-                Pmt_Yui_Util.fixMenuDisplay(sm);
+                Pwg_Yui_Util.fixMenuDisplay(sm);
                 this.yuiMenuItem.cfg.setProperty('submenu', sm);
             }
             if (
@@ -157,7 +157,7 @@ Pmt_Menu_Item.prototype = {
     refresh: function() {
     },
 
-    initializeChildContainer: Pmt_Controller.prototype.initializeChildContainer,
+    initializeChildContainer: Pwg_Controller.prototype.initializeChildContainer,
 
     doOnDelete: function() {
     	if (this.yuiMenuItem && this.yuiMenuItem.cfg.getProperty('submenu')) {

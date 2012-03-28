@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Data_Tree extends Pmt_Yui_Tree {
+class Pwg_Data_Tree extends Pwg_Yui_Tree {
     
     /**
      * don't check whether parent of refreshed node had changed
@@ -13,7 +13,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     const TM_DONT_FORCE_VISIBILITY = 1;
     
     /**
-     * if node has moved to invisible/unloaded ancestors, it will be shown (as in Pmt_Data_Tree::showNodes() with $withAncestors set to TRUE)
+     * if node has moved to invisible/unloaded ancestors, it will be shown (as in Pwg_Data_Tree::showNodes() with $withAncestors set to TRUE)
      */
     const TM_FORCE_VISIBILITY = 2;
 
@@ -38,12 +38,12 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     const POPULATE_DIRECT_CHILDREN_ONLY = 3;
     
     /**
-     * @var Pmt_I_Tree_Provider
+     * @var Pwg_I_Tree_Provider
      */
     protected $treeProvider = false;
 
     /**
-     * @var Pmt_I_Tree_Node
+     * @var Pwg_I_Tree_Node
      */
     protected $currentNode = false;
     
@@ -74,12 +74,12 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     protected $withCheckboxes = false;
 
     function __construct(array $options = array()) {
-        $this->lazyLoadLabel = new Pmt_Lang_String('pmt_data_tree_loading');
-        $this->showSiblingsLabel = new Pmt_Lang_String('pmt_data_tree_show_other_nodes');
+        $this->lazyLoadLabel = new Pwg_Lang_String('pmt_data_tree_loading');
+        $this->showSiblingsLabel = new Pwg_Lang_String('pmt_data_tree_show_other_nodes');
         parent::__construct($options);
     }
     
-    function setTreeProvider(Pmt_I_Tree_Provider $treeProvider) {
+    function setTreeProvider(Pwg_I_Tree_Provider $treeProvider) {
         if ($this->treeProvider && ($this->treeProvider !== $treeProvider))
             throw new Exception("Can set \$treeProvider only once");
             
@@ -87,7 +87,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     }
 
     /**
-     * @return Pmt_I_Tree_Provider
+     * @return Pwg_I_Tree_Provider
      */
     function getTreeProvider() {
         return $this->treeProvider;
@@ -123,7 +123,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     }
 
     /**
-     * @return Pmt_I_Tree_Node
+     * @return Pwg_I_Tree_Node
      */
     function getCurrentNode() {
         return $this->currentNode;
@@ -131,7 +131,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
 
     /**
      * Loads given data node(s) if they are not loaded; shows them up.  
-     * @param $nodeOrNodesOrIds Pmt_I_Tree_Node instance | node id | array of Pmt_I_Tree_Node instances and/or node ids
+     * @param $nodeOrNodesOrIds Pwg_I_Tree_Node instance | node id | array of Pwg_I_Tree_Node instances and/or node ids
      * @param bool $withAncestors Whether to load and show required ancestors (for nodes that otherwise won't be shown) 
      * @param bool $expandAncestors  Whether to make branches of respective nodes expanded (to make these nodes visible for the user)
      * @param int $populateChildren One of self::POPULATE_* constants
@@ -152,7 +152,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
             //if (!p) throw new Exception("Assertion: we should have node parent at this point", E_USER_ERROR);
             if ($p) {
                 //if ($p === $this) $p = $this->getRootNode();
-                if (!($p instanceof Pmt_Yui_Tree_Node)) throw new Exception("Pmt_Yui_Tree_Node instance should be provided instead of: '".get_class($p)."'");
+                if (!($p instanceof Pwg_Yui_Tree_Node)) throw new Exception("Pwg_Yui_Tree_Node instance should be provided instead of: '".get_class($p)."'");
                 $tn = $this->createTreeNode($node, $populateChildren, $p);
                 $tn->expandAncestors();
             } else {
@@ -161,8 +161,8 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     }
     
     /**
-     * Hides given data node(s) and removes corresponding Pmt_Yui_Tree_Node's from the tree 
-     * @param $nodeOrNodesOrIds Pmt_I_Tree_Node instance | node id | array of Pmt_I_Tree_Node instances and/or node ids 
+     * Hides given data node(s) and removes corresponding Pwg_Yui_Tree_Node's from the tree 
+     * @param $nodeOrNodesOrIds Pwg_I_Tree_Node instance | node id | array of Pwg_I_Tree_Node instances and/or node ids 
      */
     function hideNodes($nodeOrNodesOrIds) {
         $nodes = array_keys($this->extractNodes($nodeOrNodesOrIds, false, false));
@@ -172,15 +172,15 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     }
     
     /**
-     * @param $nodeOrNodesOrIds Pmt_I_Tree_Node instance | node id | array of Pmt_I_Tree_Node instances and/or node ids
+     * @param $nodeOrNodesOrIds Pwg_I_Tree_Node instance | node id | array of Pwg_I_Tree_Node instances and/or node ids
      * @param bool $withChildren Whether node children should also be recursively refreshed
-     * @param int $trackMovement - one of Pmt_Data_Tree::DONT_TRACK_MOVEMENT | Pmt_Data_Tree::DONT_FORCE_VISIBILITY | Pmt_Data_Tree::FORCE_VISIBILITY constants
+     * @param int $trackMovement - one of Pwg_Data_Tree::DONT_TRACK_MOVEMENT | Pwg_Data_Tree::DONT_FORCE_VISIBILITY | Pwg_Data_Tree::FORCE_VISIBILITY constants
      * @param bool $forceNewNodesDisplay Whether to display (with ancestors) nodes that are in $nodeOrNodesOrIds but currenlty not loaded/shown  
      * 
      * Here's how $trackMovement works:
-     * - Pmt_Data_Tree::TM_DONT_TRACK_MOVEMENT - don't check whether parent of refreshed node had changed
-     * - Pmt_Data_Tree::TM_DONT_FORCE_VISIBILITY - node is moved to new parent only if that parent is shown; otherwise it's hidden
-     * - Pmt_Data_Tree::TM_FORCE_VISIBILITY - if node has moved to invisible/unloaded ancestors, it will be shown (as in Pmt_Data_Tree::showNodes() with $withAncestors set to TRUE) 
+     * - Pwg_Data_Tree::TM_DONT_TRACK_MOVEMENT - don't check whether parent of refreshed node had changed
+     * - Pwg_Data_Tree::TM_DONT_FORCE_VISIBILITY - node is moved to new parent only if that parent is shown; otherwise it's hidden
+     * - Pwg_Data_Tree::TM_FORCE_VISIBILITY - if node has moved to invisible/unloaded ancestors, it will be shown (as in Pwg_Data_Tree::showNodes() with $withAncestors set to TRUE) 
      */
     function refreshNodes($nodeOrNodesOrIds, $withChildren = true, $trackMovement = self::TM_DONT_FORCE_VISIBILITY, $forceNewNodesDisplay = false) {
         $nodes = $this->extractNodes($nodeOrNodesOrIds, $forceNewNodesDisplay, $forceNewNodesDisplay);
@@ -199,17 +199,17 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
 
     function setCheckedNodes($nodeOrNodesOrIds) {
         if (!$this->withCheckboxes) {
-            trigger_error (__FUNCTION__."() makes sense only for Pmt_Data_Tree with useCheckboxes set to true", E_USER_NOTICE);
+            trigger_error (__FUNCTION__."() makes sense only for Pwg_Data_Tree with useCheckboxes set to true", E_USER_NOTICE);
             return;
         } else {
-            Pm_Conversation::log("Setting checked nodes to", $nodeOrNodesOrIds);
-            $items = $this->findNodesByPattern(array('checked' => true), 'Pmt_Yui_Tree_Node_Toggle', true, true);
+            Pwg_Conversation::log("Setting checked nodes to", $nodeOrNodesOrIds);
+            $items = $this->findNodesByPattern(array('checked' => true), 'Pwg_Yui_Tree_Node_Toggle', true, true);
             $this->setProperty($items, 'checked', false);
             $nodes = $this->getLoadedNodes($nodeOrNodesOrIds, true);
             $this->showNodes($nodes, true);
             foreach ($nodes as $dataNode) {
                 if ($visualNode = $this->findTreeNode($dataNode)) {
-                    Pm_Conversation::log("Found visual node and set it's checked status");
+                    Pwg_Conversation::log("Found visual node and set it's checked status");
                     $visualNode->setChecked(true);
                 }
             }
@@ -219,9 +219,9 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     function getCheckedNodes() {
         $res = array();
         if (!$this->withCheckboxes) {
-            trigger_error (__FUNCTION__."() makes sense only for Pmt_Data_Tree with useCheckboxes set to true", E_USER_NOTICE);
+            trigger_error (__FUNCTION__."() makes sense only for Pwg_Data_Tree with useCheckboxes set to true", E_USER_NOTICE);
         } else {
-            $items = $this->findNodesByPattern(array('checked' => true), 'Pmt_Yui_Tree_Node_Toggle', true, true);
+            $items = $this->findNodesByPattern(array('checked' => true), 'Pwg_Yui_Tree_Node_Toggle', true, true);
             foreach ($items as $item) {
                 if ($node = $this->getDataNode($tem)) {
                     $res[$node->getNodeId()] = $node;
@@ -234,9 +234,9 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     function getCheckedIds() {
         $res = array();
         if (!$this->withCheckboxes) {
-            trigger_error (__FUNCTION__."() makes sense only for Pmt_Data_Tree with useCheckboxes set to true", E_USER_NOTICE);
+            trigger_error (__FUNCTION__."() makes sense only for Pwg_Data_Tree with useCheckboxes set to true", E_USER_NOTICE);
         } else {
-            $items = $this->findNodesByPattern(array('checked' => true), 'Pmt_Yui_Tree_Node_Toggle', true, true);
+            $items = $this->findNodesByPattern(array('checked' => true), 'Pwg_Yui_Tree_Node_Toggle', true, true);
             foreach ($items as $item) {
                 $res[] = $item->getData();
             }
@@ -245,10 +245,10 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     }
     
     /**
-     * @return Pmt_Yui_Tree_Node
+     * @return Pwg_Yui_Tree_Node
      */
     function findTreeNodeByDataNode($dataNodeOrId) {
-        if ($dataNodeOrId instanceof Pmt_I_Tree_Node) $id = $dataNodeOrId->getNodeId();
+        if ($dataNodeOrId instanceof Pwg_I_Tree_Node) $id = $dataNodeOrId->getNodeId();
             else $id = $dataNodeOrId;
         $res = $this->getFirstNode($this->findNodesByPattern(array('data' => $id)), false, true);
         return $res;
@@ -256,7 +256,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     
     // +-------------- init-time properties --------------+
     
-    protected function refreshNode(Pmt_I_Tree_Node $node, $withChildren, $trackMovement, $forceNewNodesDisplay) {
+    protected function refreshNode(Pwg_I_Tree_Node $node, $withChildren, $trackMovement, $forceNewNodesDisplay) {
         if (!($visualNode = $this->findTreeNode($node))) $this->showNodes(array($node), true);
         else {
             $currentVisualParent = $visualNode->getParent();
@@ -305,7 +305,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     }
 
     /**
-     * Whether to use Pmt_Yui_Tree_Node_Toggle nodes
+     * Whether to use Pwg_Yui_Tree_Node_Toggle nodes
      * @param bool $withCheckboxes
      */
     protected function setWithCheckboxes($withCheckboxes) {
@@ -319,11 +319,11 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     // +-------------- internal stuff --------------+
 
     /**
-     * @param Pmt_Yui_Tree_Node $visualNode
+     * @param Pwg_Yui_Tree_Node $visualNode
      * @param bool $load Load data node if it's not loaded
-     * @return Pmt_I_Tree_Node
+     * @return Pwg_I_Tree_Node
      */
-    protected function getDataNode(Pmt_Yui_Tree_Node $visualNode, $load = true) {
+    protected function getDataNode(Pwg_Yui_Tree_Node $visualNode, $load = true) {
         $id = $visualNode->getData();
         if (strlen($id) && $id !== '__loadingStub' && $id !== '__showChildrenStub') {
             $res = $this->treeProvider->getNode($id, $load);
@@ -340,7 +340,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
         $allIds = array();
         $nodes = array();
         foreach ($p as $k => $item) {
-            if ($item instanceof Pmt_I_Tree_Node) {
+            if ($item instanceof Pwg_I_Tree_Node) {
                 if (!strlen($id = $item->getNodeId())) throw new Exception("Currently can't use nodes without IDs");
                 $nodes[] = $item;
                 $allIds[$k] = $id;   
@@ -374,7 +374,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
         return $res;
     }
     
-    protected function getNodeId(Pmt_I_Tree_Node $dataNode) {
+    protected function getNodeId(Pwg_I_Tree_Node $dataNode) {
         $res = $dataNode->getNodeId();
         if (!strlen($res)) throw new Exception("Currently nodes without ID are not supported");
         return $res;
@@ -384,7 +384,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
      * @param array $nodes
      * @param $default
      * @param $assertIfMoreThanOne
-     * @return Pmt_Yui_Tree_Node
+     * @return Pwg_Yui_Tree_Node
      */
     protected function getFirstNode(array $nodes, $default = false, $assertIfMoreThanOne = false) {
         if ($c = count($vs = array_values($nodes))) {
@@ -395,18 +395,18 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     }
     
     /**
-     * @param Pmt_I_Tree_Node $dataNode
-     * @return Pmt_Yui_Tree_Node
+     * @param Pwg_I_Tree_Node $dataNode
+     * @return Pwg_Yui_Tree_Node
      */
-    protected function findTreeNode(Pmt_I_Tree_Node $dataNode) {
+    protected function findTreeNode(Pwg_I_Tree_Node $dataNode) {
         return $this->getFirstNode($this->findNodesByPattern(array('data' => $this->getNodeId($dataNode))), false, true);
     }
 
     /**
-     * @param Pmt_I_Tree_Node $dataNode
-     * @return Pmt_Yui_Tree_Node
+     * @param Pwg_I_Tree_Node $dataNode
+     * @return Pwg_Yui_Tree_Node
      */
-    protected function findTreeParentOfDataNode(Pmt_I_Tree_Node $dataNode) {
+    protected function findTreeParentOfDataNode(Pwg_I_Tree_Node $dataNode) {
         $pId = $dataNode->getParentNodeId();
         if (is_null($pId) || ($pId === false) || ((string) $pId === '0')) $res = $this->getRootNode();
         else {
@@ -416,12 +416,12 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     }
     
     /**
-     * @param Pmt_I_Tree_Node $dataNode
+     * @param Pwg_I_Tree_Node $dataNode
      * @param int $alsoInitializeChildren (self::POPULATE_* constants)
-     * @param Pmt_Yui_Tree_Node $parent  
-     * @return Pmt_Yui_Tree_Node
+     * @param Pwg_Yui_Tree_Node $parent  
+     * @return Pwg_Yui_Tree_Node
      */
-    protected function createTreeNode(Pmt_I_Tree_Node $dataNode, $alsoInitializeChildren = self::POPULATE_NOTHING, Pmt_Yui_Tree_Node $parent = null) {
+    protected function createTreeNode(Pwg_I_Tree_Node $dataNode, $alsoInitializeChildren = self::POPULATE_NOTHING, Pwg_Yui_Tree_Node $parent = null) {
         if (!($res = $this->findTreeNode($dataNode))) {
             $prototype = $this->treeNodePrototype;
             $prototype['displayOrder'] = $dataNode->getOrdering();
@@ -429,7 +429,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
             $this->triggerEvent('onCreateTreeNode', array('prototype' => & $prototype, 'dataNode' => $dataNode, 'res' => & $res));
             if (!$res) {
                 if (!isset($prototype['label'])) $prototype['label'] = $dataNode->getTitle();
-                $res = Pmt_Base::factory($prototype, $this->withCheckboxes? 'Pmt_Yui_Tree_Node_Toggle' : 'Pmt_Yui_Tree_Node_Text');
+                $res = Pwg_Base::factory($prototype, $this->withCheckboxes? 'Pwg_Yui_Tree_Node_Toggle' : 'Pwg_Yui_Tree_Node_Text');
             }
             switch ($alsoInitializeChildren) {
                 case self::POPULATE_NOTHING: break;
@@ -446,56 +446,56 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
                     $this->loadAndShowChildren($res, self::POPULATE_RECURSIVE);
                     break;
                     
-                default: throw new Exception("Unknown \$alsoInitializeChildren value; should be one of Pmt_Data_Tree::POPULATE_* constants");
+                default: throw new Exception("Unknown \$alsoInitializeChildren value; should be one of Pwg_Data_Tree::POPULATE_* constants");
             }
             if (!is_null($parent)) $parent->insertNode($res);
         }
         return $res;
     }
     
-    protected function populateWithStubs(Pmt_Yui_Tree_Node $node) {
+    protected function populateWithStubs(Pwg_Yui_Tree_Node $node) {
         $data = $this->getDataNode($node);
         if ($data->getChildNodesCount()) {
             $nd = false;
-            if (!$node->listNodes()) $node->insertNode(new Pmt_Yui_Tree_Node_Text(array(
+            if (!$node->listNodes()) $node->insertNode(new Pwg_Yui_Tree_Node_Text(array(
                 'data' => '__loadingStub',
                 'label' => $this->lazyLoadLabel,
-            ))); else $node->insertNode(new Pmt_Yui_Tree_Node_Text($nd = array(
+            ))); else $node->insertNode(new Pwg_Yui_Tree_Node_Text($nd = array(
                 'data' => '__showChildrenStub',
                 'label' => $this->showSiblingsLabel,
             )));
         }
     }
     
-    protected function isLoadingStub(Pmt_Yui_Tree_Node $node) {
+    protected function isLoadingStub(Pwg_Yui_Tree_Node $node) {
         return $node->getData() === '__loadingStub';
     }
     
-    protected function isShowChildrenStub(Pmt_Yui_Tree_Node $node) {
+    protected function isShowChildrenStub(Pwg_Yui_Tree_Node $node) {
         return $node->getData() === '__showChildrenStub';
     }
     
     /**
-     * @return Pmt_Yui_Tree_Node
+     * @return Pwg_Yui_Tree_Node
      */
-    protected function findLoadingStub(Pmt_Yui_Tree_Node $node) {
-        $stubs = $node->findNodesByPattern(array('data' => '__loadingStub'), 'Pmt_Yui_Tree_Node', false, true);
+    protected function findLoadingStub(Pwg_Yui_Tree_Node $node) {
+        $stubs = $node->findNodesByPattern(array('data' => '__loadingStub'), 'Pwg_Yui_Tree_Node', false, true);
         if (count($stubs)) $res = $stubs[0];
             else $res = false;
         return $res;
     }
     
     /**
-     * @return Pmt_Yui_Tree_Node
+     * @return Pwg_Yui_Tree_Node
      */
-    protected function findShowChildrenStub(Pmt_Yui_Tree_Node $node) {
-        $stubs = $node->findNodesByPattern(array('data' => '__showChildrenStub'), 'Pmt_Yui_Tree_Node', false, trie);
+    protected function findShowChildrenStub(Pwg_Yui_Tree_Node $node) {
+        $stubs = $node->findNodesByPattern(array('data' => '__showChildrenStub'), 'Pwg_Yui_Tree_Node', false, trie);
         if (count($stubs)) $res = $stubs[0];
             else $res = false;
         return $res;
     }
     
-    protected function loadAndShowChildren(Pmt_Yui_Tree_Node $visualNode, $childInitMode) {
+    protected function loadAndShowChildren(Pwg_Yui_Tree_Node $visualNode, $childInitMode) {
         $dataNode = $this->getDataNode($visualNode, true);
         $childNodes = $this->getLoadedNodes($dataNode->listChildNodes());
         foreach ($childNodes as $childDataNode) {
@@ -507,10 +507,10 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
      * Creates (if they are not already created) nodes for all ancestors of given node
      * Returns node's parent.
      * 
-     * @param Pmt_I_Tree_Node $dataNode
-     * @return Pmt_Yui_Tree_Node
+     * @param Pwg_I_Tree_Node $dataNode
+     * @return Pwg_Yui_Tree_Node
      */
-    protected function createAncestorsBranch(Pmt_I_Tree_Node $dataNode) {
+    protected function createAncestorsBranch(Pwg_I_Tree_Node $dataNode) {
         $allAncestorIdsFromTopToBottom = array_reverse($dataNode->getAllParentNodeIds(false));
         $ancestors = $this->getLoadedNodes($allAncestorIdsFromTopToBottom);
         $parent = $this;
@@ -525,7 +525,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
     }
     
     protected function doGetConstructorName() {
-        return 'Pmt_Yui_Tree_New';
+        return 'Pwg_Yui_Tree_New';
     }
 
     protected function triggerEvent($eventType, array $params = array()) {
@@ -568,7 +568,7 @@ class Pmt_Data_Tree extends Pmt_Yui_Tree {
         return $this->alwaysLoadChildrenOnExpand;
     }
 
-    function notifyNodeDestroyed(Pmt_Yui_Tree_Node $node) {
+    function notifyNodeDestroyed(Pwg_Yui_Tree_Node $node) {
         parent::notifyNodeDestroyed($node);
         if ($this->currentNode && ($data = $this->getDataNode($node))) {
             $nId = $data->getNodeId();

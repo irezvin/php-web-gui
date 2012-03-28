@@ -1,6 +1,6 @@
 <?php
 
-interface Pm_I_Refcontrol {
+interface Pwg_I_Refcontrol {
     
     function refHas($otherObject);
     

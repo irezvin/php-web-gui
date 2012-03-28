@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Record_Ae extends Pmt_Record_Abstract {
+class Pwg_Record_Ae extends Pwg_Record_Abstract {
 
     /**
      * @var Ae_Model_Data
@@ -49,9 +49,9 @@ class Pmt_Record_Ae extends Pmt_Record_Abstract {
      */
     function getFieldInfo($fieldName) {
         if (is_string($fieldName) && $this->aeModelData->hasProperty($fieldName)) {
-            $res = new Pmt_Record_Fieldinfo_Ae($this->aeModelData->getPropertyInfo($fieldName, true));
+            $res = new Pwg_Record_Fieldinfo_Ae($this->aeModelData->getPropertyInfo($fieldName, true));
         } else {
-            $res = new Pmt_Record_Fieldinfo(array('name' => $fieldName, 'caption' => $fieldName));
+            $res = new Pwg_Record_Fieldinfo(array('name' => $fieldName, 'caption' => $fieldName));
         }
         return $res;
     }
@@ -60,10 +60,10 @@ class Pmt_Record_Ae extends Pmt_Record_Abstract {
         return $this->aeModelData->getErrors(false, false);
     }
     
-    function matches(Pmt_I_Record $otherRecord) {
+    function matches(Pwg_I_Record $otherRecord) {
         $res = null;
         if ($otherRecord === $this) $res = true; else {
-            if ($otherRecord instanceof Pmt_Record_Ae) {
+            if ($otherRecord instanceof Pwg_Record_Ae) {
                 $otherData = $otherRecord->getAeModelData();
                 if ($this->aeModelData === $otherData) $res = true;
                 elseif ($this->aeModelData instanceof Ae_Model_Object && $otherData instanceof Ae_Model_Object) {

@@ -1,18 +1,18 @@
 <?php
 
-class Pmt_Data_Source_Lister extends Pmt_Autoparams {
+class Pwg_Data_Source_Lister extends Pwg_Autoparams {
 
     /**
-     * @var Pmt_Data_Source
+     * @var Pwg_Data_Source
      */
     protected $dataSource = false;
 
-    function setDataSource(Pmt_Data_Source $dataSource = null) {
+    function setDataSource(Pwg_Data_Source $dataSource = null) {
         $this->dataSource = $dataSource;
     }
     
     /**
-     * @return Pmt_Data_Source
+     * @return Pwg_Data_Source
      */
     function getDataSource() {
         return $this->dataSource;
@@ -90,7 +90,7 @@ class Pmt_Data_Source_Lister extends Pmt_Autoparams {
             }
             $coll->addWhere(implode(" ", $crits)."0".str_repeat($aeDb->ifClose(), $i).' = 1');
             if ($this->dataSource->getDontGroupOnCount() && $this->dataSource->getGroupBy()) $coll->setGroupBy(false);
-            if ($this->dataSource->getDebug()) Pm_Conversation::log($coll->_getSql());
+            if ($this->dataSource->getDebug()) Pwg_Conversation::log($coll->_getSql());
             $res = $coll->countRecords();
         } else {
             // no such record
@@ -109,7 +109,7 @@ class Pmt_Data_Source_Lister extends Pmt_Autoparams {
             
         $res = array();
         while($rec = $coll->getNext()) {
-            Pm_Conversation::log("LOADED PK is", $rec->getPrimaryKey());
+            Pwg_Conversation::log("LOADED PK is", $rec->getPrimaryKey());
             $res[] = $rec;
             unset($rec);
         }
@@ -139,7 +139,7 @@ class Pmt_Data_Source_Lister extends Pmt_Autoparams {
         if ($this->dataSource->getDebug()) {
             $cols = implode(", ", $this->getMapper()->listPkFields());
             $sql = $coll->getStatementTail(true, true, true, $cols);
-            Pm_Conversation::log($this->dataSource->getId(), "Number is", $number, "sql is ", $sql, "pk is ", $res? $res->getPrimaryKey() : "");
+            Pwg_Conversation::log($this->dataSource->getId(), "Number is", $number, "sql is ", $sql, "pk is ", $res? $res->getPrimaryKey() : "");
         }
         return $res;
     }

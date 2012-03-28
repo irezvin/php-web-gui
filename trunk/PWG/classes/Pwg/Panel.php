@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Panel extends Pmt_Group {
+class Pwg_Panel extends Pwg_Group {
     
     /**
      * Following placeholders can be used in the template:
@@ -74,7 +74,7 @@ class Pmt_Panel extends Pmt_Group {
                     }
                 } elseif (!strncmp($mc = trim($matches[1]), 'lng:', 4)) {
                 	$lngId = substr($matches[1], 4);
-                	$val = Pmt_Lang_Resource::getInstance()->getString($lngId);
+                	$val = Pwg_Lang_Resource::getInstance()->getString($lngId);
                 } else {
                     $id = trim($matches[1]);
                     if (isset($controlsById[$id])) $val = $this->renderChildContainer($controlsById[$id], $controlsById);
@@ -88,7 +88,7 @@ class Pmt_Panel extends Pmt_Group {
         return $res;
     }
     
-    protected function renderChildContainer(Pmt_I_Control $child, & $controlsById) {
+    protected function renderChildContainer(Pwg_I_Control $child, & $controlsById) {
         $cid = $child->getId();
         ob_start(); $child->showContainer(); $control = ob_get_clean();
         if (isset($controlsById[$cid])) unset($controlsById[$cid]);
@@ -118,7 +118,7 @@ class Pmt_Panel extends Pmt_Group {
     }
     
     protected function doGetConstructorName() {
-        return 'Pmt_Group';
+        return 'Pwg_Group';
     }
     
 }

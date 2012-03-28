@@ -1,6 +1,6 @@
 <?php
 
-class Pm_Thread {
+class Pwg_Thread {
     
     /**
      * @var string
@@ -8,12 +8,12 @@ class Pm_Thread {
     protected $id = false;
     
     /**
-     * @var Pm_Conversation
+     * @var Pwg_Conversation
      */
     protected $conversation = false;
     
     /**
-     * @var Pm_Thread_Manager
+     * @var Pwg_Thread_Manager
      */
     protected $manager = null;
     
@@ -21,7 +21,7 @@ class Pm_Thread {
     
     protected $controllers = array();
     
-    function setManager(Pm_Thread_Manager $manager = null) {
+    function setManager(Pwg_Thread_Manager $manager = null) {
         if ($manager && $this->manager) throw new Exception("Can setManager() only once");
         $this->manager = $manager;
         $this->conversation = $this->manager->createConversationForThread($this);
@@ -29,20 +29,20 @@ class Pm_Thread {
     }
     
     /**
-     * @return Pm_Thread_Manager
+     * @return Pwg_Thread_Manager
      */
     function getManager() {
         return $this->manager;
     }
     
     /**
-     * @return Pm_Conversation
+     * @return Pwg_Conversation
      */
     function getConversation() {
         return $this->conversation;
     }
     
-    function registerController(Pm_I_Controller $controller) {
+    function registerController(Pwg_I_Controller $controller) {
         $controller->setThread($this);
         $this->controllers[] = $controller;
         if ($this->manager) $controller->setWebFront($this->manager);

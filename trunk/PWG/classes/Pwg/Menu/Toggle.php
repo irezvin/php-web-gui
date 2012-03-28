@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Menu_Toggle extends Pmt_Menu_Item {
+class Pwg_Menu_Toggle extends Pwg_Menu_Item {
 
     protected $checked = false;
 
@@ -32,7 +32,7 @@ class Pmt_Menu_Toggle extends Pmt_Menu_Item {
     }
     
     protected function doGetConstructorName() {
-        return 'Pmt_Menu_Item';
+        return 'Pwg_Menu_Item';
     }
     
 }
