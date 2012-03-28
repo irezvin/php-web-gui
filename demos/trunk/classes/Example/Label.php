@@ -1,6 +1,6 @@
 <?php
 
-class Example_Label extends Pmt_Controller_Aggregate {
+class Example_Label extends Pwg_Controller_Aggregate {
 
     /**
      * @var Pmt_Label

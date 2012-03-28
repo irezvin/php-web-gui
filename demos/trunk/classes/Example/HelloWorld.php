@@ -1,6 +1,6 @@
 <?php
 
-class Example_HelloWorld extends Pmt_Controller_Aggregate {
+class Example_HelloWorld extends Pwg_Controller_Aggregate {
 
     // {init}
 

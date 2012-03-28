@@ -1,6 +1,6 @@
 <?php
 
-class Pd_PaxDemos extends Pmt_Application {
+class Pd_PwgDemos extends Pwg_Application {
     
     protected $defaultControllerId = 'Pd_Index';
 
@@ -18,7 +18,7 @@ class Pd_PaxDemos extends Pmt_Application {
     }
     
     static function getInstance($id = null) {
-        return Ae_Application::getInstance('Pd_PaxDemos', $id);
+        return Ae_Application::getInstance('Pd_PwgDemos', $id);
     }
     
 }

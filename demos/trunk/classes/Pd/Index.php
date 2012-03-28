@@ -1,14 +1,14 @@
 <?php
 
 /**
- * PaxDemos examples index
+ * PwgDemos examples index
  */
 class Pd_Index extends Ae_Legacy_Controller {
 
     var $_templateClass = 'Pd_Index_Template';
     
     /**
-     * @var Pd_PaxDemos
+     * @var Pd_PwgDemos
      */
     var $application = false;
     
@@ -94,10 +94,10 @@ class Pd_Index extends Ae_Legacy_Controller {
             ob_start();
             $resp = $this->application->getWebFront()->getResponse();
             $buf = ob_get_clean();
-            if (strlen($buf) && !strlen($resp->content) && $resp->noHtml) {
-                $this->_response->content = $buf;
+            if ($resp->noHtml) {
+                $this->_response->content = $resp->content;
             } else {
-                $this->_tplData['exampleBody'] = $buf;
+                $this->_tplData['exampleBody'] = $resp->content;
                 if (($d = $this->getDescription($class))) {
                     $d->exampleBody = $resp->content;
                     $d->resetUrl = $this->application->getWebFront()->getResetUrl();
