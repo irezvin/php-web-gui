@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
+class Pwg_Web_Front extends Ae_Legacy_Controller implements Pwg_I_Web_Front {
     
     var $_defaultMethodName = 'default';
     
@@ -43,12 +43,12 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     var $id = 'paxApplication';
     
     /**
-     * @var Pmt_PaxMvc
+     * @var Pwg_PaxMvc
      */
     protected $application = null;
     
     /**
-     * @var Pmt_Legacy_App
+     * @var Pwg_Legacy_App
      */
     var $app = false;
     
@@ -73,7 +73,7 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     var $showTopAndBottomHtmlInBody = true;
 
     /**
-     * When dynamic control creation/destruction is beign used, check with Pmt_Guardian for presence of obsolete object signatures in the serialized data
+     * When dynamic control creation/destruction is beign used, check with Pwg_Guardian for presence of obsolete object signatures in the serialized data
      * (of course controls should report to the Guardian about their scheduled destruction)
      *
      * @var bool
@@ -83,7 +83,7 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     var $registerDebugHandlers = null;
     
     /**
-     * @var Pm_I_Conversation
+     * @var Pwg_I_Conversation
      */
     protected $conversation = false;
 
@@ -162,16 +162,16 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     
     function executeDefault() {
 
-        if (!Pm_Conversation::getCurrentApplication()) Pm_Conversation::setCurrentApplication($this->application);
+        if (!Pwg_Conversation::getCurrentApplication()) Pwg_Conversation::setCurrentApplication($this->application);
         
-        if ($this->topController) $this->registerController (Ae_Autoparams::factory($this->topController, 'Pmt_I_Controller'));
+        if ($this->topController) $this->registerController (Ae_Autoparams::factory($this->topController, 'Pwg_I_Controller'));
 
         
         if ($this->getUseComet()) {
             $this->conversationOptions = Ae_Util::m(array(
-                'class' => 'Pm_Conversation_Hybrid',
+                'class' => 'Pwg_Conversation_Hybrid',
                 'queuePrototype' => array(
-                    'class' => 'Pm_Queue_Mysql',
+                    'class' => 'Pwg_Queue_Mysql',
                     'db' => $this->application->getDb(),
                 ), 
             ), $this->conversationOptions);
@@ -182,7 +182,7 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
         
         $this->doBeforeExec();
         
-        if ($this->registerDebugHandlers) Pmt_Debug::registerHandlers();
+        if ($this->registerDebugHandlers) Pwg_Debug::registerHandlers();
         
         header('content-type: '.$this->contentType);
         
@@ -204,16 +204,16 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
             if (!$this->conversation->hasToProcessWebRequest() && $this->showHtml) {
                 if (isset($_COOKIE['PHPSESSID'])) {
                     $this->conversation->setSessionId($_COOKIE['PHPSESSID']);
-                    Pm_Conversation::log("session NotifyBeforeRender called");
+                    Pwg_Conversation::log("session NotifyBeforeRender called");
                     $this->conversation->notifyBeforeRender();
                 }
             }
             
             if (!isset($_SESSION)) session_start();
-            Pm_Conversation::log("----- #{$this->id} WebFront::exec() -----");
+            Pwg_Conversation::log("----- #{$this->id} WebFront::exec() -----");
             
             ini_set('log_errors', 1);
-            ini_set('error_log', Pm_Conversation::getLogFilename());
+            ini_set('error_log', Pwg_Conversation::getLogFilename());
             
             $vn = $this->getSessionStateVarName();
             $this->loaded = false;
@@ -241,7 +241,7 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
         	$this->conversation->notifyPageRender();
             $this->showHtml();
         }
-        Pm_Conversation::log("Saving session");
+        Pwg_Conversation::log("Saving session");
         $this->saveSessionData();
     }
     
@@ -262,7 +262,7 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
         return $js;
     }
     
-    function registerController(Pmt_I_Controller $controller) {
+    function registerController(Pwg_I_Controller $controller) {
         $this->controllers[] = $controller;
         $controller->setWebFront($this);
     }
@@ -337,7 +337,7 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     
     /**
      * @param $key
-     * @return Pm_Js_Initializer
+     * @return Pwg_Js_Initializer
      */
     protected function getInitializerOfController($key) {
         $res = false;
@@ -378,13 +378,13 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     }       
     
     /**
-     * @return Pm_I_Conversation
+     * @return Pwg_I_Conversation
      */
     protected function createConversation() {
         //var_dump($this->application->getAdapter()->getVarPath());
         
     	$options = Ae_Util::m(array(
-    		'class' => 'Pm_Conversation',
+    		'class' => 'Pwg_Conversation',
     		'tempDir' => $this->application->getAdapter()->getVarPath(),
     		'autoTrapErrors' => true,
     		'jsId' => $this->getConversationJsId(),
@@ -396,7 +396,7 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     		'sessionId' => isset($_REQUEST['sid'])? $_REQUEST['sid'] : session_id()
     	
     	), $this->conversationOptions);
-    	$conversation = Pmt_Autoparams::factory($options, 'Pm_Conversation_Abstract');
+    	$conversation = Pwg_Autoparams::factory($options, 'Pwg_Conversation_Abstract');
         return $conversation;
     }
     
@@ -450,7 +450,7 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
     }
     
     protected function load($data) {
-        if ($this->useGuardian) Pmt_Guardian::getInstance();
+        if ($this->useGuardian) Pwg_Guardian::getInstance();
         $res = false;
         $exception = false;
         try {
@@ -487,7 +487,7 @@ class Pmt_Web_Front extends Ae_Legacy_Controller implements Pm_I_Web_Front {
             $_SESSION[$this->getSessionStateVarName()] = $data;
         }
         if ($this->useGuardian) {
-            Pmt_Guardian::getInstance()->assertForSigns($data);
+            Pwg_Guardian::getInstance()->assertForSigns($data);
         }
     }
     

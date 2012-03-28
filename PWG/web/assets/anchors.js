@@ -1,14 +1,14 @@
-﻿Pmt_Anchors = {
+﻿Pwg_Anchors = {
     
     defaultStrategy: null
     
 };
 
-Pmt_Anchors.Observable = function() {
+Pwg_Anchors.Observable = function() {
     this.observers = {};
 };
 
-Pmt_Anchors.Observable.prototype = {
+Pwg_Anchors.Observable.prototype = {
 
     /** @type Array */
     observers: null,
@@ -77,23 +77,23 @@ Pmt_Anchors.Observable.prototype = {
     
 };
 
-Pmt_Anchors.Box = function(left, top, right, bottom) {
-    if (arguments.length == 1 && left instanceof Pmt_Anchors.Box) this.assign(left);
+Pwg_Anchors.Box = function(left, top, right, bottom) {
+    if (arguments.length == 1 && left instanceof Pwg_Anchors.Box) this.assign(left);
     else {
         this.left = left;
         this.top = top;
         this.right = right;
         this.bottom = bottom;
         
-        this.anchors = new Pmt_Anchors.Anchors();
+        this.anchors = new Pwg_Anchors.Anchors();
         
-        this.dimStrategy = Pmt_Anchors.defaultStrategy;
+        this.dimStrategy = Pwg_Anchors.defaultStrategy;
     }
 };
 
-Pmt_Anchors.Box.prototype = {
+Pwg_Anchors.Box.prototype = {
     
-    className: "Pmt_Anchors.Box",
+    className: "Pwg_Anchors.Box",
     
     left: null,
     top: null,
@@ -140,7 +140,7 @@ Pmt_Anchors.Box.prototype = {
     },
     
     substract: function(otherBox) {
-        return new Pmt_Anchors.Box(this.left - otherBox.left, this.top - otherBox.top, this.right - otherBox.right, this.bottom - otherBox.bottom);
+        return new Pwg_Anchors.Box(this.left - otherBox.left, this.top - otherBox.top, this.right - otherBox.right, this.bottom - otherBox.bottom);
     },
     
     assign: function(otherBox) {
@@ -152,7 +152,7 @@ Pmt_Anchors.Box.prototype = {
     },
     
     clone: function() {
-        return new Pmt_Anchors.Box(this);
+        return new Pwg_Anchors.Box(this);
     },
     
     adjust: function(dLeft, dTop, dRight, dBottom) {
@@ -197,15 +197,15 @@ Pmt_Anchors.Box.prototype = {
         this.setParentBox(null);
         this.setElement(null);
         
-        Pmt_Anchors.prototype.destroy.apply(this);
+        Pwg_Anchors.prototype.destroy.apply(this);
     }
     
 };
 
-Pmt_Util.extend(Pmt_Anchors.Box, Pmt_Anchors.Observable);
+Pwg_Util.extend(Pwg_Anchors.Box, Pwg_Anchors.Observable);
 
-Pmt_Anchors.Anchors = function(left, top, right, bottom) {
-    if (arguments.length == 1 && left instanceof Pmt_Anchors.Anchors) this.assign(left);
+Pwg_Anchors.Anchors = function(left, top, right, bottom) {
+    if (arguments.length == 1 && left instanceof Pwg_Anchors.Anchors) this.assign(left);
     else {
         this.left = left;
         this.top = top;
@@ -214,7 +214,7 @@ Pmt_Anchors.Anchors = function(left, top, right, bottom) {
     }
 };
 
-Pmt_Anchors.Anchors.prototype = {
+Pwg_Anchors.Anchors.prototype = {
     
     left: false,
     right: false,
@@ -229,7 +229,7 @@ Pmt_Anchors.Anchors.prototype = {
     },
     
     clone: function() {
-        return new Pmt_Anchors.Anchors(this);
+        return new Pwg_Anchors.Anchors(this);
     },
     
     adjustChild: function(childBox, adjustArgs) {
@@ -243,7 +243,7 @@ Pmt_Anchors.Anchors.prototype = {
     
 };
 
-Pmt_Anchors.DimStrategy = {
+Pwg_Anchors.DimStrategy = {
     
     getDimensions: function(element) {
         var region = YAHOO.util.Region.getRegion(element);
@@ -264,4 +264,4 @@ Pmt_Anchors.DimStrategy = {
     
 };
 
-Pmt_Anchors.defaultStrategy = Pmt_Anchors.DimStrategy;
+Pwg_Anchors.defaultStrategy = Pwg_Anchors.DimStrategy;

@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Data_Binder_LookupList extends Pmt_Data_Binder {
+class Pwg_Data_Binder_LookupList extends Pwg_Data_Binder {
     
     protected $listPropertyName = false;
     
@@ -132,8 +132,8 @@ class Pmt_Data_Binder_LookupList extends Pmt_Data_Binder {
     
     function getDummyValue() {$n = substr(__FUNCTION__, 3); $n{0} = strtolower($n{0}); return $this->$n;}
 
-    function handleControlChange(Pmt_I_Control $control, $eventType, $params = array()) {
-        if (($this->getActualDummyCaption() !== false) && $this->dataControl instanceof Pmt_List && !array_diff($this->dataControl->getSelectedOptionIndices(), array(0))) {
+    function handleControlChange(Pwg_I_Control $control, $eventType, $params = array()) {
+        if (($this->getActualDummyCaption() !== false) && $this->dataControl instanceof Pwg_List && !array_diff($this->dataControl->getSelectedOptionIndices(), array(0))) {
             $v = $this->getActualDummyValue();
             if ($this->currentRecord && $this->dataPropertyName) {
                 $uData = array();
@@ -142,7 +142,7 @@ class Pmt_Data_Binder_LookupList extends Pmt_Data_Binder {
         } else {
             if ($this->currentRecord && $this->dataPropertyName) {
                 $uData = array();
-                if ((($pVal = Pmt_Base::getProperty($control, $this->dataPropertyName, null)) !== null) || $this->allowNullValues) {
+                if ((($pVal = Pwg_Base::getProperty($control, $this->dataPropertyName, null)) !== null) || $this->allowNullValues) {
                     $uData[$this->recordPropertyName] = $pVal; 
                 }
             }
@@ -154,7 +154,7 @@ class Pmt_Data_Binder_LookupList extends Pmt_Data_Binder {
             }
         }
         $this->dataSource->updateCurrentRecord($uData);
-        $v = Pmt_Base::getProperty($this->dataControl, $this->dataPropertyName, 'default');
+        $v = Pwg_Base::getProperty($this->dataControl, $this->dataPropertyName, 'default');
     }
     
     /**
@@ -172,7 +172,7 @@ class Pmt_Data_Binder_LookupList extends Pmt_Data_Binder {
             }
             else $this->valuesProvider = null;
             if ($this->debug && $this->valuesProvider) 
-                Pm_Conversation::log("!!!! ".$this->getResponderId().'\' valuesProvider\' where is '.$this->valuesProvider->where);
+                Pwg_Conversation::log("!!!! ".$this->getResponderId().'\' valuesProvider\' where is '.$this->valuesProvider->where);
         }
         return $this->valuesProvider;
     }
@@ -189,7 +189,7 @@ class Pmt_Data_Binder_LookupList extends Pmt_Data_Binder {
 //      }
     }
     
-    function handleDataSourceCurrentRecord(Pmt_Data_Source $source, $eventType, $params = array()) {
+    function handleDataSourceCurrentRecord(Pwg_Data_Source $source, $eventType, $params = array()) {
         parent::handleDataSourceCurrentRecord($source, $eventType, $params);
         if (!$this->dynamicPropInfo && ($this->valueList === false) && ($this->valuesGetter !== false) && ($this->currentRecord)) {
             $this->refreshValueList();
@@ -198,20 +198,20 @@ class Pmt_Data_Binder_LookupList extends Pmt_Data_Binder {
     
     protected function refreshValueList() {
         if ($this->dataControl && $this->listPropertyName) {
-            if ($this->debug) Pm_Conversation::log($this->id, "Refreshing value list");
+            if ($this->debug) Pwg_Conversation::log($this->id, "Refreshing value list");
             $items = array();
             if ($this->getActualDummyCaption() !== false) $items[$this->getActualDummyValue()] = $this->getActualDummyCaption();
             $av = $this->getActualValues();
             if (!is_array($av)) $av = array();
             $items = Ae_Util::m($items, $av, true);
-            Pmt_Base::setProperty($this->dataControl, $this->listPropertyName, $items);
-            if ($this->disableIfNoValues) Pmt_Base::setProperty($this->dataControl, 'disabled', !count($av)); 
+            Pwg_Base::setProperty($this->dataControl, $this->listPropertyName, $items);
+            if ($this->disableIfNoValues) Pwg_Base::setProperty($this->dataControl, 'disabled', !count($av)); 
         }
         
     }
     
     protected function refreshDataControlFromPropInfo() {
-        if ($this->debug) Pm_Conversation::log("!!!! --- refreshing data control from prop info ---");
+        if ($this->debug) Pwg_Conversation::log("!!!! --- refreshing data control from prop info ---");
         if ($this->dynamicPropInfo) $this->valuesProvider = false;
         $this->refreshValueList();
         parent::refreshDataControlFromPropInfo();

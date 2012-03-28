@@ -1,11 +1,11 @@
-Pmt_Yui_Rte = function (options) {
+Pwg_Yui_Rte = function (options) {
     this.createSetters();
     this.initialize(options);
 
 }
 
-Pmt_Yui_Rte.prototype = {
-    jsClassName: "Pmt_Yui_Rte",
+Pwg_Yui_Rte.prototype = {
+    jsClassName: "Pwg_Yui_Rte",
     attribs: {},
     style: {},
     className: false,
@@ -48,7 +48,7 @@ Pmt_Yui_Rte.prototype = {
 
     createSetters: function() {
         for (var i = 0; i < this.setters.length; i++) {
-            var setterName = 'set' + Pmt_Util.ucFirst(this.setters[i]);
+            var setterName = 'set' + Pwg_Util.ucFirst(this.setters[i]);
             if (this[setterName] === undefined) {
                 this[setterName] = function(propName) {
                     return function(value) {
@@ -265,7 +265,7 @@ Pmt_Yui_Rte.prototype = {
             this.yuiRte.toolbar.on('toolbarExpanded', this.handleToolbarCollapseChange, false, this);
         }, null, this);
 
-        this.changeCall = new Pmt_Util.DelayedCall(this.delayedCheckForChange, null, this, [], this.getDefault('typeDelay', 300), false);
+        this.changeCall = new Pwg_Util.DelayedCall(this.delayedCheckForChange, null, this, [], this.getDefault('typeDelay', 300), false);
 
         this.yuiRte.on('editorContentLoaded', function() {
             for (var i = 0; i < this.possibleChangeEvents.length; i++) {
@@ -324,4 +324,4 @@ Pmt_Yui_Rte.prototype = {
     }
 }
 
-Pmt_Util.extend(Pmt_Yui_Rte, Pmt_Element);
+Pwg_Util.extend(Pwg_Yui_Rte, Pwg_Element);

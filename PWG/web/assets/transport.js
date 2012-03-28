@@ -1,4 +1,4 @@
-window.Pm_Transport = function(serverUrl, threadId) {
+window.Pwg_Transport = function(serverUrl, threadId) {
 
     if (window.YAHOO && window.YAHOO.util && window.YAHOO.util.Element)
     window.YAHOO.util.Element.prototype.DEFAULT_HTML_SETTER = function(value, key) {
@@ -15,7 +15,7 @@ window.Pm_Transport = function(serverUrl, threadId) {
 	
 	if (threadId === undefined && serverUrl && ((typeof serverUrl) == 'object')) {
 		console.log(serverUrl);
-		Pmt_Util.override(this, serverUrl);
+		Pwg_Util.override(this, serverUrl);
 		console.log(this.serverUrl);
 	} else {
     
@@ -27,11 +27,11 @@ window.Pm_Transport = function(serverUrl, threadId) {
 
 }
 
-window.Pm_Transport_Impl = function(options) {
-	if (options && ((typeof options) == 'object')) Pmt_Util.override(this, options);
+window.Pwg_Transport_Impl = function(options) {
+	if (options && ((typeof options) == 'object')) Pwg_Util.override(this, options);
 }
 
-window.Pm_Transport_Impl.prototype = {
+window.Pwg_Transport_Impl.prototype = {
 		
 	transport: null,
 	
@@ -76,11 +76,11 @@ window.Pm_Transport_Impl.prototype = {
 		
 }
 
-window.Pm_Transport_Impl_Ajax = function(options) {
-	window.Pm_Transport_Impl.call(this, options);
+window.Pwg_Transport_Impl_Ajax = function(options) {
+	window.Pwg_Transport_Impl.call(this, options);
 }
 
-window.Pm_Transport_Impl_Ajax.prototype = {
+window.Pwg_Transport_Impl_Ajax.prototype = {
 	    
 	axRequest: null,
     messageVarName: 'messages',
@@ -176,14 +176,14 @@ window.Pm_Transport_Impl_Ajax.prototype = {
     
 }
 
-	Pmt_Util.extend (window.Pm_Transport_Impl_Ajax, window.Pm_Transport_Impl);
+	Pwg_Util.extend (window.Pwg_Transport_Impl_Ajax, window.Pwg_Transport_Impl);
 
-window.Pm_Transport_Impl_Hybrid = function(options) {
-	window.Pm_Transport_Impl.call(this, options);
+window.Pwg_Transport_Impl_Hybrid = function(options) {
+	window.Pwg_Transport_Impl.call(this, options);
 	this.sendQueue = [];
 }
 
-window.Pm_Transport_Impl_Hybrid.prototype = {
+window.Pwg_Transport_Impl_Hybrid.prototype = {
 	
 	comet: null,
 	lastMsgId: 0,
@@ -226,7 +226,7 @@ window.Pm_Transport_Impl_Hybrid.prototype = {
 			if (cmtUrl.indexOf('?') < 0) cmtUrl += '?';
 				else cmtUrl += '&';
 			cmtUrl += this.cometParamSuffix;
-			this.comet = new Pmt_Comet(cmtUrl, this.handleCometData, this.handleCometDisconnect, undefined, this);
+			this.comet = new Pwg_Comet(cmtUrl, this.handleCometData, this.handleCometDisconnect, undefined, this);
 			this.comet.connect();
 		}
 	},
@@ -291,9 +291,9 @@ window.Pm_Transport_Impl_Hybrid.prototype = {
     
 }
 
-Pmt_Util.extend (window.Pm_Transport_Impl_Hybrid, window.Pm_Transport_Impl);
+Pwg_Util.extend (window.Pwg_Transport_Impl_Hybrid, window.Pwg_Transport_Impl);
 
-window.Pm_Transport.prototype = {
+window.Pwg_Transport.prototype = {
 
 	impl: null,
 		
@@ -325,7 +325,7 @@ window.Pm_Transport.prototype = {
     queueSeparator: {queueSeparator: true},
 
     initialize: function() {
-    	if (!this.impl) this.impl = new Pm_Transport_Impl_Ajax({transport: this});
+    	if (!this.impl) this.impl = new Pwg_Transport_Impl_Ajax({transport: this});
     	this.impl.transport = this;
         if (this.timerInterval) {
             this.intervalHandle = window.setInterval(this.checkAndPoll.bind(this), this.timerInterval);
@@ -392,7 +392,7 @@ window.Pm_Transport.prototype = {
                     this.processInboundMessage(msg);
                     this.inbox.splice(0, 1);
                 } catch (e) {
-                    if (e === window.Pm_Transport.pauseException) {
+                    if (e === window.Pwg_Transport.pauseException) {
                         // do nothing
                         //console.log("Inbound queue paused");
                         paused = true;
@@ -448,7 +448,7 @@ window.Pm_Transport.prototype = {
         // Capability of transport to accept other threads' messages
         if (msg.threadId) {
             var threadTransport = this.getThreadTransport(msg.threadId);
-            if (! threadTransport instanceof Pm_Transport) throw new Exception("Can't find transport of thread #" + msg.threadId);
+            if (! threadTransport instanceof Pwg_Transport) throw new Exception("Can't find transport of thread #" + msg.threadId);
             if (threadTransport !== this) return threadTransport.processInboundMessage(msg);
         }
         
@@ -570,7 +570,7 @@ window.Pm_Transport.prototype = {
         }
         this.observersByRecipient['rcpt-'+recipientId][l] = {'observerIndex': observerIndex, 'listenerFunction': listenerFunction, 'listenerObject': listenerObject};
         //console.log("Observing", recipientId, listenerObject);
-        Pm_Debug.d('lifecycle', 'Observing', recipientId, listenerObject.jsClassName? ' [' + listenerObject.jsClassName + ']' : '');
+        Pwg_Debug.d('lifecycle', 'Observing', recipientId, listenerObject.jsClassName? ' [' + listenerObject.jsClassName + ']' : '');
         return observerIndex;
     },
     
@@ -583,16 +583,16 @@ window.Pm_Transport.prototype = {
                         delete (this.observers[this.observersByRecipient['rcpt-'+rcptId][i]]);
                 }
             }
-            Pm_Debug.d('lifecycle', 'Unobserving', observerIndex);
+            Pwg_Debug.d('lifecycle', 'Unobserving', observerIndex);
             delete(this.observers[observerIndex]);
         } else {
-            Pm_Debug.d('lifecycle', 'WARN: this.observers[' + observerIndex + '] not found!');
+            Pwg_Debug.d('lifecycle', 'WARN: this.observers[' + observerIndex + '] not found!');
         }
     },
     
     unobserveRecipient: function (recipientId) {
         if (this.observersByRecipient['rcpt-'+recipientId]) {
-            Pm_Debug.d('lifecycle', 'Unobserving recipient', recipientId);
+            Pwg_Debug.d('lifecycle', 'Unobserving recipient', recipientId);
             for (var i = 0; i < this.observersByRecipient['rcpt-'+recipientId].length; i++) {
                 this.observers.splice(this.observersByRecipient['rcpt-'+recipientId][i].observerIndex, 1);
                 //delete(this.observers[this.observersByRecipient['rcpt-'+recipientId][i].observerIndex]);
@@ -604,13 +604,13 @@ window.Pm_Transport.prototype = {
     // 'Threads' support: other threads' transport should reside in the window memebers with the same name as the corresponding thread id.
     getThreadTransport: function(threadId) {
         var res = null;
-        if (window[threadId] instanceof Pm_Transport) res = window[threadId];
+        if (window[threadId] instanceof Pwg_Transport) res = window[threadId];
         return res;
     },
     
     pause: function() {
     	this.showPauseCursor();
-        throw window.Pm_Transport.pauseException; 
+        throw window.Pwg_Transport.pauseException; 
     },
     
     resume: function() {
@@ -624,4 +624,4 @@ window.Pm_Transport.prototype = {
     
 }
 
-window.Pm_Transport.pauseException = {pauseException: true}
+window.Pwg_Transport.pauseException = {pauseException: true}

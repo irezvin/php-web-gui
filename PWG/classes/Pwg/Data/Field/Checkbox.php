@@ -1,9 +1,9 @@
 <?php
 
-class Pmt_Data_Field_Checkbox extends Pmt_Data_Field {
+class Pwg_Data_Field_Checkbox extends Pwg_Data_Field {
     
     /**
-     * @var Pmt_Checkbox
+     * @var Pwg_Checkbox
      */
     public $editor = false;
 
@@ -11,7 +11,7 @@ class Pmt_Data_Field_Checkbox extends Pmt_Data_Field {
         parent::doOnGetControlPrototypes($prototypes);
         $p = array(
             'editor' => array(
-                'class' => 'Pmt_Checkbox',
+                'class' => 'Pwg_Checkbox',
         		'labelControlPath' => '../label', 
             ),
             'binder' => array(

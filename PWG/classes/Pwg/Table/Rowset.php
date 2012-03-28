@@ -1,13 +1,13 @@
 <?php
 
-class Pmt_Table_Recset extends Pmt_Composite_Display {
+class Pwg_Table_Recset extends Pwg_Composite_Display {
 
-    protected $allowedDisplayChildrenClass = 'Pmt_Table_Rec';
+    protected $allowedDisplayChildrenClass = 'Pwg_Table_Rec';
     
-    protected $allowedChildrenClass = 'Pmt_Table_Rec';
+    protected $allowedChildrenClass = 'Pwg_Table_Rec';
     
     /**
-     * @return Pmt_Table
+     * @return Pwg_Table
      */
     function getTable() {
         return $this->parent;
@@ -23,7 +23,7 @@ class Pmt_Table_Recset extends Pmt_Composite_Display {
     
     /**
      * @param string $id
-     * @return Pmt_Table_Rec
+     * @return Pwg_Table_Rec
      */
     function getControl($id) {
         return parent::getControl($id);
@@ -32,25 +32,25 @@ class Pmt_Table_Recset extends Pmt_Composite_Display {
     /**
      * Adds new row that displays provided record
      *
-     * @param Pmt_I_Record|null $record If null is given, $this->getTable()->createRecord() will be used to create blank record
+     * @param Pwg_I_Record|null $record If null is given, $this->getTable()->createRecord() will be used to create blank record
      * @param int|false $displayOrder
-     * @param array $rowOptions Extra options of Pmt_Table_Rec object
+     * @param array $rowOptions Extra options of Pwg_Table_Rec object
      */
-    function addRecordRow(Pmt_I_Record $record = null, $displayOrder = false, array $rowOptions = array()) {
+    function addRecordRow(Pwg_I_Record $record = null, $displayOrder = false, array $rowOptions = array()) {
         if ($record  === null) $record = $this->getTable()->createRecord();
         $rowOptions = array('record' => $record);
-        $res = $this->addControl(Pmt_Base::factory($rowOptions, 'Pmt_Table_Rec'));
+        $res = $this->addControl(Pwg_Base::factory($rowOptions, 'Pwg_Table_Rec'));
         if ($displayOrder !== false) $res->setDisplayOrder($displayOrder);
-        Pm_Conversation::log("Record added to the rowset:", $record->getData());
+        Pwg_Conversation::log("Record added to the rowset:", $record->getData());
         return $res;
     }
     
     /**
      * Finds rows that display given record
-     * @param Pmt_I_Record $record
-     * @return array Pmt_Table_Rec instances
+     * @param Pwg_I_Record $record
+     * @return array Pwg_Table_Rec instances
      */
-    function locateRowsByRecord(Pmt_I_Record $record) {
+    function locateRowsByRecord(Pwg_I_Record $record) {
         $res = array();
         foreach ($this->listControls() as $i) {
             $row = $this->getControl($i);
@@ -60,10 +60,10 @@ class Pmt_Table_Recset extends Pmt_Composite_Display {
     }
     
     /**
-     * @param Pmt_I_Record $record
-     * @return Pmt_Table_Rec
+     * @param Pwg_I_Record $record
+     * @return Pwg_Table_Rec
      */
-    function locateRowByRecord(Pmt_I_Record $record) {
+    function locateRowByRecord(Pwg_I_Record $record) {
         $rows = $this->locateRowsByRecord($record);
         if (count($rows)) $res = $rows[0];
             else $res = false;

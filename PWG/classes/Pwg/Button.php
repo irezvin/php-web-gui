@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Button extends Pmt_Element {
+class Pwg_Button extends Pwg_Element {
 
     const btImage = 'image';
     const btButton = 'button';
@@ -66,14 +66,14 @@ class Pmt_Button extends Pmt_Element {
     }
 
     static function setClassMap(array $cm) {
-        Pmt_Base::$classMap = $cm;
+        Pwg_Base::$classMap = $cm;
     }
     
     static function getClassMap() {
-        return Pmt_Base::classMap;
+        return Pwg_Base::classMap;
     }
     
-//  Template methods of Pmt_Base
+//  Template methods of Pwg_Base
 
     protected function doListPassthroughParams() {
         return array_merge(parent::doListPassthroughParams(), array(

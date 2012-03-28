@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Backup extends Pmt_Autoparams {
+class Pwg_Backup extends Pwg_Autoparams {
     
     protected $dir = false;
     
@@ -78,7 +78,7 @@ class Pmt_Backup extends Pmt_Autoparams {
     }
     
     function getHasMySql() {
-        return ($this->hasMySql()? new Pmt_Lang_String('yes') : '');    
+        return ($this->hasMySql()? new Pwg_Lang_String('yes') : '');    
     }
     
     function getSize() {

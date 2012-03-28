@@ -1,11 +1,11 @@
 <?php
 
-class Pm_Thread_Manager implements Pm_I_Responder, Pm_I_Web_Front {
+class Pwg_Thread_Manager implements Pwg_I_Responder, Pwg_I_Web_Front {
     
     protected $id = null;
     
     /**
-     * @var Pm_I_Thread_Storage
+     * @var Pwg_I_Thread_Storage
      */
     protected $storage = null;
     
@@ -16,18 +16,18 @@ class Pm_Thread_Manager implements Pm_I_Responder, Pm_I_Web_Front {
     protected $currentThreads = array();
     
     /**
-     * @var Pm_I_Web_Front
+     * @var Pwg_I_Web_Front
      */
     protected $webFront = null;
     
     /**
-     * @var Pm_I_Conversation
+     * @var Pwg_I_Conversation
      */
     protected $conversation = null;
     
     protected $threadIds = false;
 
-    function Pm_Thread_Manager(Pm_I_Thread_Storage $storage) {
+    function Pwg_Thread_Manager(Pwg_I_Thread_Storage $storage) {
         $this->setStorage($storage);
     }
     
@@ -39,13 +39,13 @@ class Pm_Thread_Manager implements Pm_I_Responder, Pm_I_Web_Front {
         return array_keys($currentThreads);
     }
     
-    function setWebFront(Pm_I_Web_Front $front = null) {
+    function setWebFront(Pwg_I_Web_Front $front = null) {
         if ($front === $this) throw new Exception("Cannot use \$this as WebFront");
         $this->webFront = $front;
     }
 
     /**
-     * @return Pm_I_Web_Front
+     * @return Pwg_I_Web_Front
      */
     function getWebFront() {
         return $this->webFront;
@@ -65,7 +65,7 @@ class Pm_Thread_Manager implements Pm_I_Responder, Pm_I_Web_Front {
     
     /**
      * @param $id
-     * @return Pm_Thread
+     * @return Pwg_Thread
      */
     function getThread($id) {
         if (isset($this->currentThreads[$id])) $res = $this->currentThreads[$id];
@@ -73,7 +73,7 @@ class Pm_Thread_Manager implements Pm_I_Responder, Pm_I_Web_Front {
             $threadData = $this->storage->loadData($this->getId(), $id);
             if (!strlen($threadData)) throw new Exception("No such thread: $id");
             $res = unserialize($threadData);
-            if (!$res instanceof Pm_Thread) throw new Exception("Data of thread # $id is corrupted");
+            if (!$res instanceof Pwg_Thread) throw new Exception("Data of thread # $id is corrupted");
             if (($tId = $res->getId()) !== $id) throw new Exception("ID of requested thread (# {$id}) does not match with ID loaded thread (# {$tId})");
             $this->currentThreads[$tId] = $res;
         }
@@ -86,7 +86,7 @@ class Pm_Thread_Manager implements Pm_I_Responder, Pm_I_Web_Front {
         }
     }
     
-    function addThread(Pm_Thread $thread) {
+    function addThread(Pwg_Thread $thread) {
         if (in_array($tId = $thread->getId(), $this->listAllThreads())) throw new Exception("Thread with # $tId is already registered");
         $thread->setManager($this);
         $this->currentThreads[$tId] = $thread;
@@ -96,14 +96,14 @@ class Pm_Thread_Manager implements Pm_I_Responder, Pm_I_Web_Front {
         return $this->getId();
     }
     
-    function setConversation(Pm_I_Conversation $conversation) {
+    function setConversation(Pwg_I_Conversation $conversation) {
         $this->conversation = $conversation;
     }
     
     function startQueue() {
     }
     
-    function acceptMessage(Pm_Message $message) {
+    function acceptMessage(Pwg_Message $message) {
         
     }
     
@@ -115,12 +115,12 @@ class Pm_Thread_Manager implements Pm_I_Responder, Pm_I_Web_Front {
         return false;
     }
 
-    protected function setStorage(Pm_I_Thread_Storage $storage) {
+    protected function setStorage(Pwg_I_Thread_Storage $storage) {
         $this->storage = $storage;
     }
 
     /**
-     * @return Pm_I_Thread_Storage
+     * @return Pwg_I_Thread_Storage
      */
     function getStorage() {
         return $this->storage;
@@ -145,11 +145,11 @@ class Pm_Thread_Manager implements Pm_I_Responder, Pm_I_Web_Front {
     }
     
     /**
-     * @param Pm_Thread $thread
-     * @return Pm_Conversation
+     * @param Pwg_Thread $thread
+     * @return Pwg_Conversation
      */
-    function createConversationForThread(Pm_Thread $thread) {
-        $conv = new Pm_Conversation();
+    function createConversationForThread(Pwg_Thread $thread) {
+        $conv = new Pwg_Conversation();
         $conv->setTempDir(PAX_TMP_PATH);
         $conv->setAutoTrapErrors(true);
         $conv->setJsId($thread->getId());

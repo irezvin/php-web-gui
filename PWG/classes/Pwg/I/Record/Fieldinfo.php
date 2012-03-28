@@ -1,6 +1,6 @@
 <?php
 
-interface Pmt_I_Record_Fieldinfo {
+interface Pwg_I_Record_Fieldinfo {
     
     function getName();
     

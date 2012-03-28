@@ -1,4 +1,4 @@
-Pmt_Yui_Util = {
+Pwg_Yui_Util = {
 		
 		getMaxZIndexByParent: function(el, zIndex) {
 			if (!zIndex) zIndex = 0;
@@ -13,7 +13,7 @@ Pmt_Yui_Util = {
 		},
 
 		getMaxZIndexOfOverlayManager: function(overlayManager) {
-			if (!overlayManager && window.Pmt_Yui_Panel) overlayManager = window.Pmt_Yui_Panel.getOverlayManager();
+			if (!overlayManager && window.Pwg_Yui_Panel) overlayManager = window.Pwg_Yui_Panel.getOverlayManager();
 			var zIndex = 0, elZIndex;
 			if (overlayManager) {
 				for (var i = 0; i < overlayManager.overlays.length; i++) {
@@ -29,9 +29,9 @@ Pmt_Yui_Util = {
 		fixMenuDisplay: function(menu) {
 			menu.showEvent.subscribe(function() { 
 					if (this.cfg.getProperty('position') === 'dynamic') {
-						var zIndex = Pmt_Yui_Util.getMaxZIndexOfOverlayManager(), mn = this;
+						var zIndex = Pwg_Yui_Util.getMaxZIndexOfOverlayManager(), mn = this;
 						while (mn && mn.element) {
-							zIndex = Pmt_Yui_Util.getMaxZIndexByParent(mn.element, zIndex);
+							zIndex = Pwg_Yui_Util.getMaxZIndexByParent(mn.element, zIndex);
 							if (mn.parent) mn = mn.parent; else mn = null;
 						}
 						this.element.style.zIndex = zIndex + 1;

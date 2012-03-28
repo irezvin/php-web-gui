@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Tree_Node_Toggle extends Pmt_Tree_Node {
+class Pwg_Tree_Node_Toggle extends Pwg_Tree_Node {
     
     protected $checked = false;
     
@@ -80,7 +80,7 @@ class Pmt_Tree_Node_Toggle extends Pmt_Tree_Node {
             $this->checked = $value;
             $this->triggerEvent('checkedChange', array('value' => $value));
             $p = $this->parent;
-            while ($p instanceof Pmt_Tree_Parent) {
+            while ($p instanceof Pwg_Tree_Parent) {
                 if ($p->observeChildCheckedChange) {
                     $p->notifyChildCheckedChange($this);
                 }
@@ -96,7 +96,7 @@ class Pmt_Tree_Node_Toggle extends Pmt_Tree_Node {
             $this->triggerEvent('checkedChange', array('value' => $value));
             $this->triggerEvent('branchToggle', array('value' => $value));
             $p = $this->parent;
-            while ($p instanceof Pmt_Tree_Parent) {
+            while ($p instanceof Pwg_Tree_Parent) {
                 if ($p->observeChildCheckedChange) {
                     $p->notifyChildCheckedChange($this);
                 }

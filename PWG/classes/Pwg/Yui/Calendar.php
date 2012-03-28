@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Yui_Calendar extends Pmt_Base implements Pmt_I_Calendar {
+class Pwg_Yui_Calendar extends Pwg_Base implements Pwg_I_Calendar {
 	
 	protected $selectedValue = false;
 	
@@ -108,7 +108,7 @@ class Pmt_Yui_Calendar extends Pmt_Base implements Pmt_I_Calendar {
     			if (($v !== false) && !(is_array($v) && !count($v))) $res[$k] = $v;
     		} 
     	} else {
-    	    Pm_Conversation::log("Selected dates: ", $dateOrDates);
+    	    Pwg_Conversation::log("Selected dates: ", $dateOrDates);
     		if (is_null($dateOrDates) || ($dateOrDates === false)) $res = $dateOrDates;
     		elseif ($this->isZeroDate($dateOrDates)) {
     		    $res = ($format === $this->phpDateFormat)? $this->zeroDate : '';
@@ -168,9 +168,9 @@ class Pmt_Yui_Calendar extends Pmt_Base implements Pmt_I_Calendar {
     	$this->setSelectedValue($selectedValue);
     	$this->unlockMessages();
     	$newSelectedValue = $this->getSelectedValue();
-        //Pm_Conversation::log("{$this} changed event ", $oldSelectedValue, $newSelectedValue);
+        //Pwg_Conversation::log("{$this} changed event ", $oldSelectedValue, $newSelectedValue);
     	if ($newSelectedValue != $oldSelectedValue) {
-    	    //Pm_Conversation::log("{$this} triggering event ", $newSelectedValue);
+    	    //Pwg_Conversation::log("{$this} triggering event ", $newSelectedValue);
     	    $this->triggerEvent(self::evtSelectedValueChange, array('selectedValue' => $newSelectedValue));
     	}
     	
@@ -246,21 +246,21 @@ class Pmt_Yui_Calendar extends Pmt_Base implements Pmt_I_Calendar {
     }
     
     function jsGetPageDate() {
-    	//Pm_Conversation::log("PageDate to set" , $this->pageDate, Ae_Util::date($this->pageDate, 'Y-m-d'), Ae_Util::date($this->pageDate, 'n/Y'));
+    	//Pwg_Conversation::log("PageDate to set" , $this->pageDate, Ae_Util::date($this->pageDate, 'Y-m-d'), Ae_Util::date($this->pageDate, 'n/Y'));
     	if (!strlen($this->pageDate)) {
     	    if (!$this->multiple && strlen($this->selectedValue) && !$this->isZeroDate($this->selectedValue)) $res = Ae_Util::date($this->selectedValue, 'n/Y'); 
     	        else $res = date('n/Y'); 
     	} else {
     	    $res = Ae_Util::date($this->pageDate, 'n/Y');
     	}
-    	//Pm_Conversation::log("jsPageDate is ", $res);
+    	//Pwg_Conversation::log("jsPageDate is ", $res);
     	return $res;
     }
     
     function triggerFrontendPageDate($pageDate) {
     	if (preg_match("#([0-9]{1,2})/([0-9]{1,4})#", $pageDate, $matches)) {
     		$this->pageDate = Ae_Util::date("{$matches[2]}-{$matches[1]}-01", $this->phpDateFormat);
-    		Pm_Conversation::log($pageDate, $this->pageDate);
+    		Pwg_Conversation::log($pageDate, $this->pageDate);
     		$this->triggerEvent(self::evtPageDateChange, array('pageDate' => $this->pageDate));
     	}
     }
@@ -342,18 +342,18 @@ class Pmt_Yui_Calendar extends Pmt_Base implements Pmt_I_Calendar {
 	function jsGetLocalizationData() {
 	    if ($this->isLocalized) {
 	        $defaults = array(
-	            'MONTHS_SHORT' => explode("|", new Pmt_Lang_String('locale_months_short', 
+	            'MONTHS_SHORT' => explode("|", new Pwg_Lang_String('locale_months_short', 
 	            	"Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec")),
-	        	'MONTHS_LONG' => explode("|", new Pmt_Lang_String('locale_months_long', 
+	        	'MONTHS_LONG' => explode("|", new Pwg_Lang_String('locale_months_long', 
 	            	implode("|", array("January", "February", "March", "April", "May", "June", 
 	            	"July", "August", "September", "October", "November", "December")))),
-	            'WEEKDAYS_1CHAR' => explode("|", new Pmt_Lang_String('locale_weekdays_1char', 
+	            'WEEKDAYS_1CHAR' => explode("|", new Pwg_Lang_String('locale_weekdays_1char', 
 	            	implode("|", array("S", "M", "T", "W", "T", "F", "S")))),
-	            'WEEKDAYS_SHORT' => explode("|", new Pmt_Lang_String('locale_weekdays_short', 
+	            'WEEKDAYS_SHORT' => explode("|", new Pwg_Lang_String('locale_weekdays_short', 
 	            	implode("|", array("Su", "Mo", "Tu", "We", "Th", "Fr", "Sa")))),
-	            'WEEKDAYS_LONG' => explode("|", new Pmt_Lang_String('locale_weekdays_long', 
+	            'WEEKDAYS_LONG' => explode("|", new Pwg_Lang_String('locale_weekdays_long', 
 	            	implode("|", array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")))),
-	            'START_WEEKDAY' => (int) (string) new Pmt_Lang_String('locale_start_weekday', '0'),
+	            'START_WEEKDAY' => (int) (string) new Pwg_Lang_String('locale_start_weekday', '0'),
 	        );
 	        if (is_array($this->isLocalized)) $res = array_merge($defaults, $this->isLocalized);
 	            else $res = $defaults;

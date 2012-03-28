@@ -1,6 +1,6 @@
 <?php
 
-interface Pm_I_Thread_Storage {
+interface Pwg_I_Thread_Storage {
     
     function listThreads($managerId);
     

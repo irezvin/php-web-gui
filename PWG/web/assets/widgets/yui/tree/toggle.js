@@ -291,12 +291,12 @@ YAHOO.extend(YAHOO.widget.ToggleNode, YAHOO.widget.TextNode, {
     }
 });
 
-Pmt_Tree_Node_Toggle = function(options) {
-    Pmt_Tree_Node.call(this, options);
+Pwg_Tree_Node_Toggle = function(options) {
+    Pwg_Tree_Node.call(this, options);
 }
 
-Pmt_Tree_Node_Toggle.prototype = {
-    jsClassName: "Pmt_Tree_Node_Toggle",
+Pwg_Tree_Node_Toggle.prototype = {
+    jsClassName: "Pwg_Tree_Node_Toggle",
     disabled: false,
     recursiveCheck: false,
     recursiveToggleOnDblClick: false,
@@ -307,7 +307,7 @@ Pmt_Tree_Node_Toggle.prototype = {
     },
 
     getTreeNodeConfig: function() {
-        var res = Pmt_Tree_Node.prototype.getTreeNodeConfig.call(this);
+        var res = Pwg_Tree_Node.prototype.getTreeNodeConfig.call(this);
         res.disabled = this.disabled;
         res.recursiveCheck = this.recursiveCheck;
         res.recursiveToggleOnDblClick = this.recursiveToggleOnDblClick;
@@ -316,7 +316,7 @@ Pmt_Tree_Node_Toggle.prototype = {
     },
 
     createTreeNode: function(c) {
-        var res = Pmt_Tree_Node.prototype.createTreeNode.call(this, c);
+        var res = Pwg_Tree_Node.prototype.createTreeNode.call(this, c);
         res.onCheckedChange = function(a) {
             return function(node) { a.onNodeCheckedChange(node); };
         } (this);
@@ -363,4 +363,4 @@ Pmt_Tree_Node_Toggle.prototype = {
 
 }
 
-Pmt_Util.extend(Pmt_Tree_Node_Toggle, Pmt_Tree_Node);
+Pwg_Util.extend(Pwg_Tree_Node_Toggle, Pwg_Tree_Node);

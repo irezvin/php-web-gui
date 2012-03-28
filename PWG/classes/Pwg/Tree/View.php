@@ -1,23 +1,23 @@
 <?php
 
-class Pmt_Tree_View extends Pmt_Tree_Parent {
+class Pwg_Tree_View extends Pwg_Tree_Parent {
 
 	protected $insetPanel = false;
 	
 	/**
-	 * @var Pmt_Tree_Node
+	 * @var Pwg_Tree_Node
 	 */	
 	protected $insetPanelNode = false;
 	
 //    protected function getControlPrototypes() {
 //        $res = $this->controlPrototypes;
-//        if (isset($res['insetPanel']) && !isset($res['insetPanel']['class'])) $res['insetPanel']['class'] = 'Pmt_Yui_Panel';
+//        if (isset($res['insetPanel']) && !isset($res['insetPanel']['class'])) $res['insetPanel']['class'] = 'Pwg_Yui_Panel';
 //        return $res;
 //    }
     
     function createControl(array $prototype, $id = false, $baseClass = false) {
     	if ($id === 'insetPanel') {
-    		$baseClass = 'Pmt_Panel';
+    		$baseClass = 'Pwg_Panel';
 			if (!$this->idp) $this->createDisplayParentImpl();
 			$this->idp->ignoreNextControlClass();
 			$this->ignoreNextControlClass();
@@ -33,7 +33,7 @@ class Pmt_Tree_View extends Pmt_Tree_Parent {
 	
 	function getInsetPanel() {
 		if (!$this->insetPanel) {
-			if ($this->controlsCreated) $this->insetPanel = $this->createControl(array(), 'insetPanel', 'Pmt_Panel');
+			if ($this->controlsCreated) $this->insetPanel = $this->createControl(array(), 'insetPanel', 'Pwg_Panel');
 		}
 		return $this->insetPanel;
 	}
@@ -63,10 +63,10 @@ class Pmt_Tree_View extends Pmt_Tree_Parent {
         return $res;  
     }
     
-    function notifyNodeDestroyed(Pmt_Tree_Node $node) {
+    function notifyNodeDestroyed(Pwg_Tree_Node $node) {
     }
 
-    function setInsetPanelNode(Pmt_Tree_Node $insetPanelNode = null) {
+    function setInsetPanelNode(Pwg_Tree_Node $insetPanelNode = null) {
         if ($insetPanelNode !== ($oldInsetPanelNode = $this->insetPanelNode)) {
             $this->insetPanelNode = $insetPanelNode;
             $this->sendMessage(__FUNCTION__, array($this->jsGetInsetPanelNode()));

@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Yui_Calendar_PopupWithTime extends Pmt_Yui_Calendar_Popup {
+class Pwg_Yui_Calendar_PopupWithTime extends Pwg_Yui_Calendar_Popup {
 
     const evtValueWithTimeChange = 'valueWithTimeChange';
     
@@ -8,12 +8,12 @@ class Pmt_Yui_Calendar_PopupWithTime extends Pmt_Yui_Calendar_Popup {
 //    }    
 
     /**
-    * @var Pmt_Text
+    * @var Pwg_Text
     */
     public $timeEdit = false;
     
     /**
-     * @return Pmt_Text
+     * @return Pwg_Text
      */
     function getTimeEdit() {
     	return $this->getControl('timeEdit');
@@ -24,10 +24,10 @@ class Pmt_Yui_Calendar_PopupWithTime extends Pmt_Yui_Calendar_Popup {
 	    parent::doOnGetControlPrototypes($prototypes);
 	    Ae_Util::ms($prototypes, array(
 	        'timeEdit' => array(
-	            'class' => 'Pmt_Text',
+	            'class' => 'Pwg_Text',
 	            'size' => 10,
 	            'containerIsBlock' => false,
-	            'dummyCaption' => new Pmt_Lang_String('calendar_popup_dummy_time'),
+	            'dummyCaption' => new Pwg_Lang_String('calendar_popup_dummy_time'),
 	        ),
 	    ));
 	}

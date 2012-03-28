@@ -1,64 +1,64 @@
 <?php
 
-class Pmt_Controller_Std_Backups extends Pmt_Controller_MDI_Window {
+class Pwg_Controller_Std_Backups extends Pwg_Controller_MDI_Window {
 	
     /**
-     * @var Pmt_Backup_List
+     * @var Pwg_Backup_List
      */
     protected $backupsList = false;
     
     /**
-     * @var Pmt_Backup
+     * @var Pwg_Backup
      */
     protected $backup = false;
     
     /**
-     * @var Pmt_Table
+     * @var Pwg_Table
      */
     protected $tblBackupsList = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnCreateBackup = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnDeleteBackup = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnRestoreBackupMySql = false;
     
     /**
-     * @var Pmt_Text
+     * @var Pwg_Text
      */
     protected $txtComment = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnSetComment = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnRefresh = false;
     
     /**
-     * @var Pmt_Label
+     * @var Pwg_Label
      */
     protected $lblEtc = false;
     
     /**
-     * @var Pmt_Label
+     * @var Pwg_Label
      */
     protected $lblResult = false;
     
     protected function doGetDefaultWindowHeader() {
-    	return new Pmt_Lang_String('backups');
+    	return new Pwg_Lang_String('backups');
     }
         
     protected function doOnGetControlPrototypes (& $prototypes) {
@@ -93,37 +93,37 @@ class Pmt_Controller_Std_Backups extends Pmt_Controller_MDI_Window {
             ),
             'tblBackupsList' => array(
                 'displayParentPath' => '../pnlLayout',
-                'class' => 'Pmt_Table',
+                'class' => 'Pwg_Table',
                 'columnPrototypes' => array(
-                    'readableDateTime' => array('label' => new Pmt_Lang_String('dateTime')),
-                    'size' => array('label' => new Pmt_Lang_String('size')),
-                    'hasMySql' => array('label' => new Pmt_Lang_String('backups_hasMySql')),
-                    'comment' => array('label' => new Pmt_Lang_String('notice'))
+                    'readableDateTime' => array('label' => new Pwg_Lang_String('dateTime')),
+                    'size' => array('label' => new Pwg_Lang_String('size')),
+                    'hasMySql' => array('label' => new Pwg_Lang_String('backups_hasMySql')),
+                    'comment' => array('label' => new Pwg_Lang_String('notice'))
                 ),
             ),
             
             'btnCreateBackup' => array(
                 'displayParentPath' => '../pnlLayout', 'containerIsBlock' => false,
-                'label' => new Pmt_Lang_String('create'),
+                'label' => new Pwg_Lang_String('create'),
             ),
             'btnDeleteBackup' => array(
                 'displayParentPath' => '../pnlLayout', 'containerIsBlock' => false,
-                'label' => new Pmt_Lang_String('delete'),
-                'confirmationMessage' => new Pmt_Lang_String('backups_delete_confirmation'),
+                'label' => new Pwg_Lang_String('delete'),
+                'confirmationMessage' => new Pwg_Lang_String('backups_delete_confirmation'),
             ),
             'btnRestoreBackupMySql' => array(
                 'displayParentPath' => '../pnlLayout', 'containerIsBlock' => false,
-                'label' => new Pmt_Lang_String('backups_restore_data'),
-                'confirmationMessage' => new Pmt_Lang_String('backups_restore_confirmation'),
+                'label' => new Pwg_Lang_String('backups_restore_data'),
+                'confirmationMessage' => new Pwg_Lang_String('backups_restore_confirmation'),
             ),
             'txtComment' => array(
                 'displayParentPath' => '../pnlLayout', 'containerIsBlock' => false,
             ),
             'btnSetComment' => array(
-                'displayParentPath' => '../pnlLayout', 'containerIsBlock' => false, 'label' => new Pmt_Lang_String('save'),
+                'displayParentPath' => '../pnlLayout', 'containerIsBlock' => false, 'label' => new Pwg_Lang_String('save'),
             ),
             'btnRefresh' => array(
-                'displayParentPath' => '../pnlLayout', 'containerIsBlock' => false, 'label' => new Pmt_Lang_String('refresh'),
+                'displayParentPath' => '../pnlLayout', 'containerIsBlock' => false, 'label' => new Pwg_Lang_String('refresh'),
             ),
             'lblEtc' => array('displayParentPath' => '../pnlLayout', 'containerIsBlock' => false,),
             'lblResult' => array('displayParentPath' => '../pnlLayout', 'containerIsBlock' => false,),
@@ -132,7 +132,7 @@ class Pmt_Controller_Std_Backups extends Pmt_Controller_MDI_Window {
 
     protected function doAfterControlsCreated() {
         parent::doAfterControlsCreated();
-        $this->backupsList = new Pmt_Backup_List(array('path' => _DEPLOY_BACKUPS_PATH));
+        $this->backupsList = new Pwg_Backup_List(array('path' => _DEPLOY_BACKUPS_PATH));
         $this->refresh(); 
     }
     
@@ -147,9 +147,9 @@ class Pmt_Controller_Std_Backups extends Pmt_Controller_MDI_Window {
             $b = $this->backupsList->getBackup($i);
             $a = array();
             $a['prefix'] = $b->getPrefix();
-            foreach ($colNames as $c) $a[$c] = Pmt_Base::getProperty($b, $c, '?');
+            foreach ($colNames as $c) $a[$c] = Pwg_Base::getProperty($b, $c, '?');
             if (is_array($a['comment']) && isset($a['comment']['text'])) $a['comment'] = $a['comment']['text'];
-            $recs[$b->getPrefix()] = new Pmt_Record_Array($a);
+            $recs[$b->getPrefix()] = new Pwg_Record_Array($a);
         }
         $this->tblBackupsList->setRecordRows($recs);
         if ($this->backup && strlen($px = $this->backup->getPrefix())) {
@@ -180,9 +180,9 @@ class Pmt_Controller_Std_Backups extends Pmt_Controller_MDI_Window {
         if ($this->backup) {
             $c = $this->backup->getComment();
             if (isset($c['text'])) $commentText = $c['text'];
-            $this->lblEtc->setHtml(sprintf(new Pmt_Lang_String('backups_chosen_copy'), $this->backup->getDirName()));
+            $this->lblEtc->setHtml(sprintf(new Pwg_Lang_String('backups_chosen_copy'), $this->backup->getDirName()));
         } else {
-            $this->lblEtc->setHtml(new Pmt_Lang_String('backups_chosen_none'));
+            $this->lblEtc->setHtml(new Pwg_Lang_String('backups_chosen_none'));
         }
         $this->btnSetComment->setDisabled(!($this->backup && ($this->txtComment->getText() !== $commentText) ));
         
@@ -207,7 +207,7 @@ class Pmt_Controller_Std_Backups extends Pmt_Controller_MDI_Window {
     function handleBtnRestoreBackupMySqlClick() {
         if ($this->backup && $this->backup->hasMySql()) {
             $res = $this->backup->restoreMySqlBackup();
-            $this->lblResult->setHtml('<br />'.($res? new Pmt_Lang_String('ok') : sprintf(new Pmt_Lang_String('backups_problems'), $this->backup->getLastResult()).'<br /><pre>'.nl2br(htmlspecialchars(implode("\n", $this->backup->getOutput()))).'</pre>').'<br />');
+            $this->lblResult->setHtml('<br />'.($res? new Pwg_Lang_String('ok') : sprintf(new Pwg_Lang_String('backups_problems'), $this->backup->getLastResult()).'<br /><pre>'.nl2br(htmlspecialchars(implode("\n", $this->backup->getOutput()))).'</pre>').'<br />');
             $this->lblResult->setVisible(true);
         }
     }

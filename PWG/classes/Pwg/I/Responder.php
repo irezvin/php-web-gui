@@ -1,16 +1,16 @@
 <?php
 
-interface Pm_I_Responder {
+interface Pwg_I_Responder {
     
-//  Pm_I_Responder  
+//  Pwg_I_Responder  
     
     function getResponderId();
     
-    function setConversation(Pm_I_Conversation $conversation);
+    function setConversation(Pwg_I_Conversation $conversation);
     
     function startQueue();
     
-    function acceptMessage(Pm_Message $message);
+    function acceptMessage(Pwg_Message $message);
     
     function endQueue();
 
@@ -19,7 +19,7 @@ interface Pm_I_Responder {
      */
     function isResidentResponder();
     
-    function pageRender(Pm_I_Renderer $renderer);
+    function pageRender(Pwg_I_Renderer $renderer);
     
 }
 

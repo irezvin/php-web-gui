@@ -1,11 +1,11 @@
 <?php
 
-class Pmt_Data_Field_Rte extends Pmt_Data_Field {
+class Pwg_Data_Field_Rte extends Pwg_Data_Field {
 
     protected $labelText = false;
     
     /**
-     * @var Pmt_Yui_Rte
+     * @var Pwg_Yui_Rte
      */
     public $editor = false;
     
@@ -15,7 +15,7 @@ class Pmt_Data_Field_Rte extends Pmt_Data_Field {
         parent::doOnGetControlPrototypes($prototypes);
         $p = array(
             'editor' => array(
-                'class' => 'Pmt_Yui_Rte',
+                'class' => 'Pwg_Yui_Rte',
                 'toolbarCollapsed' => true,
                 'toolbarTitle' => $this->labelText,
             ),
@@ -28,9 +28,9 @@ class Pmt_Data_Field_Rte extends Pmt_Data_Field {
     
     function setLabelText($labelText) {
         $this->labelText = $labelText;
-        if ($this->editor instanceof Pmt_Yui_Rte)
+        if ($this->editor instanceof Pwg_Yui_Rte)
             $this->editor->setToolbarTitle($labelText);
-        if ($this->label instanceof Pmt_Label) $this->label->setHtml($labelText);
+        if ($this->label instanceof Pwg_Label) $this->label->setHtml($labelText);
     }
     
     function getLabelText() {

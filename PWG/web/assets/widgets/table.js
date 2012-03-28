@@ -1,6 +1,6 @@
-// ------------------------------------------- Pmt_Table ------------------------------------------- //
+// ------------------------------------------- Pwg_Table ------------------------------------------- //
 
-Pmt_Table = function (options) {
+Pwg_Table = function (options) {
     this.selectedIndice = [];
     this.rows = [];
     this.toggleableColumns = [];
@@ -9,15 +9,15 @@ Pmt_Table = function (options) {
 
 }
 
-Pmt_Ref = function(str) {
+Pwg_Ref = function(str) {
     this.str = str;
     this.deref = function(root) {
         return root.getAggregateById(str);
     }
 }
 
-Pmt_Table.prototype = {
-	jsClassName: "Pmt_Table",
+Pwg_Table.prototype = {
+	jsClassName: "Pwg_Table",
     yuiTable: false,
     columnDefs: false,
     dataSource: false,
@@ -104,7 +104,7 @@ Pmt_Table.prototype = {
             if (1 || Prototype.Browser.IE) {
                 this.yuiTable.subscribe("rowClickEvent", this.yuiTable.onEventSelectRow, null, this.yuiTable);
             } else {
-                this._rowClickCall = new Pmt_Util.DelayedCall(this.yuiTable.onEventSelectRow, null, this.yuiTable, [], this.getDefault('clickDelay', 300), false);
+                this._rowClickCall = new Pwg_Util.DelayedCall(this.yuiTable.onEventSelectRow, null, this.yuiTable, [], this.getDefault('clickDelay', 300), false);
                 this.yuiTable.subscribe("rowClickEvent", function(args) {
                     this._rowClickCall.callWithArgs(args);
                 }, null, this);
@@ -237,7 +237,7 @@ Pmt_Table.prototype = {
                 lazyload: true
             }
         );
-        Pmt_Yui_Util.fixMenuDisplay(this.contextMenu);
+        Pwg_Yui_Util.fixMenuDisplay(this.contextMenu);
 
     },
 
@@ -299,7 +299,7 @@ Pmt_Table.prototype = {
     },
     
     deref: function(arg) {
-        var res = arg instanceof Pmt_Ref? arg.deref(this) : arg;
+        var res = arg instanceof Pwg_Ref? arg.deref(this) : arg;
         return res;
     },
     
@@ -336,7 +336,7 @@ Pmt_Table.prototype = {
             var aggregate = aggregateEvent[1];
             this.bindAggregate(aggregateId, eventName, outArgs);
         } else {
-            Pmt_Element.prototype.frontendObserve.call(this, eventName, outArgs);
+            Pwg_Element.prototype.frontendObserve.call(this, eventName, outArgs);
         }
     },
     
@@ -351,7 +351,7 @@ Pmt_Table.prototype = {
                 throw "Aggregate not found: " + aggregateMethod[1];
             }
         } else {
-            Pmt_Element.prototype.handleServerMessage.call(this, methodName, params);
+            Pwg_Element.prototype.handleServerMessage.call(this, methodName, params);
         }
     },
 
@@ -416,4 +416,4 @@ Pmt_Table.prototype = {
 
 };
 
-Pmt_Util.extend(Pmt_Table, Pmt_Element);
+Pwg_Util.extend(Pwg_Table, Pwg_Element);

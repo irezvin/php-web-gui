@@ -1,6 +1,6 @@
 <?php
 
-abstract class Pm_Conversation_Abstract extends Pmt_Autoparams implements Pm_I_Conversation, Pm_I_Refcontrol {
+abstract class Pwg_Conversation_Abstract extends Pwg_Autoparams implements Pwg_I_Conversation, Pwg_I_Refcontrol {
 
     protected $refs = array();
 
@@ -39,7 +39,7 @@ abstract class Pm_Conversation_Abstract extends Pmt_Autoparams implements Pm_I_C
     protected $baseUrl = false;
 
     /**
-     * @var Pm_I_WebFront
+     * @var Pwg_I_WebFront
      */
     protected $webFront = false;
 
@@ -88,7 +88,7 @@ abstract class Pm_Conversation_Abstract extends Pmt_Autoparams implements Pm_I_C
                                 $this->startResponder($this->responders[$rcptId]);
                                 $this->responders[$rcptId]->acceptMessage($message);
                             } else {
-                                Pm_Conversation::log("Unknown responder: ".$rcptId);
+                                Pwg_Conversation::log("Unknown responder: ".$rcptId);
                             }
                         } catch (Exception $e) {
                             $this->errorPushData = (string) $e;
@@ -114,10 +114,10 @@ abstract class Pm_Conversation_Abstract extends Pmt_Autoparams implements Pm_I_C
         return $res;
     }
 
-    //  Pm_I_Conversation
+    //  Pwg_I_Conversation
 
-    function registerResponder(Pm_I_Responder $responder) {
-        //Pm_Conversation::log("Registering responder for ".$responder.", id is ".$responder->getResponderId());
+    function registerResponder(Pwg_I_Responder $responder) {
+        //Pwg_Conversation::log("Registering responder for ".$responder.", id is ".$responder->getResponderId());
         $this->responders[$responder->getResponderId()] = $responder;
         if ($responder->isResidentResponder()) $this->residentResponders[$responder->getResponderId()] = $responder;
         $responder->setConversation($this);
@@ -126,11 +126,11 @@ abstract class Pm_Conversation_Abstract extends Pmt_Autoparams implements Pm_I_C
         $this->refAdd($this, $responder);
     }
 
-    function registerFilter(Pm_I_Responder $filter) {
+    function registerFilter(Pwg_I_Responder $filter) {
         $this->filters[$filter->getResponderId()] = $filter;
     }
 
-    function sendClientMessage(Pm_Message $message) {
+    function sendClientMessage(Pwg_Message $message) {
         if ($message->hasSyncControl()) {
             foreach (array_keys($this->outbox) as $i) if ($this->outbox[$i]->syncMatch($message)) unset($this->outbox[$i]);
         }
@@ -158,15 +158,15 @@ abstract class Pm_Conversation_Abstract extends Pmt_Autoparams implements Pm_I_C
 
     /**
      * @param array $msgData
-     * @return Pm_Message
+     * @return Pwg_Message
      */
     protected function filterMessage(array $msgData) {
-        $res = new Pm_Message();
+        $res = new Pwg_Message();
         if (!$res->initFromUnfilteredData($msgData)) $res = false;
         return $res;
     }
 
-    protected function startResponder(Pm_I_Responder $responder) {
+    protected function startResponder(Pwg_I_Responder $responder) {
         $id = $responder->getResponderId();
         if (!isset($this->startedResponders[$id])) {
             $this->startedResponders[$id] = true;
@@ -252,7 +252,7 @@ abstract class Pm_Conversation_Abstract extends Pmt_Autoparams implements Pm_I_C
     }
 
     function __toString() {
-        return "Pm_I_Conversation #".$this->jsId." (".count($this->responders)." responders)";
+        return "Pwg_I_Conversation #".$this->jsId." (".count($this->responders)." responders)";
     }
 
     function isPageRender() {
@@ -261,7 +261,7 @@ abstract class Pm_Conversation_Abstract extends Pmt_Autoparams implements Pm_I_C
     
     protected function initErrorHandler() {
         if ($this->autoTrapErrors) {
-	        set_error_handler(array('Pm_Conversation_Abstract', 'errorHandler'), E_ALL);
+	        set_error_handler(array('Pwg_Conversation_Abstract', 'errorHandler'), E_ALL);
 		}
     }
     
@@ -320,14 +320,14 @@ abstract class Pm_Conversation_Abstract extends Pmt_Autoparams implements Pm_I_C
             );
     }
 
-    function setWebFront(Pm_I_Web_Front $webFront) {
+    function setWebFront(Pwg_I_Web_Front $webFront) {
         $this->webFront = $webFront;
     }
 
     function releaseSession() {
     }
     
-    //  +-------------- Pm_I_Refcontrol implementation ---------------+
+    //  +-------------- Pwg_I_Refcontrol implementation ---------------+
 
     protected $refReg = array();
 
@@ -337,13 +337,13 @@ abstract class Pm_Conversation_Abstract extends Pmt_Autoparams implements Pm_I_C
         return $res;
     }
 
-    function refHas($otherObject) { return Pm_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
+    function refHas($otherObject) { return Pwg_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
 
-    function refAdd($otherObject) { return Pm_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
+    function refAdd($otherObject) { return Pwg_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
 
-    function refRemove($otherObject, $nonSymmetrical = false) { $v = $this->refGetSelfVars(); return Pm_Impl_Refcontrol::refRemove($this, $otherObject, $v, false, $nonSymmetrical); }
+    function refRemove($otherObject, $nonSymmetrical = false) { $v = $this->refGetSelfVars(); return Pwg_Impl_Refcontrol::refRemove($this, $otherObject, $v, false, $nonSymmetrical); }
 
-    function refNotifyDestroying() { return Pm_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
+    function refNotifyDestroying() { return Pwg_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
 
     //  +-------------------------------------------------------------+
 

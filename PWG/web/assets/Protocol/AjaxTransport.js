@@ -1,14 +1,14 @@
-Pm_Protocol_AjaxTransport = function(options) {
+Pwg_Protocol_AjaxTransport = function(options) {
 
 	this._unsent = [];
-	Pm_Protocol_Transport.call(this, options);
+	Pwg_Protocol_Transport.call(this, options);
 	
-	if (window.Pmt_UiDefaults && window.Pmt_UiDefaults.pollDelay !== null)
-		this.pollDelay = window.Pmt_UiDefaults.pollDelay;
+	if (window.Pwg_UiDefaults && window.Pwg_UiDefaults.pollDelay !== null)
+		this.pollDelay = window.Pwg_UiDefaults.pollDelay;
 	
 };
 
-Pm_Protocol_AjaxTransport.prototype = {
+Pwg_Protocol_AjaxTransport.prototype = {
 	
 	msgVar: 'messages',
 	checkComplete: false,
@@ -41,8 +41,8 @@ Pm_Protocol_AjaxTransport.prototype = {
 	},
 	
 	notifyProtocolInitialized: function() {
-		if (this.pollDelay) this._dc = new Pmt_Util.DelayedCall(this._immediateCheckAndPoll, null, this, [], this.pollDelay, false);
-		Pm_Protocol_Transport.prototype.notifyProtocolInitialized.call(this);
+		if (this.pollDelay) this._dc = new Pwg_Util.DelayedCall(this._immediateCheckAndPoll, null, this, [], this.pollDelay, false);
+		Pwg_Protocol_Transport.prototype.notifyProtocolInitialized.call(this);
 		if (!this.checkComplete) this._checkAndPoll();
 	},
 	
@@ -73,7 +73,7 @@ Pm_Protocol_AjaxTransport.prototype = {
 			if (msgs.errorPushData) {
 				this.protocol.reportError(
 					msgs.errorPushData,
-					Pm_Protocol.ERROR_SERVER_EXCEPTION,
+					Pwg_Protocol.ERROR_SERVER_EXCEPTION,
 					null,
 					false
 				);
@@ -88,7 +88,7 @@ Pm_Protocol_AjaxTransport.prototype = {
 					'Cannot establish connection with the server' 
 						+ '\nServer URL: ' + this.protocol.serverUrl
 						+ '\nResponse text: \n\n' + ajax.responseText,
-					Pm_Protocol.ERROR_SERVER_UNAVAILABLE,
+					Pwg_Protocol.ERROR_SERVER_UNAVAILABLE,
 					exception,
 					true
 				);
@@ -110,7 +110,7 @@ Pm_Protocol_AjaxTransport.prototype = {
 		if (this._nErrors > this.maxErrors) {
 			this.protocol.reportError(
 				"Cannot parse server message:\n" + responseText,
-				Pm_Protocol.ERROR_UNPARSABLE_RESPONSE,
+				Pwg_Protocol.ERROR_UNPARSABLE_RESPONSE,
 				exception,
 				true
 			);
@@ -142,10 +142,10 @@ Pm_Protocol_AjaxTransport.prototype = {
                     failure: this._axErrorCallback,
                     scope: this
                 },
-                Pmt_Util.makeQuery(this._unsent, this.msgVar, true)
+                Pwg_Util.makeQuery(this._unsent, this.msgVar, true)
             );
 //            this._axRequest = new Ajax.Request(this.protocol.serverUrl, {
-//                postBody: Pmt_Util.makeQuery(this._unsent, this.msgVar, true),
+//                postBody: Pwg_Util.makeQuery(this._unsent, this.msgVar, true),
 //                onComplete: this._axComplete.bind(this),
 //                onException: this._axErrorCallback.bind(this),
 //                onFailure: this._axErrorCallback.bind(this)
@@ -160,4 +160,4 @@ Pm_Protocol_AjaxTransport.prototype = {
 		
 };
 
-Pmt_Util.extend (Pm_Protocol_AjaxTransport, Pm_Protocol_Transport);
+Pwg_Util.extend (Pwg_Protocol_AjaxTransport, Pwg_Protocol_Transport);

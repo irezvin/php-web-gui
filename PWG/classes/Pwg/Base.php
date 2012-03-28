@@ -1,6 +1,6 @@
 <?php
 
-abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
+abstract class Pwg_Base implements Pwg_I_Control, Pwg_I_Refcontrol {
     
     protected $id = false;
     
@@ -13,17 +13,17 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     protected $containerAttribs = array();
     
     /**
-     * @var Pmt_I_Control_Parent
+     * @var Pwg_I_Control_Parent
      */
     protected $parent = false;
     
     /**
-     * @var Pmt_I_Controller
+     * @var Pwg_I_Controller
      */
     protected $controller = false;
 
     /**
-     * @var Pmt_I_Control_DisplayParent
+     * @var Pwg_I_Control_DisplayParent
      */
     protected $displayParent = false;
     
@@ -34,7 +34,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     protected $observers = array();
     
     /**
-     * @var Pm_I_Conversation
+     * @var Pwg_I_Conversation
      */
     protected $conversation = false;
 
@@ -59,19 +59,19 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     private static $methodMap = array();
     
     private static $classMap = array(
-        'btn' => 'Pmt_Button',
-        'txt' => 'Pmt_Text',
-        'lbl' => 'Pmt_Label',
-        'lst' => 'Pmt_List',
-        'cnr' => 'Pmt_Composite',
-        'ctl' => 'Pmt_Controller',
-        'ds' => 'Pmt_Data_Source',
-        'dn' => 'Pmt_Data_Navigator',
-        'bnds' => 'Pmt_Data_Binder_DataSource',
-        'bnd' => 'Pmt_Data_Binder',
-        'cb' => 'Pmt_Checkbox',
-        'grp' => 'Pmt_Group',
-        'pnl' => 'Pmt_Panel',
+        'btn' => 'Pwg_Button',
+        'txt' => 'Pwg_Text',
+        'lbl' => 'Pwg_Label',
+        'lst' => 'Pwg_List',
+        'cnr' => 'Pwg_Composite',
+        'ctl' => 'Pwg_Controller',
+        'ds' => 'Pwg_Data_Source',
+        'dn' => 'Pwg_Data_Navigator',
+        'bnds' => 'Pwg_Data_Binder_DataSource',
+        'bnd' => 'Pwg_Data_Binder',
+        'cb' => 'Pwg_Checkbox',
+        'grp' => 'Pwg_Group',
+        'pnl' => 'Pwg_Panel',
     );
     
     protected $isResolvingAssociations = false;
@@ -95,19 +95,19 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
      */ 
     var $_guardianSign = false;
     
-//  Pmt_Base
+//  Pwg_Base
     
     function __clone() {
-        $this->id = Pmt_Base::nextAutoId(get_class($this));
+        $this->id = Pwg_Base::nextAutoId(get_class($this));
         if ($this->container) $this->container = false;
         if ($this->parent) $this->parent = false;
         if ($this->conversation) $this->conversation = false;
-        if ($this->controller instanceof Pmt_Controller) $this->controller->observeControl($this);
+        if ($this->controller instanceof Pwg_Controller) $this->controller->observeControl($this);
         $this->responderId = false;
         $this->observers = array();
     }
     
-    static function factory(array $prototype = array(), $baseClass = 'Pmt_Base') {
+    static function factory(array $prototype = array(), $baseClass = 'Pwg_Base') {
         $className = $baseClass;
         if (isset($prototype['class'])) $className = $prototype['class'];
         $res = new $className ($prototype);
@@ -120,9 +120,9 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     }
     
     protected static function nextAutoId($className) {
-        if (!isset(Pmt_Base::$autoIds[$className])) Pmt_Base::$autoIds[$className] = 0;
-            else Pmt_Base::$autoIds[$className]++;
-        return $className.Pmt_Base::$autoIds[$className];
+        if (!isset(Pwg_Base::$autoIds[$className])) Pwg_Base::$autoIds[$className] = 0;
+            else Pwg_Base::$autoIds[$className]++;
+        return $className.Pwg_Base::$autoIds[$className];
     }
     
     protected function doListFirstInitializers() {
@@ -130,7 +130,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     }
     
     function __construct(array $options = array()) {
-        if ((!isset($options['id']) || !strlen($options['id'])) && ($this->id === false)) $options['id'] = Pmt_Base::nextAutoId(get_class($this));
+        if ((!isset($options['id']) || !strlen($options['id'])) && ($this->id === false)) $options['id'] = Pwg_Base::nextAutoId(get_class($this));
         
         $optKeys = array_unique(array_intersect(array_keys($options), array_merge($this->doListFirstInitializers(), array_keys($options))));
         foreach ($optKeys as $n) {
@@ -177,7 +177,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     
     /**
      * @param string $id
-     * @return Pmt_I_Control
+     * @return Pwg_I_Control
      */
     function getControl($id) {
         return false;
@@ -189,10 +189,10 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     
     /**
      * @param string|array $path
-     * @return Pmt_I_Control
+     * @return Pwg_I_Control
      */
     function getControlByPath($path) {
-    	//Pm_Conversation::log("$this Getting control by path", $path);
+    	//Pwg_Conversation::log("$this Getting control by path", $path);
         $res = false;
         if (!is_array($path)) $path = explode("/", $path);
         if (count($path)) {
@@ -208,12 +208,12 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
                     $current = $current->getParent();
                 }
                 elseif ($segment == '.') {} 
-                elseif (strlen($segment) && $current instanceof Pmt_I_Control_Parent) $current = $current->getControl($segment);
+                elseif (strlen($segment) && $current instanceof Pwg_I_Control_Parent) $current = $current->getControl($segment);
                 else break;
             }
             if (!count($path)) $res = $current;
         }
-        //Pm_Conversation::log("Res is {$res}");
+        //Pwg_Conversation::log("Res is {$res}");
         return $res;
     }
     
@@ -247,7 +247,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
         return 'triggerFrontend'.ucFirst($eventName);
     }
     
-//  Pm_I_Responder  
+//  Pwg_I_Responder  
 
     function isResidentResponder() {
         return false;
@@ -258,15 +258,15 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
         return $this->responderId;
     }
     
-    function setConversation(Pm_I_Conversation $conversation) {
+    function setConversation(Pwg_I_Conversation $conversation) {
         $this->conversation = $conversation;
         $this->refAdd($conversation);
         if ($this->frontInitialized || $this->frontInitialization) {
             $this->sendDelayedMessages();
         }
 //      if (!$this->delayedInitialize && $this->canInitializeFront() && (!$this->displayParent || $this->displayParent->isFrontInitialized())) {
-//          Pm_Conversation::log($this . "'s Display Parent is " . $this->displayParent );
-//          if ($this->displayParent) Pm_Conversation::log("DP front initialized: ".$this->displayParent->isFrontInitialized()); 
+//          Pwg_Conversation::log($this . "'s Display Parent is " . $this->displayParent );
+//          if ($this->displayParent) Pwg_Conversation::log("DP front initialized: ".$this->displayParent->isFrontInitialized()); 
 //          $this->initializeFront(); 
 //      }
     }
@@ -274,7 +274,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     function startQueue() {
     }
     
-    function acceptMessage(Pm_Message $message) {
+    function acceptMessage(Pwg_Message $message) {
         $methodName = $this->eventNameToMethodName($message->methodName);
         if (method_exists($this, $methodName)) {
             call_user_func_array(array($this, $methodName), array_values($message->params));
@@ -289,7 +289,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     
     
     
-//  Pmt_I_Control   
+//  Pwg_I_Control   
     
     function getId() {
         return $this->id;
@@ -300,7 +300,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
         $this->updateResponderId();
     }
 
-    function setParent(Pmt_I_Control_Parent $parent) {
+    function setParent(Pwg_I_Control_Parent $parent) {
         if (($oldParent = $this->parent) !== $parent) {
             
             //if ($oldParent) $oldParent->removeControl($this); 
@@ -319,38 +319,38 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
                 
             }
             
-            if ($parent instanceof Pmt_I_Control_DisplayParent && $this->displayParent === false && !isset($this->associations['displayParent'])) {
+            if ($parent instanceof Pwg_I_Control_DisplayParent && $this->displayParent === false && !isset($this->associations['displayParent'])) {
                 $this->setDisplayParent($parent);
             }
         }
     }
     
     /**
-     * @return Pmt_I_Control_Parent
+     * @return Pwg_I_Control_Parent
      */
     function getParent() {
         return $this->parent;
     }
     
-    function setController(Pmt_I_Controller $controller) {
+    function setController(Pwg_I_Controller $controller) {
         $this->controller = $controller;
     }
     
     /**
-     * @return Pmt_I_Controller
+     * @return Pwg_I_Controller
      */
     function getController() {
         return $this->controller;
     }
     
     /**
-     * @return Pmt_I_Control_DisplayParent
+     * @return Pwg_I_Control_DisplayParent
      */
     function getDisplayParent() {
         return $this->displayParent;
     }
     
-    function setDisplayParent(Pmt_I_Control_DisplayParent $displayParent = null) {
+    function setDisplayParent(Pwg_I_Control_DisplayParent $displayParent = null) {
         if ($this->displayParent !== $displayParent) {
             $odp = $this->displayParent;
             $this->displayParent = $displayParent;
@@ -423,21 +423,21 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
         }
     }
     
-//  Pm_I_Observable 
+//  Pwg_I_Observable 
     
-    function observe($eventType, Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
-        if (Pmt_Impl_Observable::observe($this->observers, $eventType, $observer, $methodName, $extraParams)) {
+    function observe($eventType, Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+        if (Pwg_Impl_Observable::observe($this->observers, $eventType, $observer, $methodName, $extraParams)) {
             $this->frontendObserve($eventType);
         }
     }
     
-    function unobserve($eventType, Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
-        if (Pmt_Impl_Observable::unobserve($this->observers, $eventType, $observer, $methodName, $extraParams, $this->doListFrontendEvents())) {
+    function unobserve($eventType, Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+        if (Pwg_Impl_Observable::unobserve($this->observers, $eventType, $observer, $methodName, $extraParams, $this->doListFrontendEvents())) {
             $this->frontendUnobserve($eventType);    
         }
     }
 
-//  Template methods of Pmt_Base
+//  Template methods of Pwg_Base
 
     protected function doGetAssetLibs() {
         return array();
@@ -457,7 +457,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
         return array('containerId' => 'container'); 
     }
     
-    protected function doOnGetInitializer(Pm_Js_Initializer $initializer) {
+    protected function doOnGetInitializer(Pwg_Js_Initializer $initializer) {
     }
     
     protected function doGetContainerBody() {
@@ -468,7 +468,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
 
     protected function sendMessage($methodName, $params = array(), $syncHash = false) {
         if (!$this->lockMessages) {
-            $msg = new Pm_Message();
+            $msg = new Pwg_Message();
             $msg->recipientId = $this->getResponderId();
             $msg->methodName = $methodName;
             $msg->params = $params;
@@ -477,7 +477,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
         }
     }
     
-    protected function sendMessageObject(Pm_Message $message) {
+    protected function sendMessageObject(Pwg_Message $message) {
         if ($this->conversation && $this->frontInitialized) {
             $this->conversation->sendClientMessage($message);
         } elseif (in_array($message->methodName, $this->doListDelayableMessages())) {
@@ -491,8 +491,8 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     
     protected function getMethodMap() {
         $c = get_class($this);
-        if (!isset(Pmt_Base::$methodMap[$c])) {
-            Pmt_Base::$methodMap[$c] = array();
+        if (!isset(Pwg_Base::$methodMap[$c])) {
+            Pwg_Base::$methodMap[$c] = array();
             $fns = get_class_methods($c);
             foreach ($fns as $m) {
                 $prms = array();
@@ -504,15 +504,15 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
                             else $dv = null;
                         $prms[$n] = $dv;        
                     }
-                    Pmt_Base::$methodMap[$c][$m] = $prms;
+                    Pwg_Base::$methodMap[$c][$m] = $prms;
                 }
             }
         }
-        return Pmt_Base::$methodMap[$c];
+        return Pwg_Base::$methodMap[$c];
     }
     
     protected function triggerEvent($eventType, $params = array()) {
-        return Pmt_Impl_Observable::triggerEvent($this, $this->observers, $eventType, $params);
+        return Pwg_Impl_Observable::triggerEvent($this, $this->observers, $eventType, $params);
     }
     
     protected function doListFrontendEvents() {
@@ -535,7 +535,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     protected function resolveAssociations() {
         if ($this->isResolvingAssociations === false) {
             $this->isResolvingAssociations = true;
-            //Pm_Conversation::log($this.'->resolveAssociations()');
+            //Pwg_Conversation::log($this.'->resolveAssociations()');
             foreach ($this->associations as $propName => $assocPath) {
                 if (method_exists($this, $methodName = 'set'.$propName)) {
                     if (strlen($assocPath)) {
@@ -543,7 +543,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
                             $this->$methodName($control);
                             unset($this->associations[$propName]);
                         } else {
-                            //Pm_Conversation::log("Warning: {$this} has missing association: $propName => $assocPath");
+                            //Pwg_Conversation::log("Warning: {$this} has missing association: $propName => $assocPath");
                         }
                     } else {
                         $this->$methodName(null);
@@ -591,17 +591,17 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
         }
     }
     
-    protected static function getClassMap() {return Pmt_Base::$classMap;}
+    protected static function getClassMap() {return Pwg_Base::$classMap;}
     
-    protected static function setClassMap($v) {Pmt_Base::$classMap = $v;}
+    protected static function setClassMap($v) {Pwg_Base::$classMap = $v;}
     
 //  +------------------- Frontend Lifecycle Control -----------------+  
     
     /**
-     * @return Pm_Js_Initializer 
+     * @return Pwg_Js_Initializer 
      */
     function getInitializer() {
-        $res = new Pm_Js_Initializer;
+        $res = new Pwg_Js_Initializer;
         if ($this->hasJsObject()) {
             $this->getContainerId();
             $res->constructorName = $this->doGetConstructorName();
@@ -643,7 +643,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
         echo Ae_Util::mkElement($tagName, $this->doGetContainerBody(), $attribs);
     }
     
-    function pageRender(Pm_I_Renderer $renderer) {
+    function pageRender(Pwg_I_Renderer $renderer) {
         if (!$this->delayedInitialize && !$this->displayParent) {
             $renderer->renderAssets($this->getAssetLibs());
             if ($this->hasContainer()) {
@@ -722,7 +722,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
         $this->jsObjectInitialized = true;
     }
     
-    // +-------------- Pm_I_Refcontrol implementation ---------------+
+    // +-------------- Pwg_I_Refcontrol implementation ---------------+
 
     protected $refReg = array();
 
@@ -733,13 +733,13 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     }
 
     
-    function refHas($otherObject) { return Pm_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
+    function refHas($otherObject) { return Pwg_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
     
-    function refAdd($otherObject) { return Pm_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
+    function refAdd($otherObject) { return Pwg_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
     
-    function refRemove($otherObject, $nonSymmetrical = false) { $v = $this->refGetSelfVars(); return Pm_Impl_Refcontrol::refRemove($this, $otherObject, $v, false, $nonSymmetrical); }
+    function refRemove($otherObject, $nonSymmetrical = false) { $v = $this->refGetSelfVars(); return Pwg_Impl_Refcontrol::refRemove($this, $otherObject, $v, false, $nonSymmetrical); }
 
-    function refNotifyDestroying() { return Pm_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
+    function refNotifyDestroying() { return Pwg_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
     
 
     // +-------------------------------------------------------------+ 
@@ -756,7 +756,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
         $this->sendMessage('destroy');
         $this->triggerEvent('destroy');
         $this->doOnDestroy();
-        Pmt_Guardian::getInstance()->shouldBeDeleted($this, $this->id);
+        Pwg_Guardian::getInstance()->shouldBeDeleted($this, $this->id);
         $this->refNotifyDestroying();
     }
     
@@ -775,7 +775,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
         if ($this->debug) {
             $a = func_get_args();
             $a = array_merge(array($this->getResponderId()), $a);
-            call_user_func_array(array('Pm_Conversation', 'log'), $a);
+            call_user_func_array(array('Pwg_Conversation', 'log'), $a);
         }
     }
     
@@ -825,16 +825,16 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     
     static function getClassMethodsWithCache($objOrClass) {
         if (is_object($objOrClass)) $objOrClass = get_class($objOrClass);
-        if (!isset(Pmt_Base::$classMethods[$objOrClass])) {
-            Pmt_Base::$classMethods[$objOrClass] = get_class_methods($objOrClass);
+        if (!isset(Pwg_Base::$classMethods[$objOrClass])) {
+            Pwg_Base::$classMethods[$objOrClass] = get_class_methods($objOrClass);
         }
-        return Pmt_Base::$classMethods[$objOrClass];
+        return Pwg_Base::$classMethods[$objOrClass];
     }
 
     /**
      * Returns array of parents starting from immediate parent of current control and ending with topmost ('root') parent.
      * @param bool $rootIsFirst - whether to reverse the result (so topmost parent will be first in the result array)
-     * @return array Array of Pmt_Base descendants 
+     * @return array Array of Pwg_Base descendants 
      */
     function getAllParents($rootIsFirst = false) {
         $res = array();
@@ -845,7 +845,7 @@ abstract class Pmt_Base implements Pmt_I_Control, Pm_I_Refcontrol {
     }
     
     /**
-     * @return Pmt_Application
+     * @return Pwg_Application
      */
     function getApplication() {
         $res = null;

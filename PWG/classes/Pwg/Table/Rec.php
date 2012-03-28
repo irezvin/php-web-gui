@@ -1,33 +1,33 @@
 <?php
 
-class Pmt_Table_Rec extends Pmt_Base {
+class Pwg_Table_Rec extends Pwg_Base {
 
     /**
-     * @var Pmt_I_Record
+     * @var Pwg_I_Record
      */
     protected $record = false;
     
-    function setRecord(Pmt_I_Record $record) {
+    function setRecord(Pwg_I_Record $record) {
         $this->record = $record;
         // TODO: replace record in the browser when it is replaced here
     }
     
     /**
-     * @return Pmt_I_Record
+     * @return Pwg_I_Record
      */
     function getRecord() {
         return $this->record;
     }
     
     /**
-     * @return Pmt_Table_Recset
+     * @return Pwg_Table_Recset
      */
     function getRowset() {
         return $this->parent;
     }
     
     /**
-     * @return Pmt_Table
+     * @return Pwg_Table
      */
     function getTable() {
         $res = false;

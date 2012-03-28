@@ -7,6 +7,6 @@
  * 
  * @author Nivzer
  */
-final class Pmt_Lang_String extends Ae_Lang_String {
+final class Pwg_Lang_String extends Ae_Lang_String {
 }
 

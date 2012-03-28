@@ -1,18 +1,18 @@
-Pmt_Yui_Panel = function (options) {
+Pwg_Yui_Panel = function (options) {
     this.createSetters();
     this.initialize(options);
 }
 
-Pmt_Yui_Panel.getOverlayManager = function() {
-    if (!Pmt_Yui_Panel.overlayManager) {
-        Pmt_Yui_Panel.overlayManager = new YAHOO.widget.OverlayManager();
+Pwg_Yui_Panel.getOverlayManager = function() {
+    if (!Pwg_Yui_Panel.overlayManager) {
+        Pwg_Yui_Panel.overlayManager = new YAHOO.widget.OverlayManager();
     }
-    return Pmt_Yui_Panel.overlayManager;
+    return Pwg_Yui_Panel.overlayManager;
 };
 
-Pmt_Yui_Panel.prototype = {
+Pwg_Yui_Panel.prototype = {
 
-    jsClassName: "Pmt_Yui_Panel",
+    jsClassName: "Pwg_Yui_Panel",
     attribs: {},
     style: {},
     className: false,
@@ -72,7 +72,7 @@ Pmt_Yui_Panel.prototype = {
 
     createSetters: function() {
         for (var i = 0; i < this.setters.length; i++) {
-            var setterName = 'set' + Pmt_Util.ucFirst(this.setters[i]);
+            var setterName = 'set' + Pwg_Util.ucFirst(this.setters[i]);
             if (this[setterName] === undefined) {
                 this[setterName] = function(propName) {
                     return function(value) {
@@ -226,7 +226,7 @@ Pmt_Yui_Panel.prototype = {
                 }
             }, this.yuiPanel, true);
             
-            this.resizeCall = new Pmt_Util.DelayedCall(function(args) {
+            this.resizeCall = new Pwg_Util.DelayedCall(function(args) {
                 if (!args) return;
                 if (args[0]) args = args[0];
                 var panelHeight = args.height;
@@ -243,11 +243,11 @@ Pmt_Yui_Panel.prototype = {
             //if (this.height) this.yuiPanel.cfg.setProperty("height", this.height);
         }
         
-        this.moveCall = new Pmt_Util.DelayedCall(this.yuiPanelMove, null, this, [], this.getDefault('reportDelay', 300), false);
+        this.moveCall = new Pwg_Util.DelayedCall(this.yuiPanelMove, null, this, [], this.getDefault('reportDelay', 300), false);
         this.yuiPanel.subscribe("move", this.moveCall.callWithArgs, null, this.moveCall);
         
         this.yuiPanel.cfg.subscribeToConfigEvent("zindex", this.yuiPanelZIndexChange, null, this);
-        Pmt_Yui_Panel.getOverlayManager().register(this.yuiPanel);
+        Pwg_Yui_Panel.getOverlayManager().register(this.yuiPanel);
         if (this.focused) this.setFocused();
         
         if (this.yuiPanel.focusEvent) {
@@ -297,7 +297,7 @@ Pmt_Yui_Panel.prototype = {
 
     setFocused: function(focused) {
         if (focused != undefined) this.focused = focused;
-        var om = Pmt_Yui_Panel.getOverlayManager();
+        var om = Pwg_Yui_Panel.getOverlayManager();
         if (om && this.yuiPanel) {
             if (this.focused) {
                 om.focus(this.yuiPanel);
@@ -312,7 +312,7 @@ Pmt_Yui_Panel.prototype = {
     setAutoSize: function(autoSize) {
         if (autoSize != undefined) this.autoSize = autoSize;
         if (this.autoSize) this.applyAutoSize();
-//        if (this.autoSize) new Pmt_Util.DelayedCall(function() {
+//        if (this.autoSize) new Pwg_Util.DelayedCall(function() {
 //        	console.log("Let's apply auto size");
 //        	this.applyAutoSize();
 //        }, 'foo', this, [], 2000, true);
@@ -357,7 +357,7 @@ Pmt_Yui_Panel.prototype = {
         }
     },
 
-    initializeChildContainer: Pmt_Controller.prototype.initializeChildContainer,
+    initializeChildContainer: Pwg_Controller.prototype.initializeChildContainer,
     
     doOnDelete: function() {
         this.setCloseOnOutsideClick(false);
@@ -507,4 +507,4 @@ Pmt_Yui_Panel.prototype = {
     }
 }
 
-Pmt_Util.extend(Pmt_Yui_Panel, Pmt_Group);
+Pwg_Util.extend(Pwg_Yui_Panel, Pwg_Group);

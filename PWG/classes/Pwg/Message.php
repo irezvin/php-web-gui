@@ -1,6 +1,6 @@
 <?php
 
-class Pm_Message {
+class Pwg_Message {
     
 	var $msgId = false;
 	
@@ -18,7 +18,7 @@ class Pm_Message {
         return strlen($this->syncHash) && strlen($this->recipientId) && strlen($this->methodName);
     }
     
-    function syncMatch(Pm_Message $other) {
+    function syncMatch(Pwg_Message $other) {
         $res = ($this->threadId === $other->threadId)
             && ($this->recipientId === $other->recipientId)  
             && ($this->syncHash === $other->syncHash) 

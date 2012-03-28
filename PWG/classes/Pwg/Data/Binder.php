@@ -1,31 +1,31 @@
 <?php
 
-class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
+class Pwg_Data_Binder extends Pwg_Base implements Pwg_I_Observer {
     
     /**
-     * @var Pmt_Data_Source
+     * @var Pwg_Data_Source
      */
     protected $dataSource = false;
     
     /**
-     * @var Pmt_I_Control
+     * @var Pwg_I_Control
      */
     protected $recordPropertyName = false;
     
     /**
-     * @var Pmt_I_Control
+     * @var Pwg_I_Control
      */
     protected $dataControl = false;
 
     /**
-     * @var Pmt_I_Control
+     * @var Pwg_I_Control
      */
     protected $labelControl = false;
     
     protected $decorator = false;
     
     /**
-     * @var Pmt_I_Control
+     * @var Pwg_I_Control
      */
     protected $errorControl = false;
     
@@ -63,7 +63,7 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
     
     // ------------------ dataSource related methods -------------------
     
-    function setDataSource(Pmt_Data_Source $v = null) {
+    function setDataSource(Pwg_Data_Source $v = null) {
         $n = substr(__FUNCTION__, 3); $n{0} = strtolower($n{0}); $ov = $this->$n; $this->$n = $v; $this->refAdd($v);
         if ($ov !== $v) {
             if ($ov) {
@@ -100,7 +100,7 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
     
     // ------------------ dataControl related methods -------------------
     
-    function setDataControl(Pmt_I_Control $v) {
+    function setDataControl(Pwg_I_Control $v) {
         $n = substr(__FUNCTION__, 3); $n{0} = strtolower($n{0}); 
         $ov = $this->$n;
         $this->$n = $v;
@@ -113,7 +113,7 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
     }
     
     /**
-     * @return Pmt_I_Control
+     * @return Pwg_I_Control
      */
     function getDataControl() {$n = substr(__FUNCTION__, 3); $n{0} = strtolower($n{0}); return $this->$n;}
     
@@ -179,7 +179,7 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
     
     // ------------------ labelControl related methods -------------------
     
-    function setLabelControl(Pmt_I_Control $v = null) {
+    function setLabelControl(Pwg_I_Control $v = null) {
         $n = substr(__FUNCTION__, 3); $n{0} = strtolower($n{0}); 
         $ov = $this->$n;
         $this->$n = $v;
@@ -192,7 +192,7 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
     }
     
     /**
-     * @return Pmt_I_Control
+     * @return Pwg_I_Control
      */
     function getLabelControl() {$n = substr(__FUNCTION__, 3); $n{0} = strtolower($n{0}); return $this->$n;}
     
@@ -219,7 +219,7 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
     
     // ------------------ errorControl related methods -------------------
     
-    function setErrorControl(Pmt_I_Control $v = null) {
+    function setErrorControl(Pwg_I_Control $v = null) {
         $n = substr(__FUNCTION__, 3); $n{0} = strtolower($n{0}); 
         $ov = $this->$n;
         $this->$n = $v;
@@ -232,7 +232,7 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
     }
     
     /**
-     * @return Pmt_I_Control
+     * @return Pwg_I_Control
      */
     function getErrorControl() {$n = substr(__FUNCTION__, 3); $n{0} = strtolower($n{0}); return $this->$n;}
     
@@ -253,25 +253,25 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
     
 //  Event Handlers
 
-    function handleDataSourceInvalidRecord(Pmt_Data_Source $source, $eventType, $params = array()) {
+    function handleDataSourceInvalidRecord(Pwg_Data_Source $source, $eventType, $params = array()) {
         if ($this->controlsRefresh && $this->errorControl) $this->refreshErrorControlFromData();
     }
 
-    function handleDataSourceCurrentRecord(Pmt_Data_Source $source, $eventType, $params = array()) {
+    function handleDataSourceCurrentRecord(Pwg_Data_Source $source, $eventType, $params = array()) {
         $this->refresh();
     }
     
-    function handleDataSourceOnUpdateRecord(Pmt_Data_Source $source, $eventType, $params = array()) {
+    function handleDataSourceOnUpdateRecord(Pwg_Data_Source $source, $eventType, $params = array()) {
         if (!$this->lockUpdateRecord) $this->refresh();
     }
     
-    function handleControlChange(Pmt_I_Control $control, $eventType, $params = array()) {
+    function handleControlChange(Pwg_I_Control $control, $eventType, $params = array()) {
         if ($this->debug) {
-            Pm_Conversation::log("$control change: $eventType");
+            Pwg_Conversation::log("$control change: $eventType");
         }
         if ($this->currentRecord && $this->dataPropertyName) {
             $uData = array();
-            if ((($pVal = Pmt_Base::getProperty($control, $this->dataPropertyName, null)) !== null) || $this->allowNullValues) {
+            if ((($pVal = Pwg_Base::getProperty($control, $this->dataPropertyName, null)) !== null) || $this->allowNullValues) {
                 $uData[$this->recordPropertyName] = $pVal;
                 $this->lockUpdateRecord++; 
                 $this->dataSource->updateCurrentRecord($uData);
@@ -283,18 +283,18 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
     function getControlValue($default = null) {
         $res = $default;
         if ($this->dataPropertyName && $this->dataControl) 
-            $res = Pmt_Base::getProperty($this->dataControl, $this->dataPropertyName, $default);
+            $res = Pwg_Base::getProperty($this->dataControl, $this->dataPropertyName, $default);
         return $res;
     }
     
     function setControlValue($value) {
         $res = false;
         if ($this->dataPropertyName && $this->dataControl) 
-            $res = Pmt_Base::setProperty($this->dataControl, $this->dataPropertyName, $value);
+            $res = Pwg_Base::setProperty($this->dataControl, $this->dataPropertyName, $value);
         return $res;
     }
 
-    function handleEvent(Pm_I_Observable $source, $eventType, $params = array()) {
+    function handleEvent(Pwg_I_Observable $source, $eventType, $params = array()) {
     }
     
     function refresh() {
@@ -324,7 +324,7 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
     
     protected function getRecordError() {
         $res = false;
-        Pm_Conversation::log($this->recordPropertyName.' getRecordError()');
+        Pwg_Conversation::log($this->recordPropertyName.' getRecordError()');
         if ($this->currentRecord && ($this->currentRecord->_checked || $this->alwaysCheckRecord) && strlen($this->recordPropertyName)) {
             $res = $this->currentRecord->getErrors($this->recordPropertyName, false);
         } 
@@ -333,7 +333,7 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
     
     protected function internalSetRecord(Ae_Model_Object $record = null) {
         if ($this->debug)
-            Pm_Conversation::log("!!!!" . $this->getResponderId()." internalSetRecord: ".($record? (get_class($record)." #".$record->getPrimaryKey()) : "null"));
+            Pwg_Conversation::log("!!!!" . $this->getResponderId()." internalSetRecord: ".($record? (get_class($record)." #".$record->getPrimaryKey()) : "null"));
         
         $this->currentRecord = $record;
         if ($this->dynamicPropInfo) $this->updatePropInfo();
@@ -359,21 +359,21 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
     
     protected function refreshDataControlFromData($value = null) {
         if (func_num_args() == 0) $value = $this->getRecordPropertyValue();
-        if ($this->debug) Pm_Conversation::log($this->getResponderId(). ": setting value of ". $this->dataControl->getResponderId()." to ".$value);
-        Pmt_Base::setProperty($this->dataControl, $this->dataPropertyName, $value); 
+        if ($this->debug) Pwg_Conversation::log($this->getResponderId(). ": setting value of ". $this->dataControl->getResponderId()." to ".$value);
+        Pwg_Base::setProperty($this->dataControl, $this->dataPropertyName, $value); 
     }
     
     protected function refreshErrorControlFromData($error = null) {
-        Pm_Conversation::log("$this RefreshErrorControlFromData", $this->recordPropertyName);
+        Pwg_Conversation::log("$this RefreshErrorControlFromData", $this->recordPropertyName);
         $n = func_num_args();       
         if (func_num_args() == 0) $error = $this->getRecordError();
         if (is_array($error)) $error = Ae_Util::implode_r("<br />", $error);
         if (strlen($error)) {
-            Pmt_Base::setProperty($this->errorControl, $this->errorPropertyName, $error); 
-            Pmt_Base::setProperty($this->errorControl, 'visible', true);
+            Pwg_Base::setProperty($this->errorControl, $this->errorPropertyName, $error); 
+            Pwg_Base::setProperty($this->errorControl, 'visible', true);
         } else {
-            Pmt_Base::setProperty($this->errorControl, $this->errorPropertyName, '');
-            Pmt_Base::setProperty($this->errorControl, 'visible', false);
+            Pwg_Base::setProperty($this->errorControl, $this->errorPropertyName, '');
+            Pwg_Base::setProperty($this->errorControl, 'visible', false);
         }
     }
     
@@ -382,19 +382,19 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
             if ($this->dynamicPropInfo) $this->refreshDataControlFromData($pi->value);
             $this->updateReadOnlyStatus();          
             if (isset($pi->attribs) && is_array($pi->attribs) && $this->updateControlAttribsFromProperty) 
-                Pmt_Base::setProperty($this->dataControl, 'attribs', $pi->attribs);
+                Pwg_Base::setProperty($this->dataControl, 'attribs', $pi->attribs);
         } else {
-            Pmt_Base::setProperty($this->dataControl, $this->dataPropertyName, '(no property)'); 
-            Pmt_Base::setProperty($this->dataControl, 'disabled', false);
+            Pwg_Base::setProperty($this->dataControl, $this->dataPropertyName, '(no property)'); 
+            Pwg_Base::setProperty($this->dataControl, 'disabled', false);
             $this->updateReadOnlyStatus();
         }
     }
     
     protected function refreshLabelControlFromPropInfo() {
         if ($pi = $this->propInfo) {
-            Pmt_Base::setProperty($this->labelControl, $this->labelPropertyName, $pi->caption !== false? $pi->caption : $pi->name);
+            Pwg_Base::setProperty($this->labelControl, $this->labelPropertyName, $pi->caption !== false? $pi->caption : $pi->name);
         } else {
-            Pmt_Base::setProperty($this->labelControl, $this->labelPropertyName, '(no such property: '.$this->recordPropertyName.' in '.(is_object($this->currentRecord)? get_class($this->currentRecord) : gettype($this->currentRecord)).')');
+            Pwg_Base::setProperty($this->labelControl, $this->labelPropertyName, '(no such property: '.$this->recordPropertyName.' in '.(is_object($this->currentRecord)? get_class($this->currentRecord) : gettype($this->currentRecord)).')');
         }
     }
     
@@ -446,7 +446,7 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
         $this->updateReadOnlyStatus();
     }
     
-    function handleDataSourceRefresh(Pmt_Data_Source $dataSource, $eventType, $params) {
+    function handleDataSourceRefresh(Pwg_Data_Source $dataSource, $eventType, $params) {
         $this->updateReadOnlyStatus();
     }
     
@@ -454,7 +454,7 @@ class Pmt_Data_Binder extends Pmt_Base implements Pm_I_Observer {
         if ($this->dataControl && strlen($this->readOnlyPropertyName) && $this->dataSource) {
             $pRo = $this->propInfo? $this->propInfo->readOnly : false;
             $ro = $this->dataSource->getReadOnly() || $pRo;
-            Pmt_Base::setProperty($this->dataControl, $this->readOnlyPropertyName, $ro);
+            Pwg_Base::setProperty($this->dataControl, $this->readOnlyPropertyName, $ro);
         } else {
         }
     }

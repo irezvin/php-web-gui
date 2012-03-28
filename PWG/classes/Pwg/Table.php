@@ -1,12 +1,12 @@
 <?php
 
-class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
+class Pwg_Table extends Pwg_Controller implements Pwg_I_Control_RecordsDisplay {
     
     const evtRowDblClick = 'rowDblClick';
     
     protected $shownFieldsList = false;
 
-    protected $rowClass = 'Pmt_Table_Row';
+    protected $rowClass = 'Pwg_Table_Row';
     
     protected $rows = array();
     
@@ -80,7 +80,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     protected $height = false;
 
     /**
-     * @var Pmt_I_Record
+     * @var Pwg_I_Record
      */
     protected $metadataProvider = false;
 
@@ -114,10 +114,10 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     protected function getControlPrototypes() {
         $res = array(
 //          'rowset' => array(
-//              'class' => 'Pmt_Table_Recset',
+//              'class' => 'Pwg_Table_Recset',
 //          ), 
             'colset' => array(
-                'class' => 'Pmt_Table_Colset',
+                'class' => 'Pwg_Table_Colset',
                 'controlPrototypes' => $this->getColumnPrototypes(),
             ),
         );
@@ -137,7 +137,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
         $this->lockMessages();
         $this->clearRows();
         $this->unlockMessages();
-        foreach ($records as $record) $this->rows[] = new Pmt_Table_Row($this, $record);
+        foreach ($records as $record) $this->rows[] = new Pwg_Table_Row($this, $record);
         $this->triggerEvent('onSendRows');
         $tmp = $this->lockMessages;
         $this->lockMessages = 0;
@@ -162,12 +162,12 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
         return $res;
     }
     
-    function triggerFormatRow(Pmt_Table_Row $row, Pmt_I_Record $record, array & $rowData) {
+    function triggerFormatRow(Pwg_Table_Row $row, Pwg_I_Record $record, array & $rowData) {
     	$this->triggerEvent('onFormatRow', array('row' => $row, 'record' => $record, 'rowData' => & $rowData));
     }
     
     /**
-     * @return Pmt_Table_Colset
+     * @return Pwg_Table_Colset
      */
     function getColset() {
         return $this->getControl('colset');
@@ -182,7 +182,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     }    
     
 //  /**
-//   * @return Pmt_Table_Recset
+//   * @return Pwg_Table_Recset
 //   */
 //  function getRowset() {
 //      return $this->getControl('rowset');
@@ -297,11 +297,11 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     }
     
     /**
-     * @return Pmt_I_Record
+     * @return Pwg_I_Record
      */
     function createRecord() {
         $data = array();
-        return new Pmt_Record_Array($data);
+        return new Pwg_Record_Array($data);
     }
     
     protected function setDataSourceJsClass($dataSourceJsClass) {
@@ -474,23 +474,23 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
         return $this->summary;
     }   
 
-//  Pmt_I_Control_RecordsDisplay    
+//  Pwg_I_Control_RecordsDisplay    
     
     function setRecordPrototype(Ae_Model_Object $record = null) {
     	if (!$record) $this->setMetadataProvider(null);
-    		else $this->setMetadataProvider(new Pmt_Record_Ae($record));
+    		else $this->setMetadataProvider(new Pwg_Record_Ae($record));
     }
     
     function addRecord(Ae_Model_Object $record, $newIndex = false) {
         // TODO
         
 //      $this->controller->logMessage("add record", $newIndex, $record->getDataFields());
-//      $this->getRowset()->addRecordRow(new Pmt_Record_Ae($record), $newIndex);
+//      $this->getRowset()->addRecordRow(new Pwg_Record_Ae($record), $newIndex);
     }
     
     function deleteRecord(Ae_Model_Object $record) {
 //      // TODO
-//      $row = $this->getRowset()->locateRowsByRecord(new Pmt_Record_Ae($record));
+//      $row = $this->getRowset()->locateRowsByRecord(new Pwg_Record_Ae($record));
 //      foreach ($rows as $row) {
 //          $this->getRowset()->deleteControl($row);
 //      }
@@ -498,7 +498,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     
     function updateRecord(Ae_Model_Object $record, $newIndex = false) {
 //      // TODO
-//      $rows = $this->getRowset()->locateRowsByRecord(new Pmt_Record_Ae($record));
+//      $rows = $this->getRowset()->locateRowsByRecord(new Pwg_Record_Ae($record));
 //      if ($rows) {
 //          foreach ($rows as $row) {
 //              $row->setRecord($record);
@@ -510,7 +510,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     function setRecords(array $records = array()) {
         $pmRecords = array();
         foreach ($records as $rec) {
-            $pmRecords[] = new Pmt_Record_Ae($rec);
+            $pmRecords[] = new Pwg_Record_Ae($rec);
         }
         $this->setRecordRows($pmRecords);
     }
@@ -527,7 +527,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     
     function findRowByAeRecord(Ae_Model_Data $record, $many = false) {
         $res = array();
-        $pmtRecord = new Pmt_Record_Ae($record);
+        $pmtRecord = new Pwg_Record_Ae($record);
         foreach ($this->listRows() as $i) {
             if ($this->getRow($i)->getRecord()->matches($pmtRecord)) {
                 $res[] = $this->getRow($i);
@@ -539,7 +539,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     }
     
     /**
-     * @param array(Pmt_Record) $selectedRecords
+     * @param array(Pwg_Record) $selectedRecords
      */
     function setSelectedRecords($selectedRecords = array()) {
         $newSel = array();
@@ -606,7 +606,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     
     function getRecordIndex(Ae_Model_Object $record) {
         $res = false;
-        $r = new Pmt_Record_Ae($record);
+        $r = new Pwg_Record_Ae($record);
         foreach ($this->rows as $i => $row) {
             if ($row->matches($r)) {
                 $res = $i;
@@ -616,35 +616,35 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
         return $res;
     }   
     
-    function observeRecordSelected (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function observeRecordSelected (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->observe('onRecordSelected', $observer, $methodName, $extraParams);
     }
 
-    function unobserveRecordSelected (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function unobserveRecordSelected (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->unobserve('onRecordSelected', $observer, $methodName, $extraParams);
     }
     
-    function observeRecordEdited (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function observeRecordEdited (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->observe('onRecordEdited', $observer, $methodName, $extraParams);
     }
     
-    function unobserveRecordEdited (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function unobserveRecordEdited (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->unobserve('onRecordEdited', $observer, $methodName, $extraParams);
     }
     
-    function observeRecordCreated (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function observeRecordCreated (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->observe('onRecordCreated', $observer, $methodName, $extraParams);
     }
     
-    function unobserveRecordCreated (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function unobserveRecordCreated (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->unobserve('onRecordCreated', $observer, $methodName, $extraParams);
     }
 
-    function observeRecordRemoved (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function observeRecordRemoved (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->observe('onRecordRemoved', $observer, $methodName, $extraParams);
     }
     
-    function unobserveRecordRemoved (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function unobserveRecordRemoved (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->unobserve('onRecordRemoved', $observer, $methodName, $extraParams);
     }
     
@@ -673,10 +673,10 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     }
     
     /**
-     * @param Pmt_I_Record $record
-     * @return Pmt_Table_Row
+     * @param Pwg_I_Record $record
+     * @return Pwg_Table_Row
      */
-    function addRow(Pmt_I_Record $record = null) {
+    function addRow(Pwg_I_Record $record = null) {
         $cl = $this->rowClass;
         $res = new $cl($this);
         if ($record !== false) $res->setRecord($record);
@@ -693,7 +693,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
         return $res;
     }
     
-    function getRowIndex(Pmt_Table_Row $row) {
+    function getRowIndex(Pwg_Table_Row $row) {
         $k = $this->getRowKey($row);
         if ($k !== false) {
             $res = array_search($k, array_keys($this->rows));
@@ -704,7 +704,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     }
     
     /**
-     * @return Pmt_Table_Row
+     * @return Pwg_Table_Row
      */
     function getRowByIndex($index) {
         $res = false;
@@ -714,25 +714,25 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     }
     
     /**
-     * @return Pmt_Table_Row
+     * @return Pwg_Table_Row
      */
     function getRow($index) {
         return $this->getRowByIndex($index);
     }
     
-    function notifyRowUpdated(Pmt_Table_Row $row) {
+    function notifyRowUpdated(Pwg_Table_Row $row) {
         if (($index = $this->getRowIndex($row)) !== false) {
             $this->sendMessage('rowUpdated', array($row, $index));
         }
     }
     
-//  function notifyRowDeleted(Pmt_Table_Row $row) {
+//  function notifyRowDeleted(Pwg_Table_Row $row) {
 //      if (($index = $this->getRowIndex($row)) !== false) {
 //          $this->sendMessage('rowDeleted', array($index));
 //      }
 //  }
     
-    function getRowKey(Pmt_Table_Row $row) {
+    function getRowKey(Pwg_Table_Row $row) {
         $res = false;
         foreach ($this->rows as $k => $rw) {
             if ($row === $rw) {
@@ -757,7 +757,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
         return array_keys($this->rows);
     }
 
-    protected function notifySelected(Pmt_Table_Row $row) {
+    protected function notifySelected(Pwg_Table_Row $row) {
         if (($index = $this->getRowIndex($row)) !== false) {
             $this->sendMessage('rowSelected', array($index));
         }
@@ -769,7 +769,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
         }
     }
     
-    function selectRow(Pmt_Table_Row $row) {
+    function selectRow(Pwg_Table_Row $row) {
         if (!$this->isRowSelected($row)) {
             if (!$this->multiple) {
                 foreach ($this->selectedRows as $row) $row->setSelected(false);
@@ -782,7 +782,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
         }
     }
     
-    function isRowSelected(Pmt_Table_Row $row) {
+    function isRowSelected(Pwg_Table_Row $row) {
         $res = false;
         foreach (array_keys($this->selectedRows) as $k) 
             if ($this->selectedRows[$k] === $row) {
@@ -791,7 +791,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
         return $res;
     }
     
-    function deselectRow(Pmt_Table_Row $row) {
+    function deselectRow(Pwg_Table_Row $row) {
         foreach ($this->selectedRows as $k => $row) 
             if ($this->selectedRows[$k] === $row) {
                 unset($this->selectedRows[$k]); 
@@ -823,7 +823,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     }
     
     /**
-     * @return Pmt_Table_Row
+     * @return Pwg_Table_Row
      */
     function getFirstSelectedRow() {
         if (strlen($i = $this->getFirstSelectedIndex())) {
@@ -856,7 +856,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     /**
      * @param string $uid
      * @param bool $findIndex Return index instead of the row
-     * @return Pmt_Table_Row 
+     * @return Pwg_Table_Row 
      */
     function findRowByUid($uid, $findIndex = false) {
         $res = false;
@@ -874,7 +874,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
      * @param bool $multiple Whether to return multiple values or keys
      * @param bool $findIndex Whether to return index or indice of found records 
      * @param bool $strict Use strict comparison of fields with values in $data 
-     * @return Pmt_Table_Row
+     * @return Pwg_Table_Row
      */
     function findRowByData(array $data, $multiple = false, $findIndex = false, $strict = false) {
         if ($multiple) $res = array();
@@ -913,9 +913,9 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
         $this->unlockMessages();
     }
     
-    protected function getModelObject(Pmt_Table_Row $row) {
+    protected function getModelObject(Pwg_Table_Row $row) {
         $res = false;
-        if (($rec = $row->getRecord()) && $rec instanceof Pmt_Record_Ae && (($aeRec = $rec->getAeModelData()) instanceof Ae_Model_Object)) {
+        if (($rec = $row->getRecord()) && $rec instanceof Pwg_Record_Ae && (($aeRec = $rec->getAeModelData()) instanceof Ae_Model_Object)) {
             $res = $aeRec;
         }
         return $res;
@@ -940,7 +940,7 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     }
     
     function triggerFrontendColumnSortRequest($columnKey, $sort) {
-        Pm_Conversation::log("\n\nSort Request", $columnKey, $sort);
+        Pwg_Conversation::log("\n\nSort Request", $columnKey, $sort);
     	if ($column = $this->getColset()->getControl($columnKey)) {
             if ($column->getSortable()) {
                 $setNewSort = false;
@@ -1047,19 +1047,19 @@ class Pmt_Table extends Pmt_Controller implements Pmt_I_Control_RecordsDisplay {
     }    
 
     protected function doGetConstructorName() {
-        return 'Pmt_Table';
+        return 'Pwg_Table';
     }
     
     function notifyContainerInitialized() {
         parent::notifyContainerInitialized();
     }
 
-    function setMetadataProvider(Pmt_I_Record $metadataProvider = null) {
+    function setMetadataProvider(Pwg_I_Record $metadataProvider = null) {
         $this->metadataProvider = $metadataProvider;
     }
     
     /**
-     * @return Pmt_I_Record
+     * @return Pwg_I_Record
      */
     function getMetadataProvider() {
         return $this->metadataProvider;

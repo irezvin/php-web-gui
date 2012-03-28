@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Data_Accessor extends Pmt_Autoparams {
+class Pwg_Data_Accessor extends Pwg_Autoparams {
 	
 	
 	

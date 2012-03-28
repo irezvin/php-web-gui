@@ -1,8 +1,8 @@
 <?php
 
-// TODO: move common DisplayParent functionality from Pmt_Composite_Display and Pmt_Group into aggregate class
+// TODO: move common DisplayParent functionality from Pwg_Composite_Display and Pwg_Group into aggregate class
 
-class Pmt_Composite_Display extends Pmt_Composite implements Pmt_I_Control_DisplayParent {
+class Pwg_Composite_Display extends Pwg_Composite implements Pwg_I_Control_DisplayParent {
         
     protected $displayChildren = array();
     
@@ -12,13 +12,13 @@ class Pmt_Composite_Display extends Pmt_Composite implements Pmt_I_Control_Displ
     
     /**
      * Aggregate that implements displayParent functionality
-     * @var Pmt_Impl_DisplayParent
+     * @var Pwg_Impl_DisplayParent
      */
     protected $idp = false;
 
     protected function createDisplayParentImpl() {
         if (!$this->idp) {
-            $this->idp = new Pmt_Impl_DisplayParent(array(
+            $this->idp = new Pwg_Impl_DisplayParent(array(
                 'allowedDisplayChildrenClass' => $this->allowedChildrenClass,
                 'conversation' => $this->conversation? $this->conversation : null,
                 'responderId' => $this->responderId,
@@ -32,7 +32,7 @@ class Pmt_Composite_Display extends Pmt_Composite implements Pmt_I_Control_Displ
         $this->createDisplayParentImpl();
     }
     
-    function setConversation(Pm_I_Conversation $conversation) {
+    function setConversation(Pwg_I_Conversation $conversation) {
         if ($this->idp) {
             $this->idp->setConversation($conversation);
             $this->idp->setResponderId($this->getResponderId());
@@ -41,12 +41,12 @@ class Pmt_Composite_Display extends Pmt_Composite implements Pmt_I_Control_Displ
         return $res;
     }       
     
-    function addControl(Pmt_I_Control $control) {
+    function addControl(Pwg_I_Control $control) {
         parent::addControl($control);
         if (!$control->getDisplayParent()) $this->addDisplayChild($control);
     }
     
-//  Pmt_I_Control_DisplayParent 
+//  Pwg_I_Control_DisplayParent 
     
     
     function getOrderedDisplayChildren() {
@@ -54,22 +54,22 @@ class Pmt_Composite_Display extends Pmt_Composite implements Pmt_I_Control_Displ
         return $this->idp->getOrderedDisplayChildren(); 
     }
     
-    function findDisplayChild(Pmt_I_Control $child) {
+    function findDisplayChild(Pwg_I_Control $child) {
         //$this->listControls();
         return $this->idp->findDisplayChild($child);
     }
         
-    function addDisplayChild(Pmt_I_Control $child) {
+    function addDisplayChild(Pwg_I_Control $child) {
         $this->listControls();
         return $this->idp->addDisplayChild($child);
     }
     
-    function removeDisplayChild(Pmt_I_Control $child) {
+    function removeDisplayChild(Pwg_I_Control $child) {
         $this->listControls();
         return $this->idp->removeDisplayChild($child);
     }
     
-    function updateDisplayChildPosition(Pmt_I_Control $child, $displayOrder) {
+    function updateDisplayChildPosition(Pwg_I_Control $child, $displayOrder) {
         $this->listControls();
         return $this->idp->updateDisplayChildPosition($child, $displayOrder);
     }
@@ -79,13 +79,13 @@ class Pmt_Composite_Display extends Pmt_Composite implements Pmt_I_Control_Displ
         return $this->idp->doGetContainerBody();
     }
     
-    function deleteControl(Pmt_I_Control $control) {
+    function deleteControl(Pwg_I_Control $control) {
         $this->listControls();
         $this->idp->removeDisplayChild($control);
         return parent::deleteControl($control);
     }
 
-    function initializeChildContainer(Pmt_I_Control $child) {
+    function initializeChildContainer(Pwg_I_Control $child) {
         //$this->listControls();
         return $this->idp->initializeChildContainer($child);
     }

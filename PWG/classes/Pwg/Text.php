@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Text extends Pmt_Element {
+class Pwg_Text extends Pwg_Element {
     
     protected $text = '';
     
@@ -34,7 +34,7 @@ class Pmt_Text extends Pmt_Element {
     }
     
     function triggerFrontendKeyup($newText) {
-        //Pm_Conversation::log("keyup: ".$newText);
+        //Pwg_Conversation::log("keyup: ".$newText);
         $evt = substr(__FUNCTION__, 15); $evt{0} = strtolower($evt{0});
         $this->triggerEvent($evt);
     }
@@ -165,7 +165,7 @@ class Pmt_Text extends Pmt_Element {
         return $this->dummyText;
     }    
     
-//  Template methods of Pmt_Base
+//  Template methods of Pwg_Base
 
     protected function doListPassthroughParams() {
         return array_merge(parent::doListPassthroughParams(), array(

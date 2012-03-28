@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Data_Source extends Pmt_Base {
+class Pwg_Data_Source extends Pwg_Base {
 
     const HOLD_NUMBER = 0;
     const HOLD_KEY = 1;
@@ -71,14 +71,14 @@ class Pmt_Data_Source extends Pmt_Base {
     protected $isCancel = false;
     
     /**
-     * @var Pmt_Data_Source_Lister
+     * @var Pwg_Data_Source_Lister
      */
     protected $lister = false;
     
     function __construct(array $options = array()) {
         $this->updateLastMtime();
         parent::__construct($options);
-        if (!$this->lister) $this->setLister(array('class' => 'Pmt_Data_Source_Lister_Memory'));
+        if (!$this->lister) $this->setLister(array('class' => 'Pwg_Data_Source_Lister_Memory'));
     }
     
     function setAlias($alias) {
@@ -266,7 +266,7 @@ class Pmt_Data_Source extends Pmt_Base {
                 if (!is_array($k)) $k = array($k);
                 $coll = & $this->createCollection();
                 $coll->addWhere($this->getLegacyDb()->sqlKeysCriteria($k, $this->getMapper()->listPkFields(), $this->alias));
-                if ($this->debug) Pm_Conversation::log($this->getResponderId(), $coll->getStatementTail());
+                if ($this->debug) Pwg_Conversation::log($this->getResponderId(), $coll->getStatementTail());
                 $this->currentRecord = $coll->getNext();
             } else {
                 if ($this->recordNo !== false) $this->currentRecord = $this->getKeyByRecordNumber($this->recordNo, true);
@@ -286,7 +286,7 @@ class Pmt_Data_Source extends Pmt_Base {
     function updateCurrentRecord($values = array()) {
         if ($record = $this->getCurrentRecord()) {
             if ($this->restrictions && $this->forceRestrictionsOnStore) $values = array_merge($values, $this->restrictions);
-            if ($this->debug) Pm_Conversation::log($values);
+            if ($this->debug) Pwg_Conversation::log($values);
             $valuesToBind = array();
             $valuesToSet = array();
             foreach ($values as $k => $v) {
@@ -320,7 +320,7 @@ class Pmt_Data_Source extends Pmt_Base {
             if ($defaults) $this->currentRecord->bind($defaults);
             $this->triggerEvent('onNewRecord');
             $this->triggerCurrentRecord();
-            if ($this->debug) Pm_Conversation::log("Record created; values are ", $defaults);
+            if ($this->debug) Pwg_Conversation::log("Record created; values are ", $defaults);
             return true; 
         } else return false;
     }
@@ -562,7 +562,7 @@ class Pmt_Data_Source extends Pmt_Base {
             $coll = & $this->createCollection();
             if ($this->groupBy && !$this->having && $this->dontGroupOnCount) $coll->setGroupBy(false);
             $this->recordsCount = $coll->countRecords();
-            if ($this->debug) Pm_Conversation::log($this->responderId, "Count is {$this->recordsCount}: ".$coll->getStatementTail());
+            if ($this->debug) Pwg_Conversation::log($this->responderId, "Count is {$this->recordsCount}: ".$coll->getStatementTail());
         }
         return $this->recordsCount;
     }
@@ -772,7 +772,7 @@ class Pmt_Data_Source extends Pmt_Base {
     function setReadOnly($readOnly) {
         if ($readOnly !== ($oldReadOnly = $this->readOnly)) {
             $this->readOnly = $readOnly;
-            if ($this->debug) Pm_Conversation::log($this->getResponderId().' / '.$this->id.' - setting readOnly status to '.($readOnly? 'true' : 'false'));
+            if ($this->debug) Pwg_Conversation::log($this->getResponderId().' / '.$this->id.' - setting readOnly status to '.($readOnly? 'true' : 'false'));
             $this->triggerEvent('onReadOnlyStatusChange', array('oldReadOnly' => $oldReadOnly, 'readOnly' => $readOnly));
         }
     }
@@ -781,7 +781,7 @@ class Pmt_Data_Source extends Pmt_Base {
         return !$this->isOpen || $this->readOnly;
     }    
     
-    function reload($holdMode = Pmt_Data_Source::HOLD_NUMBER) {
+    function reload($holdMode = Pwg_Data_Source::HOLD_NUMBER) {
         if ($holdMode === self::HOLD_NUMBER) {
             $hold = $this->getRecordNo();
         }
@@ -879,11 +879,11 @@ class Pmt_Data_Source extends Pmt_Base {
     }    
 
     protected function setLister($lister) {
-        if (!(is_null($lister) || is_array($lister) || $lister instanceof Pmt_Data_Source_Lister))
-            throw new Exception("\$lister should be either Pmt_Data_Source_Lister instance or array (it's prototype)");
+        if (!(is_null($lister) || is_array($lister) || $lister instanceof Pwg_Data_Source_Lister))
+            throw new Exception("\$lister should be either Pwg_Data_Source_Lister instance or array (it's prototype)");
         if (is_null($lister)) $lister = array();
         if (is_array($lister)) {
-            $lister = Pmt_Autoparams::factory($lister, 'Pmt_Data_Source_Lister');
+            $lister = Pwg_Autoparams::factory($lister, 'Pwg_Data_Source_Lister');
         }
         $this->lister = $lister;
         $this->lister->setDataSource($this);

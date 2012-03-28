@@ -1,4 +1,4 @@
-Pmt_Yui_Tree_New = function (options) {
+Pwg_Yui_Tree_New = function (options) {
     this.items = new Array;
     this.queue = new Array;
     this.autoEvents = new Array;
@@ -6,9 +6,9 @@ Pmt_Yui_Tree_New = function (options) {
     this.initialize(options);
 }
 
-Pmt_Yui_Tree_New.prototype = {
+Pwg_Yui_Tree_New.prototype = {
 
-    jsClassName: "Pmt_Yui_Tree_New",
+    jsClassName: "Pwg_Yui_Tree_New",
     container: false,
     id: false,
 
@@ -121,7 +121,7 @@ Pmt_Yui_Tree_New.prototype = {
 
     renderElement: function() {
         if (!this.yuiTreeView) {
-            this.refreshCall = new Pmt_Util.DelayedCall(this._immediateRefresh, null, this, [], this.getDefault('renderDelay', 200), false);
+            this.refreshCall = new Pwg_Util.DelayedCall(this._immediateRefresh, null, this, [], this.getDefault('renderDelay', 200), false);
             this._arrangeInsetContainer();
 
             this.yuiTreeView = new YAHOO.widget.TreeView(this.container, []);
@@ -145,7 +145,7 @@ Pmt_Yui_Tree_New.prototype = {
     getNodePath: function(node) {
         var res = [];
         while (node.parent) {
-            res.splice(0, 0, Pmt_Util.indexOf(node, node.parent.children));
+            res.splice(0, 0, Pwg_Util.indexOf(node, node.parent.children));
             node = node.parent;
         }
         return res;
@@ -240,7 +240,7 @@ Pmt_Yui_Tree_New.prototype = {
     setNodeProperty: function(idPath, propName, propValue) {
         var n = this.getNodeByPath(idPath);
         if (n) {
-            var setterName = 'set' + Pmt_Util.ucFirst(propName);
+            var setterName = 'set' + Pwg_Util.ucFirst(propName);
             if (typeof n[setterName] == 'function') n[setterName] (propValue);
                 else n[propName] = propValue;
             this._refresh(n);
@@ -295,7 +295,7 @@ Pmt_Yui_Tree_New.prototype = {
 
     setVisible: function(visible) {
         if (visible === undefined) visible = this.visible;
-        return Pmt_Element.prototype.setVisible.call(this, visible);
+        return Pwg_Element.prototype.setVisible.call(this, visible);
     },
 
     findNode: function(nodeOrPath) {
@@ -458,7 +458,7 @@ Pmt_Yui_Tree_New.prototype = {
 
 }
 
-Pmt_Util.extend(Pmt_Yui_Tree_New, Pmt_Element);
+Pwg_Util.extend(Pwg_Yui_Tree_New, Pwg_Element);
 
 /**
  * @extends YAHOO.widget.TextNode

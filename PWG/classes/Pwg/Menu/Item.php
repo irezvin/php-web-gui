@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Menu_Item extends Pmt_Menu_Parent {
+class Pwg_Menu_Item extends Pwg_Menu_Parent {
 
     protected $submenuIsHorizontal = false;
     
@@ -92,7 +92,7 @@ class Pmt_Menu_Item extends Pmt_Menu_Parent {
         if ($this->disabled) return;
         $this->triggerEvent('click');
         $p = $this->parent;
-        while ($p instanceof Pmt_Menu_Parent) {
+        while ($p instanceof Pwg_Menu_Parent) {
             if ($p->observeChildClicks) {
                 $p->notifyChildClick($this);
             }

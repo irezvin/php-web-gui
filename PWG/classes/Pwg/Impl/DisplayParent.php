@@ -3,13 +3,13 @@
 /**
  * Aggregate that implements "Display Parent" functionality of controls. 
  * It is in a way that host control's methods should just pass return values of an aggregate methods.
- * For usage examples, see Pmt_Composite_Display and Pmt_Group. 
+ * For usage examples, see Pwg_Composite_Display and Pwg_Group. 
  * It is important for host control to properly initialize the aggregate and set Conversation when it changes:
  *
  * <code>   
  *   protected function doOnInitialize(array $options) {
  *      parent::doOnInitialize($options);
- *      $this->idp = new Pmt_Impl_DisplayParent(array(
+ *      $this->idp = new Pwg_Impl_DisplayParent(array(
  *          'allowedDisplayChildrenClass' => $this->allowedDisplayChildrenClass,
  *          'conversation' => $this->conversation? $this->conversation : null, 
  *          'responderId' => $this->responderId,
@@ -17,7 +17,7 @@
  *      ));
  *   }
  *  
- *  function setConversation(Pm_I_Conversation $conversation) {
+ *  function setConversation(Pwg_I_Conversation $conversation) {
  *      $res = parent::setConversation($conversation);
  *      if ($this->idp) {
  *          $this->idp->setConversation($conversation);
@@ -30,7 +30,7 @@
  * <b>Important</b>: $container property should refer to the host control since all display children's $displayParent properties should reference the host control, 
  * not the implementation. 
  */
-class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_DisplayParent, Pm_I_Refcontrol  {
+class Pwg_Impl_DisplayParent extends Pwg_Autoparams implements Pwg_I_Control_DisplayParent, Pwg_I_Refcontrol  {
     
     protected $displayChildren = array();
     
@@ -40,12 +40,12 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
     
     /**
      * Container that holds this object as an aggregate
-     * @var Pmt_I_Control_DisplayParent
+     * @var Pwg_I_Control_DisplayParent
      */
     protected $container = false;
     
     /**
-     * @var Pm_Conversation
+     * @var Pwg_Conversation
      */
     protected $conversation = false;    
     
@@ -55,14 +55,14 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
     
     protected $nextControlClassIgnore = false;
     
-//  --------------- functions that are specified by the interface Pmt_I_Control_DisplayParent ---------------   
+//  --------------- functions that are specified by the interface Pwg_I_Control_DisplayParent ---------------   
     
     function getOrderedDisplayChildren() {
         if ($this->hasToReorderDisplayChildren) $this->reorderDisplayChildren();
         return $this->displayChildren;
     }
     
-    function findDisplayChild(Pmt_I_Control $child) {
+    function findDisplayChild(Pwg_I_Control $child) {
         $res = false;
         foreach ($this->getOrderedDisplayChildren() as $index => $c) {
             if ($child === $c) { $res = $index; break; }
@@ -75,7 +75,7 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
     	$this->nextControlClassIgnore = true;
     }
     
-    function addDisplayChild(Pmt_I_Control $child) {
+    function addDisplayChild(Pwg_I_Control $child) {
         if ($this->findDisplayChild($child) === false) {
             $this->refAdd($child);
             if ($this->nextControlClassIgnore) {
@@ -118,7 +118,7 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
         }
     }
     
-    function removeDisplayChild(Pmt_I_Control $child) {
+    function removeDisplayChild(Pwg_I_Control $child) {
         $idx = $this->findDisplayChild($child);
         if ($idx !== false) {
             unset($this->displayChildren[$idx]);
@@ -127,10 +127,10 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
     }
     
     protected function dbgList() {
-        Pm_Conversation::log($this->container.'', implode(", ", $this->displayChildren));
+        Pwg_Conversation::log($this->container.'', implode(", ", $this->displayChildren));
     }
     
-    function updateDisplayChildPosition(Pmt_I_Control $child, $displayOrder) {
+    function updateDisplayChildPosition(Pwg_I_Control $child, $displayOrder) {
         $c = $this->container->getController();
         if ($c) $c->logMessage($this->container.'', implode(", ", $this->displayChildren));
         $oi = $this->findDisplayChild($child);
@@ -139,7 +139,7 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
         if ($displayOrder !== $oi) $this->doFrontendUpdateChildPosition($child, $oi, $displayOrder);
     }
     
-    function getChildDisplayOrder(Pmt_I_Control $child) {
+    function getChildDisplayOrder(Pwg_I_Control $child) {
         
     }
     
@@ -155,9 +155,9 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
     }
     
     /**
-     * @return Pmt_I_Control
+     * @return Pwg_I_Control
      */
-    protected function findNearestChildWithFrontBeforeGiven(Pmt_I_Control $child) {
+    protected function findNearestChildWithFrontBeforeGiven(Pwg_I_Control $child) {
         $lastChild = false;
         foreach ($this->getOrderedDisplayChildren() as $control) {
             if ($control === $child) break;
@@ -166,7 +166,7 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
         return $lastChild;
     }
     
-    function initializeChildContainer(Pmt_I_Control $child) {
+    function initializeChildContainer(Pwg_I_Control $child) {
         // TODO
         if ($this->conversation && $this->container && strlen($this->responderId)) {
             // Determine ID of container after which we should insert container of our new control 
@@ -180,7 +180,7 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
             $cntBody = ob_get_clean();
             
             
-            $msg = new Pm_Message();
+            $msg = new Pwg_Message();
             $msg->methodName = 'initializeChildContainer';
             $msg->recipientId = $this->responderId;
             
@@ -195,7 +195,7 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
             $child->notifyContainerInitialized();
             
         } else {
-          Pm_Conversation::log(
+          Pwg_Conversation::log(
               " has conversation? ".(!!$this->conversation)
               ."; has container? ".$this->container
               .", responder id is ".$this->responderId
@@ -210,7 +210,7 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
         }
     }
     
-//  --------------- functions that are not defined in Pmt_I_Control_DisplayParent ---------------   
+//  --------------- functions that are not defined in Pwg_I_Control_DisplayParent ---------------   
 
     function setResponderId($responderId) {
         $this->responderId = $responderId;
@@ -220,7 +220,7 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
         return $this->responderId;
     }
         
-    function setConversation(Pm_I_Conversation $conversation = null) {
+    function setConversation(Pwg_I_Conversation $conversation = null) {
         $this->conversation = $conversation;
     }
 
@@ -228,7 +228,7 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
         return $this->conversation;
     }   
     
-    protected function doFrontendUpdateChildPosition(Pmt_I_Control $child, $oldIndex, $newIndex) {
+    protected function doFrontendUpdateChildPosition(Pwg_I_Control $child, $oldIndex, $newIndex) {
     }
     
     protected function getLastDisplayChildOrder() {
@@ -236,7 +236,7 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
     }
     
     protected function reorderDisplayChildren() {
-        usort($this->displayChildren, array('Pmt_Impl_DisplayParent', 'sortByDisplayOrder'));
+        usort($this->displayChildren, array('Pwg_Impl_DisplayParent', 'sortByDisplayOrder'));
         return $this->displayChildren;
     }
     
@@ -248,7 +248,7 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
         return $this->allowedDisplayChildrenClass;
     }
     
-    static function sortByDisplayOrder(Pmt_I_Control $child1, Pmt_I_Control $child2) {
+    static function sortByDisplayOrder(Pwg_I_Control $child1, Pwg_I_Control $child2) {
         if (($o1 = $child1->getDisplayOrder()) < ($o2 = $child2->getDisplayOrder())) return -1;
         elseif ($o1 > $o2) return 1;
         return 0;
@@ -264,7 +264,7 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
     }   
     
 
-//  +-------------- Pm_I_Refcontrol implementation ---------------+
+//  +-------------- Pwg_I_Refcontrol implementation ---------------+
 
     protected $refReg = array();
 
@@ -275,13 +275,13 @@ class Pmt_Impl_DisplayParent extends Pmt_Autoparams implements Pmt_I_Control_Dis
     }
 
     
-    function refHas($otherObject) { return Pm_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
+    function refHas($otherObject) { return Pwg_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
     
-    function refAdd($otherObject) { return Pm_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
+    function refAdd($otherObject) { return Pwg_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
     
-    function refRemove($otherObject, $nonSymmetrical = false) { $v = $this->refGetSelfVars(); return Pm_Impl_Refcontrol::refRemove($this, $otherObject, $v, false, $nonSymmetrical); }
+    function refRemove($otherObject, $nonSymmetrical = false) { $v = $this->refGetSelfVars(); return Pwg_Impl_Refcontrol::refRemove($this, $otherObject, $v, false, $nonSymmetrical); }
 
-    function refNotifyDestroying() { return Pm_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
+    function refNotifyDestroying() { return Pwg_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
     
 //  +-------------------------------------------------------------+ 
     

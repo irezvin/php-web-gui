@@ -1,28 +1,28 @@
 <?php
 
-class Pmt_Data_Field_Tree extends Pmt_Data_Field {
+class Pwg_Data_Field_Tree extends Pwg_Data_Field {
 
     // +---------------------- visual components ----------------------+ 
     
     /**
-     * @var Pmt_Yui_Panel
+     * @var Pwg_Yui_Panel
      */
     protected $popup = false;
     
     /**
-     * @var Pmt_Data_Tree
+     * @var Pwg_Data_Tree
      */
     public $tvNodes = false;
     
     /**
      * Label that displays currently selected node(s) when popup isn't visible
-     * @var Pmt_Label
+     * @var Pwg_Label
      */
     protected $lblHeader = false;
     
     /**
      * Label that displays currently selected node(s) when popup is visible if $this->withSelectionLabels is TRUE
-     * @var Pmt_Label
+     * @var Pwg_Label
      */
     protected $lblSelectionLabels = false;
     
@@ -36,7 +36,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
 
     /**
      * Autocomplete control that is displayed inside a popup for a quick node lookups (when $this->withSearch is TRUE)  
-     * @var Pmt_Yui_Autocomplete
+     * @var Pwg_Yui_Autocomplete
      */
     protected $acSearch = false;
 
@@ -87,14 +87,14 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
     // +--------------------------- dependencies --------------------------+
 
     /**
-     * Class of concrete Pmt_I_Tree_Mapper_NestedSets mapper (can be skipped if $this->treeProvider is set) 
+     * Class of concrete Pwg_I_Tree_Mapper_NestedSets mapper (can be skipped if $this->treeProvider is set) 
      * @var string | FALSE
      */
     protected $mapperClass = false;
 
     /**
      * Provider of data nodes. Should be set if $this->mapperClass is not.
-     * @var Pmt_I_Tree_Provider
+     * @var Pwg_I_Tree_Provider
      */
     protected $treeProvider = false;
     
@@ -206,7 +206,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
     }
     
     /**
-     * Overrides for controls that are created with the popup. If $this->lazyPopup set to FALSE, controls are created at Pmt_Data_Field_Tree 
+     * Overrides for controls that are created with the popup. If $this->lazyPopup set to FALSE, controls are created at Pwg_Data_Field_Tree 
      * initialization time and using $popupPrototypesOverride doesn't make much sense; but when $this->lazyPopup is TRUE, it's the only legal way to
      * provide prototypes for controls that should be created with the popup.
      * 
@@ -304,7 +304,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
         $this->mapperClass = $mapperClass;
         if (strlen($mapperClass)) {
             $mapper = $this->getApplication()->getMapper($mapperClass);
-            if ($mapper instanceof Pmt_I_Tree_Mapper)
+            if ($mapper instanceof Pwg_I_Tree_Mapper)
                 $this->setTreeProvider($mapper->createTreeProvider());
         }
     }
@@ -313,7 +313,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
         return $this->mapperClass;
     }
 
-    protected function setTreeProvider(Pmt_I_Tree_Provider $treeProvider) {
+    protected function setTreeProvider(Pwg_I_Tree_Provider $treeProvider) {
         $this->treeProvider = $treeProvider;
     }
 
@@ -351,7 +351,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
                     else $this->tvNodes->setCurrentNode($value, true);
             }
             if ($this->lblSelectionLabels) $this->lblSelectionLabels->setHtml($this->getNodeLabels($value));
-            if ($this->popup instanceof Pmt_Yui_Panel) $this->popup->applyAutoSize();
+            if ($this->popup instanceof Pwg_Yui_Panel) $this->popup->applyAutoSize();
         } else {
         }
         if ($this->lblHeader) {
@@ -376,7 +376,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
                     $this->originalValue = $this->getValue();
                     if ($this->lblSelectionLabels) {
                         $this->lblSelectionLabels->setHtml($this->getNodeLabels($this->originalValue));
-                        if ($this->popup instanceof Pmt_Yui_Panel) $this->popup->applyAutoSize();
+                        if ($this->popup instanceof Pwg_Yui_Panel) $this->popup->applyAutoSize();
                     }
                 }
             } 
@@ -454,9 +454,9 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
             
         $res = array(
             'popup' => array(
-                'class' => 'Pmt_Yui_Panel',
+                'class' => 'Pwg_Yui_Panel',
                 'closeOnOutsideClick' => true,
-                'context' => array(new Pmt_Control_Path('../lblHeader'), 'tl', 'tl'),
+                'context' => array(new Pwg_Control_Path('../lblHeader'), 'tl', 'tl'),
                 'visible' => $this->popupVisible,
                 'width' => 400,
                 'header' => $this->lngHeader,
@@ -471,7 +471,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
                 '.click' => 'nodesLabelClick',
             ),
             'acSearch' => array(
-                'class' => 'Pmt_Yui_AutoComplete',
+                'class' => 'Pwg_Yui_AutoComplete',
                 'displayParentPath' => '../pnlPopup',
                 'containerIsBlock' => false,
                 'dataSourceProperties' => array(
@@ -482,7 +482,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
                 'size' => 40,
             ),
             'tvNodes' => array(
-                'class' => 'Pmt_Data_Tree',
+                'class' => 'Pwg_Data_Tree',
                 'displayParentPath' => '../pnlPopup',
                 'treeProvider' => $this->treeProvider,
                 'withCheckboxes' => $this->multiple,
@@ -669,13 +669,13 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
         $this->setPopupVisible(false);
     }
         
-    function handleAcSearchDataRequest(Pmt_Yui_Autocomplete $acSearch, $eventType, array $params) {
+    function handleAcSearchDataRequest(Pwg_Yui_Autocomplete $acSearch, $eventType, array $params) {
         $records = $this->findTreeItems($params['request']);
         $resp = $this->formatSearchResults($this->findTreeItems(trim($params['request'])), trim($params['request']));
         $acSearch->setResponse($resp);
     }
     
-    function nodesLabelClick(Pmt_Label $label, $eventType, array $params) {
+    function nodesLabelClick(Pwg_Label $label, $eventType, array $params) {
         
         if (!$this->readOnly)  {
             if (isset($params['href']) && $params['href'] == '##-clear-') {
@@ -696,7 +696,7 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
         }
     }
     
-    function handleAcSearchItemSelected(Pmt_Yui_Autocomplete $acSearch, $eventType, array $params) {
+    function handleAcSearchItemSelected(Pwg_Yui_Autocomplete $acSearch, $eventType, array $params) {
         if (strlen($txt = trim($params['text'])) && strlen($mf = $this->modelFieldWithNodeId)) {
             $records = array_values($this->findTreeItems($txt, 1));
             if (count($records)) {
@@ -708,12 +708,12 @@ class Pmt_Data_Field_Tree extends Pmt_Data_Field {
         }
     }
     
-    function treeSelectionChange(Pmt_Data_Tree $treeView, $eventType, $params) {
+    function treeSelectionChange(Pwg_Data_Tree $treeView, $eventType, $params) {
         if (!$this->readOnly) {
             $this->value = $this->getValue();
             if ($this->lblSelectionLabels) {
                 $this->lblSelectionLabels->setHtml($this->getNodeLabels($this->value));
-                if ($this->popup instanceof Pmt_Yui_Panel) $this->popup->applyAutoSize();
+                if ($this->popup instanceof Pwg_Yui_Panel) $this->popup->applyAutoSize();
             }
             if ($this->instantApply) $this->apply();
         }

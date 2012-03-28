@@ -1,6 +1,6 @@
 <?php
 
-interface Pmt_I_Calendar {
+interface Pwg_I_Calendar {
 
 	const evtPageDateChange = 'pageDateChange';
 	const evtSelectedValueChange = 'selectedValueChange';

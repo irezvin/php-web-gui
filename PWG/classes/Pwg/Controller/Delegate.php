@@ -1,9 +1,9 @@
 <?php
 
-class Pmt_Controller_Delegate extends Pmt_Autoparams implements Pm_I_Observer, Pm_I_Refcontrol {
+class Pwg_Controller_Delegate extends Pwg_Autoparams implements Pwg_I_Observer, Pwg_I_Refcontrol {
     
     /**
-     * @var Pmt_Controller
+     * @var Pwg_Controller
      */
     protected $controller = false;
     
@@ -15,13 +15,13 @@ class Pmt_Controller_Delegate extends Pmt_Autoparams implements Pm_I_Observer, P
     
     protected $externPrefix = false;
     
-    protected function setController(Pmt_Controller $controller) {
+    protected function setController(Pwg_Controller $controller) {
         $this->controller = $controller;
         $this->addObservable($this->controller, 'Controller');
     }
 
     /**
-     * @return Pmt_Controller
+     * @return Pwg_Controller
      */
     function getController() {
         return $this->controller;
@@ -71,7 +71,7 @@ class Pmt_Controller_Delegate extends Pmt_Autoparams implements Pm_I_Observer, P
     function onControlsCreated() {
     }
     
-    function addObservable (Pm_I_Observable $observable, $id, array $eventMap = array()) {
+    function addObservable (Pwg_I_Observable $observable, $id, array $eventMap = array()) {
         $em = $this->getExternMap();
         if (isset($em[$id])) {
             $id = $em[$id];
@@ -96,13 +96,13 @@ class Pmt_Controller_Delegate extends Pmt_Autoparams implements Pm_I_Observer, P
     }
 
     
-//  +--------------- Pm_I_Observer implementation ----------------+
+//  +--------------- Pwg_I_Observer implementation ----------------+
     
-    function handleEvent(Pm_I_Observable $observable, $eventType, $params = array()) {
+    function handleEvent(Pwg_I_Observable $observable, $eventType, $params = array()) {
     }
     
     
-//  +-------------- Pm_I_Refcontrol implementation ---------------+
+//  +-------------- Pwg_I_Refcontrol implementation ---------------+
 
     protected $refReg = array();
 
@@ -112,13 +112,13 @@ class Pmt_Controller_Delegate extends Pmt_Autoparams implements Pm_I_Observer, P
         return $res;
     }
     
-    function refHas($otherObject) { return Pm_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
+    function refHas($otherObject) { return Pwg_Impl_Refcontrol::refHas($otherObject, $this->refReg); }
     
-    function refAdd($otherObject) { return Pm_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
+    function refAdd($otherObject) { return Pwg_Impl_Refcontrol::refAdd($this, $otherObject, $this->refReg); }
     
-    function refRemove($otherObject, $nonSymmetrical = false) { $v = $this->refGetSelfVars(); return Pm_Impl_Refcontrol::refRemove($this, $otherObject, $v, false, $nonSymmetrical); }
+    function refRemove($otherObject, $nonSymmetrical = false) { $v = $this->refGetSelfVars(); return Pwg_Impl_Refcontrol::refRemove($this, $otherObject, $v, false, $nonSymmetrical); }
 
-    function refNotifyDestroying() { return Pm_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
+    function refNotifyDestroying() { return Pwg_Impl_Refcontrol::refNotifyDestroying($this, $this->refReg); }
 
 //  +-------------------------------------------------------------+ 
     

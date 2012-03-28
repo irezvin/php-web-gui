@@ -1,6 +1,6 @@
 <?php
 
-abstract class Pmt_Yui_Tree_Node extends Pmt_Struct_Tree_Node {
+abstract class Pwg_Yui_Tree_Node extends Pwg_Struct_Tree_Node {
 
     private static $LAST_UID = 0;
 
@@ -10,7 +10,7 @@ abstract class Pmt_Yui_Tree_Node extends Pmt_Struct_Tree_Node {
 
     protected $expanded = false;
     	
-	protected $nodeBaseClass = 'Pmt_Yui_Tree_Node';
+	protected $nodeBaseClass = 'Pwg_Yui_Tree_Node';
     
     
 	abstract protected function getJsNodeType();
@@ -31,7 +31,7 @@ abstract class Pmt_Yui_Tree_Node extends Pmt_Struct_Tree_Node {
 	
 	/**
 	 * @param $uid
-	 * @return Pmt_Yui_Tree_Node
+	 * @return Pwg_Yui_Tree_Node
 	 */
 	function findNodeByUid($uid) {
 	    if ($this->uid == $uid) return $this;
@@ -78,11 +78,11 @@ abstract class Pmt_Yui_Tree_Node extends Pmt_Struct_Tree_Node {
     }
     
     /**
-     * @return Pmt_Yui_Tree
+     * @return Pwg_Yui_Tree
      */
     function getTree() {
     	$n = $this;
-    	while ($n && !($n instanceof Pmt_Yui_Tree_Root)) {
+    	while ($n && !($n instanceof Pwg_Yui_Tree_Root)) {
     		$n = $n->getParentNode();
     	}
     	if ($n) $res = $n->getTree();
@@ -116,7 +116,7 @@ abstract class Pmt_Yui_Tree_Node extends Pmt_Struct_Tree_Node {
 		if ($t = $this->getTree()) $t->msgExecuteNodeMethod($this, $methodName, array_slice($args, 1));
 	}
 
-	protected function doOnNodeRemoved(Pmt_Struct_Tree_Node $node, $oldIndex) {
+	protected function doOnNodeRemoved(Pwg_Struct_Tree_Node $node, $oldIndex) {
 	    if ($t = $this->getTree()) {
             $t->msgRemoveChild($this, $oldIndex);
 	    }
@@ -126,14 +126,14 @@ abstract class Pmt_Yui_Tree_Node extends Pmt_Struct_Tree_Node {
 	    if ($t = $this->getTree()) $t->msgDeleteNode($this);
 	}
 	
-    protected function doOnSetParentNode(Pmt_Struct_Tree_Node $oldParentNode = null) {
+    protected function doOnSetParentNode(Pwg_Struct_Tree_Node $oldParentNode = null) {
         $t = $this->getTree();
         if ($t) {
             if ($this->parentNode) $t->msgAddNode($this, $this->parentNode, $this->parentNode->getNodeIndex($this));
         } 
     }
     
-    protected function doOnMoveNode(Pmt_Struct_Tree_Node $node, $oldIndex, $newIndex) {
+    protected function doOnMoveNode(Pwg_Struct_Tree_Node $node, $oldIndex, $newIndex) {
         $t = $this->getTree();
         $t->msgMoveNode($node, $newIndex);
     }

@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Yui_Tree extends Pmt_Element implements Pmt_I_Control_DisplayParent {
+class Pwg_Yui_Tree extends Pwg_Element implements Pwg_I_Control_DisplayParent {
 
     const evtChildClick = 'childClick';
     const evtChildDblClick = 'childDblClick';
@@ -10,23 +10,23 @@ class Pmt_Yui_Tree extends Pmt_Element implements Pmt_I_Control_DisplayParent {
     const evtChildToggleBranch = 'childToggleBranch';
     
     /**
-     * @var Pmt_Yui_Tree_Node_Root
+     * @var Pwg_Yui_Tree_Node_Root
      */
 	protected $rootNode = false;
 	
 	/**
-	 * @var Pmt_Yui_Tree_Node
+	 * @var Pwg_Yui_Tree_Node
 	 */	
 	protected $insetPanelNode = false;
 	
 	/**
-	 * @var Pmt_Yui_Tree_Node
+	 * @var Pwg_Yui_Tree_Node
 	 */	
 	protected $selectedNode = false;
 	
     /**
      * Aggregate that implements displayParent functionality
-     * @var Pmt_Impl_DisplayParent
+     * @var Pwg_Impl_DisplayParent
      */
     protected $idp = false;
 	
@@ -34,14 +34,14 @@ class Pmt_Yui_Tree extends Pmt_Element implements Pmt_I_Control_DisplayParent {
     
     protected function doOnInitialize(array $options) {
         parent::doOnInitialize($options);
-        $this->idp = new Pmt_Impl_DisplayParent(array(
+        $this->idp = new Pwg_Impl_DisplayParent(array(
             'conversation' => $this->conversation? $this->conversation : null,
             'responderId' => $this->responderId,
             'container' => $this,
         ));
     }
     
-    function setConversation(Pm_I_Conversation $conversation) {
+    function setConversation(Pwg_I_Conversation $conversation) {
         $res = parent::setConversation($conversation);
         if ($this->idp) {
             $this->idp->setConversation($conversation);
@@ -51,16 +51,16 @@ class Pmt_Yui_Tree extends Pmt_Element implements Pmt_I_Control_DisplayParent {
     }       
     
     /**
-     * @return Pmt_Yui_Tree_Root
+     * @return Pwg_Yui_Tree_Root
      */
     function getRootNode() {
         if ($this->rootNode === false) {
-        	$this->rootNode = new Pmt_Yui_Tree_Root(array('tree' => $this, 'nodePrototypes' => $this->nodePrototypes));
+        	$this->rootNode = new Pwg_Yui_Tree_Root(array('tree' => $this, 'nodePrototypes' => $this->nodePrototypes));
         }
         return $this->rootNode;
     }
     
-    function findNodesByPattern(array $pattern = array(), $baseClass = 'Pmt_Struct_Tree_Node', $recursive = true, $strict = false) {
+    function findNodesByPattern(array $pattern = array(), $baseClass = 'Pwg_Struct_Tree_Node', $recursive = true, $strict = false) {
         return $this->getRootNode()->findNodesByPattern($pattern, $baseClass, $recursive, $strict);
     }    
 
@@ -96,50 +96,50 @@ class Pmt_Yui_Tree extends Pmt_Element implements Pmt_I_Control_DisplayParent {
 	}
 	
 	protected function doGetConstructorName() {
-		return 'Pmt_Yui_Tree_New';
+		return 'Pwg_Yui_Tree_New';
 	}
 
 	
 	// Messages and events
 	
 	
-	function msgSetNodeProperty(Pmt_Yui_Tree_Node $node, $propName, $propValue) {
+	function msgSetNodeProperty(Pwg_Yui_Tree_Node $node, $propName, $propValue) {
 		$this->sendMessage(__FUNCTION__, $a = array($node->getIndexPath(), $propName, $propValue));
 	}
 	
-	function msgExecuteNodeMethod(Pmt_Yui_Tree_Node $node, $methodName, array $args = array()) {
+	function msgExecuteNodeMethod(Pwg_Yui_Tree_Node $node, $methodName, array $args = array()) {
 		$this->sendMessage(__FUNCTION__, array($node->getIndexPath(), $methodName, $args));
 	}
 	
 	
-	function msgAddNode(Pmt_Yui_Tree_Node $node, Pmt_Yui_Tree_Node $parent, $index) {
+	function msgAddNode(Pwg_Yui_Tree_Node $node, Pwg_Yui_Tree_Node $parent, $index) {
 	    $this->sendMessage(__FUNCTION__, array($node->toJs(), $parent->getIndexPath(), $index));
 	}
 	
-	function msgRemoveNode(Pmt_Yui_Tree_Node $node) {
+	function msgRemoveNode(Pwg_Yui_Tree_Node $node) {
 		$this->sendMessage(__FUNCTION__, array($node->getIndexPath()));
 	}
 	
-	function msgRemoveChild(Pmt_Yui_Tree_Node $node, $childIndex) {
+	function msgRemoveChild(Pwg_Yui_Tree_Node $node, $childIndex) {
 	    $this->sendMessage(__FUNCTION__, array($node->getIndexPath(), $childIndex));
 	}
 	
-	function msgDeleteNode(Pmt_Yui_Tree_Node $node) {
+	function msgDeleteNode(Pwg_Yui_Tree_Node $node) {
 		$this->sendMessage(__FUNCTION__, array($node->getIndexPath()));
 	}
 	
-	function msgMoveNode(Pmt_Yui_Tree_Node $node, $newIndex) {
+	function msgMoveNode(Pwg_Yui_Tree_Node $node, $newIndex) {
 		$this->sendMessage(__FUNCTION__, array($node->getIndexPath(), $newIndex));
 	}
 	
-	function msgScrollNodeIntoView(Pmt_Yui_Tree_Node $node) {
+	function msgScrollNodeIntoView(Pwg_Yui_Tree_Node $node) {
 		$this->sendMessage(__FUNCTION__, array($node->getIndexPath()));
 	}
 	
 	//function msgScrollIntoView
 	
 	
-	function notifyChildExpandChange(Pmt_Yui_Tree_Node $node, $isExpanded) {
+	function notifyChildExpandChange(Pwg_Yui_Tree_Node $node, $isExpanded) {
 	    $this->triggerEvent(
 	        $isExpanded? self::evtChildExpand : self::evtChildCollapse, 
 	        array('child' => $node, 'byUser' => false)
@@ -147,29 +147,29 @@ class Pmt_Yui_Tree extends Pmt_Element implements Pmt_I_Control_DisplayParent {
 	}
 	
     
-//  Pmt_I_Control_DisplayParent 
+//  Pwg_I_Control_DisplayParent 
     
     function getOrderedDisplayChildren() {
         return $this->idp->getOrderedDisplayChildren(); 
     }
     
-    function findDisplayChild(Pmt_I_Control $child) {
+    function findDisplayChild(Pwg_I_Control $child) {
         return $this->idp->findDisplayChild($child);
     }
         
-    function addDisplayChild(Pmt_I_Control $child) {
+    function addDisplayChild(Pwg_I_Control $child) {
         return $this->idp->addDisplayChild($child);
     }
     
-    function removeDisplayChild(Pmt_I_Control $child) {
+    function removeDisplayChild(Pwg_I_Control $child) {
         return $this->idp->removeDisplayChild($child);
     }
     
-    function updateDisplayChildPosition(Pmt_I_Control $child, $displayOrder) {
+    function updateDisplayChildPosition(Pwg_I_Control $child, $displayOrder) {
         return $this->idp->updateDisplayChildPosition($child, $displayOrder);
     }
     
-    function initializeChildContainer(Pmt_I_Control $child) {
+    function initializeChildContainer(Pwg_I_Control $child) {
         return $this->idp->initializeChildContainer($child);
     }
     
@@ -194,7 +194,7 @@ class Pmt_Yui_Tree extends Pmt_Element implements Pmt_I_Control_DisplayParent {
 
     // InsetPanelNode property    
     
-    function setInsetPanelNode(Pmt_Yui_Tree_Node $insetPanelNode = null) {
+    function setInsetPanelNode(Pwg_Yui_Tree_Node $insetPanelNode = null) {
         if ($insetPanelNode !== ($oldInsetPanelNode = $this->insetPanelNode)) {
             $this->insetPanelNode = $insetPanelNode;
             $this->sendMessage(__FUNCTION__, array($this->jsGetInsetPanelNode()));
@@ -212,7 +212,7 @@ class Pmt_Yui_Tree extends Pmt_Element implements Pmt_I_Control_DisplayParent {
 
     // SelectedNode property    
 	
-    function setSelectedNode(Pmt_Yui_Tree_Node $selectedNode = null) {
+    function setSelectedNode(Pwg_Yui_Tree_Node $selectedNode = null) {
         if ($selectedNode !== ($oldSelectedNode = $this->selectedNode)) {
             $this->selectedNode = $selectedNode;
             if ($selectedNode) $selectedNode->expandAncestors();
@@ -221,7 +221,7 @@ class Pmt_Yui_Tree extends Pmt_Element implements Pmt_I_Control_DisplayParent {
     }
 
     /**
-     * @return Pmt_Yui_Tree_Node
+     * @return Pwg_Yui_Tree_Node
      */
     function getSelectedNode() {
         return $this->selectedNode;

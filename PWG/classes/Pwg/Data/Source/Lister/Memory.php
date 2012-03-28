@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Data_Source_Lister_Memory extends Pmt_Data_Source_Lister {
+class Pwg_Data_Source_Lister_Memory extends Pwg_Data_Source_Lister {
     
     protected $keyIndex = false;
     

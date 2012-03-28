@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
+class Pwg_Data_Field_AutoComplete extends Pwg_Data_Field {
     
     protected $labelFieldName = false;
     
@@ -30,19 +30,19 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
     //protected $allowNullValues = false;
     
     /**
-     * @var Pmt_Data_Source
+     * @var Pwg_Data_Source
      */
     protected $listSource = false;
 
     protected $ownListSourcePrototype = false;
     
     /**
-     * @var Pmt_Data_Source
+     * @var Pwg_Data_Source
      */
     public $ownListSource = false;
     
     /**
-     * @var Pmt_Yui_AutoComplete
+     * @var Pwg_Yui_AutoComplete
      */
     public $editor = false;
     
@@ -61,7 +61,7 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
         parent::doOnGetControlPrototypes($prototypes);
         $p = array(
             'editor' => array(
-                'class' => 'Pmt_Yui_AutoComplete', 
+                'class' => 'Pwg_Yui_AutoComplete', 
                 'displayParentPath' => '../panel', 
                 'containerIsBlock' => false,
                 'autoCompleteProperties' => array(
@@ -98,11 +98,11 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
         return $res;
     }
     
-    function handleEditorDataRequest(Pmt_Yui_AutoComplete $editor, $eventName, array $params) {
+    function handleEditorDataRequest(Pwg_Yui_AutoComplete $editor, $eventName, array $params) {
         if (isset($params['request'])) {
             $lf = $this->getLabelFieldName();
             $alde = $this->getActualLabelDisplayExpression();
-            if (!$this->listSource) Pm_Conversation::log("~~~ no list source ~~~");
+            if (!$this->listSource) Pwg_Conversation::log("~~~ no list source ~~~");
             if ($this->listSource && (strlen($lf) || strlen($alde)) && strlen($this->valueFieldName)) {
                 $c = $this->listSource->createCollection();
                 
@@ -124,7 +124,7 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
                 }
                 $this->editor->setResponse($list);
             } else {
-                throw new Exception("Pmt_Yui_AutoComplete isn't properly configured; check if listSource, valueFieldName and labelField (or labelExpression) properties are set.");
+                throw new Exception("Pwg_Yui_AutoComplete isn't properly configured; check if listSource, valueFieldName and labelField (or labelExpression) properties are set.");
             }
         }
     }
@@ -229,7 +229,7 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
         return $this->valueFieldName;
     }
 
-    function setListSource(Pmt_Data_Source $listSource = null) {
+    function setListSource(Pwg_Data_Source $listSource = null) {
         if ($listSource !== ($oldListSource = $this->listSource)) {
             $this->listSource = $listSource;
             $this->intReset();
@@ -365,12 +365,12 @@ class Pmt_Data_Field_AutoComplete extends Pmt_Data_Field {
     
     /**
      * @param array|bool $ownListSourcePrototype 
-     * - Array to enable Pmt_Data_Field_AutoComplete to create ownListSource and use it;
+     * - Array to enable Pwg_Data_Field_AutoComplete to create ownListSource and use it;
      * - FALSE to remove prototype and to DO NOT create ownListSource
      */
     protected function setOwnListSourcePrototype($ownListSourcePrototype) {
         if (is_array($ownListSourcePrototype)) {
-            if (!isset($ownListSourcePrototype['class'])) $ownListSourcePrototype['class'] = 'Pmt_Data_Source';
+            if (!isset($ownListSourcePrototype['class'])) $ownListSourcePrototype['class'] = 'Pwg_Data_Source';
             if (!isset($this->associations['listSource'])) $this->associations['listSource'] = 'ownListSource'; 
         }
         $this->ownListSourcePrototype = $ownListSourcePrototype;

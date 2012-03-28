@@ -1,13 +1,13 @@
 
-// +------------------------ Pmt_Yui_Paginator ------------------------+
+// +------------------------ Pwg_Yui_Paginator ------------------------+
 
-Pmt_Yui_Paginator = function(options) {
-    window.Pmt_Element.call(this, options);
+Pwg_Yui_Paginator = function(options) {
+    window.Pwg_Element.call(this, options);
     this.initialize(options);
 }
 
-Pmt_Yui_Paginator.prototype = {
-   jsClassName: "Pmt_Yui_Paginator",
+Pwg_Yui_Paginator.prototype = {
+   jsClassName: "Pwg_Yui_Paginator",
    id: false,
    autoEvents: [],
    container: false,
@@ -24,8 +24,8 @@ Pmt_Yui_Paginator.prototype = {
    renderElement: function() {
         var paginatorOptions = {};
         if (this.localization !== null && (typeof this.localization == 'object'))
-            Pmt_Util.override(paginatorOptions, this.localization);
-        Pmt_Util.override(paginatorOptions, {
+            Pwg_Util.override(paginatorOptions, this.localization);
+        Pwg_Util.override(paginatorOptions, {
             rowsPerPage: this.rowsPerPage,
             totalRecords: this.totalRecords,
             initialPage: this.currentPage + 1,
@@ -108,16 +108,16 @@ Pmt_Yui_Paginator.prototype = {
 
 };
 
-Pmt_Util.extend(Pmt_Yui_Paginator, Pmt_Element);
+Pwg_Util.extend(Pwg_Yui_Paginator, Pwg_Element);
 
-// ------------------------------------------- Pmt_Yui_Tab_Control ------------------------------------------- //
+// ------------------------------------------- Pwg_Yui_Tab_Control ------------------------------------------- //
 
-Pmt_Yui_Tab_Control = function (options) {
+Pwg_Yui_Tab_Control = function (options) {
     this.initialize(options);    
 }
 
-Pmt_Yui_Tab_Control.prototype = {
-	jsClassName: "Pmt_Yui_Tab_Control",
+Pwg_Yui_Tab_Control.prototype = {
+	jsClassName: "Pwg_Yui_Tab_Control",
     yuiTabView: false,
     tabs: false,
     yuiTabs: false,
@@ -224,16 +224,16 @@ Pmt_Yui_Tab_Control.prototype = {
 
 }
 
-Pmt_Util.extend(Pmt_Yui_Tab_Control, Pmt_Element);
+Pwg_Util.extend(Pwg_Yui_Tab_Control, Pwg_Element);
 
-//  ---- Pmt_Yui_AutoComplete ----
+//  ---- Pwg_Yui_AutoComplete ----
 
-Pmt_Yui_AutoComplete = function(options) {
+Pwg_Yui_AutoComplete = function(options) {
     this.initialize(options);
 }
 
-Pmt_Yui_AutoComplete.prototype = {
-    jsClassName: "Pmt_Yui_AutoComplete",
+Pwg_Yui_AutoComplete.prototype = {
+    jsClassName: "Pwg_Yui_AutoComplete",
     yuiAutoComplete: false,
     autoCompleteConfig: {},
     autoCompleteProperties: {},
@@ -264,13 +264,13 @@ Pmt_Yui_AutoComplete.prototype = {
     },
 
     renderElement: function() {
-        Pmt_Text.prototype.renderElement.call(this);
+        Pwg_Text.prototype.renderElement.call(this);
         var ic = this.getInnerContainer();
         if (ic) {
             this.divElement = document.createElement('div');
             ic.appendChild(this.divElement);
             if (!this.dataSource) {
-                this.dataSource = new Pmt_Yui_DataSource({
+                this.dataSource = new Pwg_Yui_DataSource({
                     'id': this.id,
                     'transport': this.transport
                     //'dataRequestMethod': 'autoCompleteRequest',
@@ -323,4 +323,4 @@ Pmt_Yui_AutoComplete.prototype = {
     }
 }
 
-Pmt_Util.extend(Pmt_Yui_AutoComplete, Pmt_Text);
+Pwg_Util.extend(Pwg_Yui_AutoComplete, Pwg_Text);

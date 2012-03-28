@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Yui_DataSource extends Pmt_Base {
+class Pwg_Yui_DataSource extends Pwg_Base {
     
     protected $defaultResponse = array();
     

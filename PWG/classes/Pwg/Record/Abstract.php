@@ -1,6 +1,6 @@
 <?php
 
-abstract class Pmt_Record_Abstract implements Pmt_I_Record {
+abstract class Pwg_Record_Abstract implements Pwg_I_Record {
 
     protected $uid = false;
     
@@ -27,7 +27,7 @@ abstract class Pmt_Record_Abstract implements Pmt_I_Record {
         $diff = $this->getDifferences($data);
         if ($diff) {
             $this->doUpdateData($data);
-            Pmt_Impl_Observable::triggerEvent($this, $this->observers, 'change', $diff);
+            Pwg_Impl_Observable::triggerEvent($this, $this->observers, 'change', $diff);
         }
     }
     
@@ -41,17 +41,17 @@ abstract class Pmt_Record_Abstract implements Pmt_I_Record {
         return $this->getField($name);
     }
     
-//  Pm_I_Observable 
+//  Pwg_I_Observable 
     
-    function observe($eventType, Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
-        return Pmt_Impl_Observable::observe($this->observers, $eventType, $observer, $methodName, $extraParams);
+    function observe($eventType, Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+        return Pwg_Impl_Observable::observe($this->observers, $eventType, $observer, $methodName, $extraParams);
     }
     
-    function unobserve($eventType, Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
-        return Pmt_Impl_Observable::unobserve($this->observers, $eventType, $observer, $methodName, $extraParams);    
+    function unobserve($eventType, Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+        return Pwg_Impl_Observable::unobserve($this->observers, $eventType, $observer, $methodName, $extraParams);    
     }
 
-    function matches(Pmt_I_Record $otherRecord) {
+    function matches(Pwg_I_Record $otherRecord) {
         return $this === $otherRecord || $this->getData() == $otherRecord->getData();
     }
     

@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Record_Fieldinfo_Ae implements Pmt_I_Record_Fieldinfo {
+class Pwg_Record_Fieldinfo_Ae implements Pwg_I_Record_Fieldinfo {
     
     /**
      * @var Ae_Model_Property

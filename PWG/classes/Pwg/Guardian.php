@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Guardian {
+class Pwg_Guardian {
 
     protected $lastSignId = 0;
     
@@ -12,15 +12,15 @@ class Pmt_Guardian {
     }
     
     /**
-     * @return Pmt_Guardian
+     * @return Pwg_Guardian
      */
     function getInstance() {
-        if (!isset($GLOBALS['_Pmt_Guardian']) || ! ($GLOBALS['_Pmt_Guardian'] instanceof Pmt_Guardian)) 
-            $GLOBALS['_Pmt_Guardian'] = new Pmt_Guardian;
+        if (!isset($GLOBALS['_Pmt_Guardian']) || ! ($GLOBALS['_Pmt_Guardian'] instanceof Pwg_Guardian)) 
+            $GLOBALS['_Pmt_Guardian'] = new Pwg_Guardian;
         return $GLOBALS['_Pmt_Guardian'];
     }
     
-    function setInstance(Pmt_Guardian $instance) {
+    function setInstance(Pwg_Guardian $instance) {
         $GLOBALS['_Pmt_Guardian'] = & $instance;        
     }
     

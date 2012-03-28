@@ -1,12 +1,12 @@
 <?php
 
-interface Pm_I_Renderer {
+interface Pwg_I_Renderer {
     
     function renderAssets(array $assets);
     
     function renderContainer($containerHtml);
     
-    function renderInitializer(Pm_Js_Initializer $initializer);
+    function renderInitializer(Pwg_Js_Initializer $initializer);
     
 }
 

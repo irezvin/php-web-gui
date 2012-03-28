@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Tree_Node extends Pmt_Tree_Parent {
+class Pwg_Tree_Node extends Pwg_Tree_Parent {
     
     protected $content = false;
     
@@ -45,7 +45,7 @@ class Pmt_Tree_Node extends Pmt_Tree_Parent {
             if (!$noTrigger) {
                 $this->triggerEvent('expand', array('byUser' => false));
                 $p = $this->parent;
-                while ($p instanceof Pmt_Tree_Parent) {
+                while ($p instanceof Pwg_Tree_Parent) {
                     if ($p->observeChildExpand) {
                         $p->notifyChildExpand($this, false);
                     }
@@ -115,7 +115,7 @@ class Pmt_Tree_Node extends Pmt_Tree_Parent {
     function triggerFrontendClick() {
         $this->triggerEvent('click');
         $p = $this->parent;
-        while ($p instanceof Pmt_Tree_Parent) {
+        while ($p instanceof Pwg_Tree_Parent) {
             if ($p->observeChildClicks) {
                 $p->notifyChildClick($this);
             }
@@ -126,7 +126,7 @@ class Pmt_Tree_Node extends Pmt_Tree_Parent {
     function triggerFrontendDblClick() {
         $this->triggerEvent('dblClick');
         $p = $this->parent;
-        while ($p instanceof Pmt_Tree_Parent) {
+        while ($p instanceof Pwg_Tree_Parent) {
             if ($p->observeChildClicks) {
                 $p->notifyChildDblClick($this);
             }
@@ -138,7 +138,7 @@ class Pmt_Tree_Node extends Pmt_Tree_Parent {
         $this->expanded = true;
         $this->triggerEvent('expand', array('byUser' => true));
         $p = $this->parent;
-        while ($p instanceof Pmt_Tree_Parent) {
+        while ($p instanceof Pwg_Tree_Parent) {
             if ($p->observeChildExpand) {
                 $p->notifyChildExpand($this, true);
             }
@@ -150,7 +150,7 @@ class Pmt_Tree_Node extends Pmt_Tree_Parent {
         $this->expanded = false;
         $this->triggerEvent('collapse');
         $p = $this->parent;
-        while ($p instanceof Pmt_Tree_Parent) {
+        while ($p instanceof Pwg_Tree_Parent) {
             if ($p->observeChildCollapse) {
                 $p->notifyChildCollapse($this);
             }
@@ -168,12 +168,12 @@ class Pmt_Tree_Node extends Pmt_Tree_Parent {
     
     function expandAncestors() {
         $p = & $this;
-        while (($p = & $p->getParent()) instanceof Pmt_Tree_Node) {
+        while (($p = & $p->getParent()) instanceof Pwg_Tree_Node) {
             $p->setExpanded(true);
         }
     }
     
-    function changeParent(Pmt_Tree_Parent $otherParent) {
+    function changeParent(Pwg_Tree_Parent $otherParent) {
         $this->setParent($otherParent);
         $this->sendMessage('changeParent', array($otherParent->getResponderId()), 1);
     }
@@ -199,10 +199,10 @@ class Pmt_Tree_Node extends Pmt_Tree_Parent {
         parent::doOnDestroy();
         $parentTree = false;
         $p = & $this->parent;
-        while ($p && !$p instanceof Pmt_Tree_View) {
+        while ($p && !$p instanceof Pwg_Tree_View) {
             $p = & $p->parent;
         }
-        if ($p instanceof Pmt_Tree_View) $p->notifyNodeDestroyed($this);
+        if ($p instanceof Pwg_Tree_View) $p->notifyNodeDestroyed($this);
     } 
 
 }

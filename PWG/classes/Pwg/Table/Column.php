@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Table_Column extends Pmt_Composite {
+class Pwg_Table_Column extends Pwg_Composite {
 
     protected $caption = false;
     
@@ -9,7 +9,7 @@ class Pmt_Table_Column extends Pmt_Composite {
     protected $editorPrototype = false;
     
     /**
-     * @var Pmt_Table_Editor
+     * @var Pwg_Table_Editor
      */
     protected $editor = false;
     
@@ -67,28 +67,28 @@ class Pmt_Table_Column extends Pmt_Composite {
     }   
     
     /**
-     * @return Pmt_Table_Editor
+     * @return Pwg_Table_Editor
      */
     function getEditor() {
-        //Pm_Conversation::log("Editor", $this->editor, "hasEditor", $this->hasEditor, "editorPrototype", $this->editorPrototype);      
+        //Pwg_Conversation::log("Editor", $this->editor, "hasEditor", $this->hasEditor, "editorPrototype", $this->editorPrototype);      
         if (($this->editor === false) && $this->hasEditor && is_array($this->editorPrototype)) {
             $ep = $this->editorPrototype;
             $ep['column'] = $this;
-            $this->editor = Pmt_Base::factory($this->editorPrototype, 'Pmt_Table_Editor');
+            $this->editor = Pwg_Base::factory($this->editorPrototype, 'Pwg_Table_Editor');
         }
-        //Pm_Conversation::log("Editor of {$this} is {$this->editor}");
+        //Pwg_Conversation::log("Editor of {$this} is {$this->editor}");
         return $this->editor;
     }
     
     /**
-     * @return Pmt_Table_Colset
+     * @return Pwg_Table_Colset
      */
     function getColset() {
         return $this->parent;
     }
     
     /**
-     * @return Pmt_Table
+     * @return Pwg_Table
      */
     function getTable() {
         $res = false;

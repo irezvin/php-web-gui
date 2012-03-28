@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Renderer implements Pm_I_Renderer {
+class Pwg_Renderer implements Pwg_I_Renderer {
 
     protected $allAssets = array();
     
@@ -16,7 +16,7 @@ class Pmt_Renderer implements Pm_I_Renderer {
         if (strlen($containerHtml)) $this->allContainersHtml[] = $containerHtml;
     }
     
-    function renderInitializer(Pm_Js_Initializer $initializer) {
+    function renderInitializer(Pwg_Js_Initializer $initializer) {
         $this->allInitializers[] = $initializer;
     }
     

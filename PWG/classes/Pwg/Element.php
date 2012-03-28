@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Element extends Pmt_Base implements Pm_I_Observer {
+class Pwg_Element extends Pwg_Base implements Pwg_I_Observer {
 
     protected $containerDisplay = true;
     
@@ -131,7 +131,7 @@ class Pmt_Element extends Pmt_Base implements Pm_I_Observer {
         return $this->$prop;
     }
     
-//  Template methods of Pmt_Base
+//  Template methods of Pwg_Base
 
     protected function doListPassthroughParams() {
         return array_merge(parent::doListPassthroughParams(), array('visible', 'attribs', 'style', 'className', 'nInnerContainers')); 

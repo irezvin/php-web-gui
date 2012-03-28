@@ -1,6 +1,6 @@
 <?php
 
-class Pm_Cmt_Responder extends Pmt_Autoparams {
+class Pwg_Cmt_Responder extends Pwg_Autoparams {
 	
 	const fixLen = 5000;
 	const fixLen2 = 5000;
@@ -58,7 +58,7 @@ class Pm_Cmt_Responder extends Pmt_Autoparams {
     }
     
     function send($json) {
-    	$call = 'Pmt_Comet.sendDataToInstance';
+    	$call = 'Pwg_Comet.sendDataToInstance';
     	if (!$this->getIsXhr()) $call = 'parent.'.$call;
     	$j = new Ae_Js_Call($call, array($this->getInstanceId(), $json));
     	if (!$this->getIsXhr()) {
@@ -82,7 +82,7 @@ class Pm_Cmt_Responder extends Pmt_Autoparams {
     }
     
     function disconnect() {
-    	$call = 'Pmt_Comet.disconnectInstance';
+    	$call = 'Pwg_Comet.disconnectInstance';
     	if (!$this->getIsXhr()) $call = 'parent.'.$call;
     	$j = new Ae_Js_Call($call, array($this->getInstanceId()));
 		if (!$this->getIsXhr()) {

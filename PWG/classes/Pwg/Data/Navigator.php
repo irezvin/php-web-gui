@@ -1,63 +1,63 @@
 <?php
 
-class Pmt_Data_Navigator extends Pmt_Controller {
+class Pwg_Data_Navigator extends Pwg_Controller {
 
     const evtNavButtonClick = 'navButtonClick';
     
     protected $allowPassthroughEvents = true;
     
     /**
-     * @var Pmt_Data_Source
+     * @var Pwg_Data_Source
      */
     protected $dataSource = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnNext = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnPrev = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnFirst = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnLast = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnNew = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnSave = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnCancel = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnDelete = false;
     
     /**
-     * @var Pmt_Text
+     * @var Pwg_Text
      */
     protected $txtRecordNo = false;
 
     /**
-     * @var Pmt_Text
+     * @var Pwg_Text
      */
     protected $txtRecordsCount = false;
 
@@ -88,63 +88,63 @@ class Pmt_Data_Navigator extends Pmt_Controller {
     protected $deleteConfirmation = false;
     
     /**
-     * @return Pmt_Button
+     * @return Pwg_Button
      */
     function getBtnNext() { return $this->getControl('btnNext'); }
 
     /**
-     * @return Pmt_Button
+     * @return Pwg_Button
      */
     function getBtnPrev() { return $this->getControl('btnPrev'); }
     
     /**
-     * @return Pmt_Button
+     * @return Pwg_Button
      */
     function getBtnFirst() { return $this->getControl('btnFirst'); }
     
     /**
-     * @return Pmt_Button
+     * @return Pwg_Button
      */
     function getBtnLast() { return $this->getControl('btnLast'); }
     
     /**
-     * @return Pmt_Button
+     * @return Pwg_Button
      */
     function getBtnReload() { return $this->getControl('btnReload'); }
     
     /**
-     * @return Pmt_Button
+     * @return Pwg_Button
      */
     function getBtnSave() { return $this->getControl('btnSave'); }
     
     /**
-     * @return Pmt_Button
+     * @return Pwg_Button
      */
     function getBtnCancel() { return $this->getControl('btnCancel'); }
     
     /**
-     * @return Pmt_Button
+     * @return Pwg_Button
      */
     function getBtnDelete() { return $this->getControl('btnDelete'); }
     
     /**
-     * @return Pmt_Text
+     * @return Pwg_Text
      */
     function getTxtRecordNo() { return $this->getControl('txtRecordNo'); }
     
     /**
-     * @return Pmt_Text
+     * @return Pwg_Text
      */
     function getTxtRecordsCount() { return $this->getControl('txtRecordsCount'); }
     
     /**
-     * @return Pmt_Data_Source
+     * @return Pwg_Data_Source
      */
     function getDataSource() {
         return $this->dataSource;
     }
     
-    function setDataSource(Pmt_Data_Source $source) {
+    function setDataSource(Pwg_Data_Source $source) {
         $this->dataSource = $source;
         $this->dataSource->observe('onCurrentRecord', $this, 'handleCurrentRecord');
         $this->dataSource->observe('onUpdateRecord', $this, 'handleCurrentRecord');
@@ -163,8 +163,8 @@ class Pmt_Data_Navigator extends Pmt_Controller {
         ob_start();
 ?>
 <?php   if ($this->hasIndexDisplay) { ?> 
-                <span class='pos'><?php echo new Pmt_Lang_String('navigator_record_no', 'Record # '); ?><?php $this->getControl('txtRecordNo')->showContainer(); ?></span>  
-                <span class='count'><?php echo new Pmt_Lang_String('navigator_record_of', 'of '); ?><?php $this->getControl('txtRecordsCount')->showContainer(); ?></span>
+                <span class='pos'><?php echo new Pwg_Lang_String('navigator_record_no', 'Record # '); ?><?php $this->getControl('txtRecordNo')->showContainer(); ?></span>  
+                <span class='count'><?php echo new Pwg_Lang_String('navigator_record_of', 'of '); ?><?php $this->getControl('txtRecordsCount')->showContainer(); ?></span>
 <?php   } ?>                 
                 <span class='buttons'>
 <?php       foreach ($this->getNavButtonNames() as $n) if ($c = $this->getControl($n)) { ?>
@@ -215,31 +215,31 @@ class Pmt_Data_Navigator extends Pmt_Controller {
         
         $res = Ae_Util::ms($res, array(
             'btnNext' => array(
-                'label' => html_entity_decode(new Pmt_Lang_String('next', array('suffix' => ' &gt;')), null, 'utf-8'),
+                'label' => html_entity_decode(new Pwg_Lang_String('next', array('suffix' => ' &gt;')), null, 'utf-8'),
             ),
             'btnPrev' => array(
-                'label' => html_entity_decode(new Pmt_Lang_String('prev', array('prefix' => '&lt; ')), null, 'utf-8'),
+                'label' => html_entity_decode(new Pwg_Lang_String('prev', array('prefix' => '&lt; ')), null, 'utf-8'),
             ),
             'btnFirst' => array(
-                'label' => html_entity_decode(new Pmt_Lang_String('first', array('prefix' => ' &laquo;')), null, 'utf-8'),
+                'label' => html_entity_decode(new Pwg_Lang_String('first', array('prefix' => ' &laquo;')), null, 'utf-8'),
             ),
             'btnLast' => array(
-                'label' => html_entity_decode(new Pmt_Lang_String('last', array('suffix' => ' &raquo;')), null, 'utf-8'),
+                'label' => html_entity_decode(new Pwg_Lang_String('last', array('suffix' => ' &raquo;')), null, 'utf-8'),
             ),
             'btnReload' => array(
-                'label' => html_entity_decode(new Pmt_Lang_String('refresh'), null, 'utf-8'),
+                'label' => html_entity_decode(new Pwg_Lang_String('refresh'), null, 'utf-8'),
             ),
             'btnNew' => array(
-                'label' => new Pmt_Lang_String('create'),
+                'label' => new Pwg_Lang_String('create'),
             ),
             'btnSave' => array(
-                'label' => new Pmt_Lang_String('save'),
+                'label' => new Pwg_Lang_String('save'),
             ),
             'btnCancel' => array(
-                'label' =>  new Pmt_Lang_String('cancel'),
+                'label' =>  new Pwg_Lang_String('cancel'),
             ),
             'btnDelete' => array(
-                'label' =>  new Pmt_Lang_String('delete'),
+                'label' =>  new Pwg_Lang_String('delete'),
             	'confirmationMessage' => $this->deleteConfirmation,
             ),
             'txtRecordNo' => array(
@@ -260,7 +260,7 @@ class Pmt_Data_Navigator extends Pmt_Controller {
         return $res;
     }
     
-    function handleNavButtonsClick(Pmt_Button $button, $eventType, $params = array()) {
+    function handleNavButtonsClick(Pwg_Button $button, $eventType, $params = array()) {
         
         $process = true;
         $params['process'] = & $process;
@@ -277,7 +277,7 @@ class Pmt_Data_Navigator extends Pmt_Controller {
                     case 'btnNew': $this->dataSource->createRecord(); break;
                     case 'btnCancel': $this->dataSource->cancel(); break;
                     case 'btnDelete': $this->dataSource->deleteRecord(); break;
-                    case 'btnReload': $this->dataSource->reload(Pmt_Data_Source::HOLD_NUMBER); break;
+                    case 'btnReload': $this->dataSource->reload(Pwg_Data_Source::HOLD_NUMBER); break;
                     case 'btnSave': 
                         $this->dataSource->saveRecord(); 
                         break;
@@ -287,7 +287,7 @@ class Pmt_Data_Navigator extends Pmt_Controller {
         }
     }
     
-    function updateButtons(Pmt_Data_Source $source) {
+    function updateButtons(Pwg_Data_Source $source) {
         if (!is_array($this->controls)) $this->createControls();
         
         if ($this->btnFirst) $this->btnFirst->setDisabled($source->isFirst() || $source->isStart() || !$source->canMove());
@@ -303,7 +303,7 @@ class Pmt_Data_Navigator extends Pmt_Controller {
         if ($this->btnSave) $this->btnSave->setDisabled(!$source->canSave());
     }   
     
-    function handleCurrentRecord(Pmt_Data_Source $source, $eventType, $params = array()) {
+    function handleCurrentRecord(Pwg_Data_Source $source, $eventType, $params = array()) {
         
         $this->updateButtons($source);
         
@@ -321,7 +321,7 @@ class Pmt_Data_Navigator extends Pmt_Controller {
         if ($this->txtRecordsCount) $this->txtRecordsCount->setText($source->getRecordsCount());
     }
     
-    function handleRecordNoChange(Pmt_Text $recordNo, $eventType, $params = array()) {
+    function handleRecordNoChange(Pwg_Text $recordNo, $eventType, $params = array()) {
         $rn = $recordNo->getText();
         if (is_numeric($rn) && (intval($rn - 1) != $this->dataSource->getRecordNo())) {
             $this->lockRecordNo = true;
@@ -334,7 +334,7 @@ class Pmt_Data_Navigator extends Pmt_Controller {
     }
 
     function doGetConstructorName() {
-        return 'Pmt_Controller';
+        return 'Pwg_Controller';
     }
     
 

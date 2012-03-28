@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Data_RecordsDisplay_List_Option extends Pmt_List_Option {
+class Pwg_Data_RecordsDisplay_List_Option extends Pwg_List_Option {
     
     /**
      * @var Ae_Model_Object
@@ -8,7 +8,7 @@ class Pmt_Data_RecordsDisplay_List_Option extends Pmt_List_Option {
     protected $record = false;
     
     /**
-     * @var Pmt_Data_RecordsDisplay_List
+     * @var Pwg_Data_RecordsDisplay_List
      */
     protected $list = false;
     

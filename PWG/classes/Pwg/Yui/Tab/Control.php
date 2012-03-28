@@ -1,20 +1,20 @@
 <?php
 
-class Pmt_Yui_Tab_Control extends Pmt_Composite_Display {
+class Pwg_Yui_Tab_Control extends Pwg_Composite_Display {
     
-    protected $allowedChildrenClass = 'Pmt_Yui_Tab_Sheet';
+    protected $allowedChildrenClass = 'Pwg_Yui_Tab_Sheet';
 
-    protected $allowedDisplayChildrenClass = 'Pmt_Yui_Tab_Sheet';
+    protected $allowedDisplayChildrenClass = 'Pwg_Yui_Tab_Sheet';
     
     protected $containerAttribs = array('class' => 'yui-skin-sam');
     
     /**
-     * @var Pmt_Yui_Tab_Sheet
+     * @var Pwg_Yui_Tab_Sheet
      */
     protected $currentTab = false;
     
     /**
-     * @return Pmt_Yui_Tab_Sheet
+     * @return Pwg_Yui_Tab_Sheet
      */
     function getCurrentTab() {
         if ($this->currentTab === false && count($odc = $this->getOrderedDisplayChildren())) {
@@ -23,30 +23,30 @@ class Pmt_Yui_Tab_Control extends Pmt_Composite_Display {
         return $this->currentTab;
     }
         
-    function updateTabTitle(Pmt_Yui_Tab_Sheet $tab) {
+    function updateTabTitle(Pwg_Yui_Tab_Sheet $tab) {
         if ($tab->getParent() !== $this) throw new Exception("Tab {$tab} is not a child of '{$this}'");
         $this->sendMessage('setTabTitle', array($tab->getId(), $tab->getTitle()));
     }
     
-    function updateTabOrder(Pmt_Yui_Tab_Sheet $tab) {
+    function updateTabOrder(Pwg_Yui_Tab_Sheet $tab) {
         if ($tab->getParent() !== $this) throw new Exception("Tab {$tab} is not a child of '{$this}'");
         $this->sendMessage('setTabIndex', array($tab->getId(), $tab->getDisplayOrder()));
     }
     
-    function updateTabVisibility(Pmt_Yui_Tab_Sheet $tab) {
+    function updateTabVisibility(Pwg_Yui_Tab_Sheet $tab) {
         if ($tab->getParent() !== $this) throw new Exception("Tab {$tab} is not a child of '{$this}'");
         $this->sendMessage('setTabVisibility', array($tab->getId(), $tab->getVisible()));
     }
     
     /**
      * @param string $id
-     * @return Pmt_Yui_Tab_Sheet
+     * @return Pwg_Yui_Tab_Sheet
      */
     function getControl($id) {
         return parent::getControl($id);
     }
     
-    function setCurrentTab(Pmt_Yui_Tab_Sheet $tab) {
+    function setCurrentTab(Pwg_Yui_Tab_Sheet $tab) {
         if ($this->currentTab !== $tab) {
             $this->currentTab = $tab;
             $this->sendMessage('setCurrentTab', array($tab->getId()));
@@ -72,7 +72,7 @@ class Pmt_Yui_Tab_Control extends Pmt_Composite_Display {
         return '';
     }
     
-    protected function doFrontendUpdateChildPosition(Pmt_I_Control $child, $oldIndex, $newIndex) {
+    protected function doFrontendUpdateChildPosition(Pwg_I_Control $child, $oldIndex, $newIndex) {
         $this->updateTabOrder($child);
     }
     
@@ -99,9 +99,9 @@ class Pmt_Yui_Tab_Control extends Pmt_Composite_Display {
         ));
     }
     
-    protected function doOnGetInitializer(Pm_Js_Initializer $initializer) {
+    protected function doOnGetInitializer(Pwg_Js_Initializer $initializer) {
         parent::doOnGetInitializer($initializer);
-        //Pmt_Conversation::log($this->)
+        //Pwg_Conversation::log($this->)
         
         $initializer->constructorParams[0]['tabs'] = $this->getOrderedDisplayChildren(); 
     }

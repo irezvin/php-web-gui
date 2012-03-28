@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Yui_Tree_Node_Html extends Pmt_Yui_Tree_Node {
+class Pwg_Yui_Tree_Node_Html extends Pwg_Yui_Tree_Node {
 
 	protected $html = false;
 	

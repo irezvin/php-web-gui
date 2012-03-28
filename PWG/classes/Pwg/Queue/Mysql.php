@@ -1,6 +1,6 @@
 <?php
 
-class Pm_Queue_Mysql extends Pmt_Autoparams implements Pm_I_Queue {
+class Pwg_Queue_Mysql extends Pwg_Autoparams implements Pwg_I_Queue {
 	
     protected $id = false;
 

@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Yui_Paginator extends Pmt_Base implements Pmt_I_Control_Paginator, Pm_I_Observer {
+class Pwg_Yui_Paginator extends Pwg_Base implements Pwg_I_Control_Paginator, Pwg_I_Observer {
 
     const TEMPLATE_DEFAULT = -1;
     
@@ -31,7 +31,7 @@ class Pmt_Yui_Paginator extends Pmt_Base implements Pmt_I_Control_Paginator, Pm_
     );
     
     /**
-     * @var Pmt_Data_Source
+     * @var Pwg_Data_Source
      */
     protected $dataSource = false;
     
@@ -193,10 +193,10 @@ class Pmt_Yui_Paginator extends Pmt_Base implements Pmt_I_Control_Paginator, Pm_
     function jsGetLocalization() {
         if ($this->localization) {
             $defaults = array(
-                'nextPageLinkLabel' => new Pmt_Lang_String('paginator_next_page_link_label', 'Next &gt;'),
-            	'previousPageLinkLabel' => new Pmt_Lang_String('paginator_prev_page_link_label', '&lt; Prev'),
-            	'firstPageLinkLabel' => new Pmt_Lang_String('paginator_first_page_link_label', '&lt;&lt; First'),
-            	'lastPageLinkLabel' => new Pmt_Lang_String('paginator_last_page_link_label', 'Last &gt;&gt;'),
+                'nextPageLinkLabel' => new Pwg_Lang_String('paginator_next_page_link_label', 'Next &gt;'),
+            	'previousPageLinkLabel' => new Pwg_Lang_String('paginator_prev_page_link_label', '&lt; Prev'),
+            	'firstPageLinkLabel' => new Pwg_Lang_String('paginator_first_page_link_label', '&lt;&lt; First'),
+            	'lastPageLinkLabel' => new Pwg_Lang_String('paginator_last_page_link_label', 'Last &gt;&gt;'),
             );
             if (is_array($this->localization)) $res = array_merge($defaults, $this->localization);
                 else $res = $defaults;
@@ -233,7 +233,7 @@ class Pmt_Yui_Paginator extends Pmt_Base implements Pmt_I_Control_Paginator, Pm_
         return $this->extraContainerIds;
     }
     
-    function setDataSource(Pmt_Data_Source $dataSource = null) {
+    function setDataSource(Pwg_Data_Source $dataSource = null) {
         if ($dataSource !== ($oldDataSource = $this->dataSource)) {
             if ($oldDataSource) {
                 $oldDataSource->unobserve('onRefresh', $this, 'handleDataSourceUpdate');
@@ -242,7 +242,7 @@ class Pmt_Yui_Paginator extends Pmt_Base implements Pmt_I_Control_Paginator, Pm_
             }
             $this->dataSource = $dataSource;
             if ($this->dataSource) {
-                Pm_Conversation::log("Set data source");
+                Pwg_Conversation::log("Set data source");
                 $this->dataSource->observe('onRefresh', $this, 'handleDataSourceUpdate');
                 $this->dataSource->observe('onGroupSizeChange', $this, 'handleDataSourceUpdate');
                 $this->dataSource->observe('onCurrentRecord', $this, 'handleDataSourceUpdate');
@@ -258,7 +258,7 @@ class Pmt_Yui_Paginator extends Pmt_Base implements Pmt_I_Control_Paginator, Pm_
         if ((int) $gs) $this->setRowsPerPage((int) $gs);        
     }
     
-    function handleDataSourceUpdate(Pmt_Data_Source $dataSource, $eventType, $params) {
+    function handleDataSourceUpdate(Pwg_Data_Source $dataSource, $eventType, $params) {
         $this->refreshFromDataSource();
     }
     
@@ -266,30 +266,30 @@ class Pmt_Yui_Paginator extends Pmt_Base implements Pmt_I_Control_Paginator, Pm_
         $this->associations['dataSource'] = $dataSourcePath;
     }
     
-//  +--------------------- Pmt_I_Control_Paginator implementation ----------------+    
+//  +--------------------- Pwg_I_Control_Paginator implementation ----------------+    
     
     function getLimit() {
         return $this->getRowsPerPage();
     }
     
-    function observeOffsetChanged(Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function observeOffsetChanged(Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->observe('offsetChanged', $observer, $methodName, $extraParams);
     }
     
-    function observeLimitChanged(Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function observeLimitChanged(Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->observe('limitChanged', $observer, $methodName, $extraParams);
     }
     
     
-    function unobserveOffsetChanged(Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function unobserveOffsetChanged(Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->unobserve('offsetChanged', $observer, $methodName, $extraParams);
     }
     
-    function unobserveLimitChanged(Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function unobserveLimitChanged(Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->unobserve('limitChanged', $observer, $methodName, $extraParams);
     }
     
-    function handleEvent(Pm_I_Observable $observable, $eventType, $params = array()) {}
+    function handleEvent(Pwg_I_Observable $observable, $eventType, $params = array()) {}
 
     function setVisible($visible) {
         $visible = (bool) $visible;

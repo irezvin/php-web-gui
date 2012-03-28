@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Controller_Std_Tree extends Pmt_Controller_MDI_Window implements Pmt_I_RecordTree {
+class Pwg_Controller_Std_Tree extends Pwg_Controller_MDI_Window implements Pwg_I_RecordTree {
     
     protected $mapperClass = false;
     
@@ -15,32 +15,32 @@ class Pmt_Controller_Std_Tree extends Pmt_Controller_MDI_Window implements Pmt_I
     protected $searchTool = false;
     
     /**
-     * @var Pmt_Data_Tree
+     * @var Pwg_Data_Tree
      */
     protected $tvTree = false;
     
     /**
-     * @var Pmt_Yui_AutoComplete
+     * @var Pwg_Yui_AutoComplete
      */
     protected $acSearch = false;
     
     /**
-     * @var Pmt_Yui_Tree_Node
+     * @var Pwg_Yui_Tree_Node
      */
     protected $currNode = false;
     
     /**
-     * @var Pmt_Data_Source
+     * @var Pwg_Data_Source
      */
     protected $dsData = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnNewSibling = false;
     
     /**
-     * @var Pmt_Button
+     * @var Pwg_Button
      */
     protected $btnNewChild = false;
     
@@ -55,27 +55,27 @@ class Pmt_Controller_Std_Tree extends Pmt_Controller_MDI_Window implements Pmt_I
         if ($this->mapper === false) {
             if (!strlen($this->mapperClass)) throw new Exception("\$mapperClass not provided");
             $this->mapper = $this->getApplication()->getMapper($this->mapperClass);
-            if ($this->mapper instanceof Pmt_I_Tree_Mapper) {
-                if (!($this->mapper instanceof Pmt_I_Tree_Mapper_AdjacencyList || $this->mapper instanceof Pmt_I_Tree_Mapper_NestedSets))
-                    throw new Exception("Currently Pmt_Controller_Std_Tree supports only mappers that implement "
-                        ."Pmt_I_Tree_Mapper_AdjacencyList or Pmt_I_Tree_Mapper_NestedSets interfaces");
+            if ($this->mapper instanceof Pwg_I_Tree_Mapper) {
+                if (!($this->mapper instanceof Pwg_I_Tree_Mapper_AdjacencyList || $this->mapper instanceof Pwg_I_Tree_Mapper_NestedSets))
+                    throw new Exception("Currently Pwg_Controller_Std_Tree supports only mappers that implement "
+                        ."Pwg_I_Tree_Mapper_AdjacencyList or Pwg_I_Tree_Mapper_NestedSets interfaces");
             } else {
-                 throw new Exception("{$this->mapperClass} doesn't implement Pmt_I_Tree_Mapper");
+                 throw new Exception("{$this->mapperClass} doesn't implement Pwg_I_Tree_Mapper");
             }
         }
         return $this->mapper;
     }
 
     /**
-     * @return Pmt_I_Tree_SearchTool
+     * @return Pwg_I_Tree_SearchTool
      */
     function getSearchTool() {
-        if (is_object($this->searchTool) && !($this->searchTool instanceof Pmt_I_Tree_SearchTool))
-            throw new Exception("\$searchTool must implement Pmt_I_Tree_SearchTool, but ".get_class($this->searchTool)." doesn't");
+        if (is_object($this->searchTool) && !($this->searchTool instanceof Pwg_I_Tree_SearchTool))
+            throw new Exception("\$searchTool must implement Pwg_I_Tree_SearchTool, but ".get_class($this->searchTool)." doesn't");
         else {
             if (is_array($this->searchTool))
-                $this->searchTool = Pmt_Base::factory($this->searchTool, 'Pmt_I_Tree_SearchTool');
-            elseif ($this->getMapper() instanceof Pmt_I_Tree_SearchTool) {
+                $this->searchTool = Pwg_Base::factory($this->searchTool, 'Pwg_I_Tree_SearchTool');
+            elseif ($this->getMapper() instanceof Pwg_I_Tree_SearchTool) {
                 $this->searchTool = $this->getMapper();
             }
         }
@@ -125,7 +125,7 @@ class Pmt_Controller_Std_Tree extends Pmt_Controller_MDI_Window implements Pmt_I
             ),
             'acSearch' => array(
                 'containerIsBlock' => false,
-                'class' => 'Pmt_Yui_AutoComplete',
+                'class' => 'Pwg_Yui_AutoComplete',
                 'displayParentPath' => '../pnlSearch',
                 'dataSourceProperties' => array(
                     'responseSchema' => array('fields' => array('value', 'label')),
@@ -135,7 +135,7 @@ class Pmt_Controller_Std_Tree extends Pmt_Controller_MDI_Window implements Pmt_I
                 'size' => 40,
             ),
             'tvTree' => array(
-                'class' => 'Pmt_Data_Tree',
+                'class' => 'Pwg_Data_Tree',
                 'displayParentPath' => '../pnlLayout', 
                 'containerAttribs' => array(
                     'style' => 'height: 400px; width: 400px; background-color: white; border: 1px solid silver; overflow: scroll;'
@@ -162,7 +162,7 @@ class Pmt_Controller_Std_Tree extends Pmt_Controller_MDI_Window implements Pmt_I
                 'hasBtnSave' => $this->editInForm,
                 'hasBtnCancel' => $this->editInForm,
                 'hasBtnReload' => true,
-                'deleteConfirmation' => new Pmt_Lang_String('deleteRecordConfirmation'),
+                'deleteConfirmation' => new Pwg_Lang_String('deleteRecordConfirmation'),
             ),
             'btnNewSibling' => array(
                 'label' => 'Новая запись (сосед)',
@@ -176,7 +176,7 @@ class Pmt_Controller_Std_Tree extends Pmt_Controller_MDI_Window implements Pmt_I
             ),
         ));
         $mapper = $this->getMapper();
-        if ($mapper instanceof Pmt_I_Tree_Mapper_NestedSets) {
+        if ($mapper instanceof Pwg_I_Tree_Mapper_NestedSets) {
             $ns = $mapper->getNestedSets();
             Ae_Util::ms($prototypes, array(
                 'dsData' => array(
@@ -184,7 +184,7 @@ class Pmt_Controller_Std_Tree extends Pmt_Controller_MDI_Window implements Pmt_I
                     'ordering' => array($ns->getOrderByPart()),
                 )
             ));
-        } elseif ($mapper instanceof Pmt_I_Tree_Mapper_AdjacencyList) {
+        } elseif ($mapper instanceof Pwg_I_Tree_Mapper_AdjacencyList) {
             Ae_Util::ms($prototypes, array(
                 'dsData' => array(
                     'ordering' => array($mapper->database->NameQuote($mapper->getNodeOrderField())),
@@ -260,25 +260,25 @@ class Pmt_Controller_Std_Tree extends Pmt_Controller_MDI_Window implements Pmt_I
     }
     
     function handleDsDataOnDeleteRecord($dataSource, $eventType, $params) {
-        $this->triggerEvent(Pmt_I_RecordList::evtDeleteRecord, $params);
+        $this->triggerEvent(Pwg_I_RecordList::evtDeleteRecord, $params);
     }
     
     function handleBtnOpenDetailsClick() {
         if ($r = $this->dsData->getCurrentRecord()) {
-            $this->triggerEvent(Pmt_I_RecordList::evtOpenDetails, array('primaryKey' => $r->getPrimaryKey(), 'record' => $r, 'mapperClass' => $this->getMapperClass()));
+            $this->triggerEvent(Pwg_I_RecordList::evtOpenDetails, array('primaryKey' => $r->getPrimaryKey(), 'record' => $r, 'mapperClass' => $this->getMapperClass()));
         }
     }
     
     function handleBtnCreateClick() {
-        $this->triggerEvent(Pmt_I_RecordList::evtCreateRecord, array('mapperClass' => $this->getMapperClass()));
+        $this->triggerEvent(Pwg_I_RecordList::evtCreateRecord, array('mapperClass' => $this->getMapperClass()));
     }   
     
-    function handleTvTreeCurrentNodeChange(Pmt_Data_Tree $tree, $eventType, array $params) {
+    function handleTvTreeCurrentNodeChange(Pwg_Data_Tree $tree, $eventType, array $params) {
         if ($this->lockCurrentNodeSwitch) return;
         $this->lockCurrentNodeSwitch = true;
         if (isset($params['currentNode']) && $params['currentNode']) {
             $id = $params['currentNode']->getNodeId();
-            Pm_Conversation::log("Lets switch to node #", $id, "current id is ", $this->dsData->getCurrentRecord()->getPrimaryKey());
+            Pwg_Conversation::log("Lets switch to node #", $id, "current id is ", $this->dsData->getCurrentRecord()->getPrimaryKey());
             if (!($rec = $this->dsData->getCurrentRecord()) || ($rec->getPrimaryKey() !== $id)) {
                 $this->dsData->locateRecordByPrimaryKey($id, true);
             }
@@ -286,11 +286,11 @@ class Pmt_Controller_Std_Tree extends Pmt_Controller_MDI_Window implements Pmt_I
         $this->lockCurrentNodeSwitch = false;
     }
     
-    function handleAcSearchDataRequest(Pmt_Yui_Autocomplete $acSearch, $eventType, array $params) {
+    function handleAcSearchDataRequest(Pwg_Yui_Autocomplete $acSearch, $eventType, array $params) {
         if ($t = $this->getSearchTool()) return $t->handleAutocompleteDataRequest($acSearch, $params);
     }
     
-    function handleAcSearchItemSelected(Pmt_Yui_Autocomplete $acSearch, $eventType, array $params) {
+    function handleAcSearchItemSelected(Pwg_Yui_Autocomplete $acSearch, $eventType, array $params) {
         if ($t = $this->getSearchTool()) {
             $id = $t->handleAutocompleteItemSelected($acSearch, $params);
             if ($id !== false) $this->tvTree->setCurrentNode($id, true);

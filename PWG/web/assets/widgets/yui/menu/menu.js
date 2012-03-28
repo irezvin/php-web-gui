@@ -1,10 +1,10 @@
-Pmt_Menu = function (options) {
+Pwg_Menu = function (options) {
     this.createSetters();
     this.initialize(options);
 }
 
-Pmt_Menu.prototype = {
-	jsClassName: "Pmt_Menu",
+Pwg_Menu.prototype = {
+	jsClassName: "Pwg_Menu",
     container: false,
     element : false,
     id: false,
@@ -37,12 +37,12 @@ Pmt_Menu.prototype = {
     topChildrenPrototypes: [],
 
     /**
-     * Array of top children instances (of Pmt_Menu_Item or its descendants)
+     * Array of top children instances (of Pwg_Menu_Item or its descendants)
      */
     topChildren: [],
 
     /**
-     * Registry of all children {id: Pmt_Menu_Item}
+     * Registry of all children {id: Pwg_Menu_Item}
      */
     allChildren: {},
 
@@ -75,7 +75,7 @@ Pmt_Menu.prototype = {
 
     createSetters: function() {
         for (var i = 0; i < this.setters.length; i++) {
-            var setterName = 'set' + Pmt_Util.ucFirst(this.setters[i]);
+            var setterName = 'set' + Pwg_Util.ucFirst(this.setters[i]);
             if (this[setterName] === undefined) {
                 this[setterName] = function(propName) {
                     return function(value) {
@@ -127,7 +127,7 @@ Pmt_Menu.prototype = {
             }
             this.createMenu(c);
             this.yuiMenu.render();
-        	Pmt_Yui_Util.fixMenuDisplay(this.yuiMenu);
+        	Pwg_Yui_Util.fixMenuDisplay(this.yuiMenu);
             for (var i = 0; i < this.children.length; i++) this.children[i].renderElement();
         }
     },
@@ -135,7 +135,7 @@ Pmt_Menu.prototype = {
     refresh: function() {
     },
 
-    initializeChildContainer: Pmt_Controller.prototype.initializeChildContainer,
+    initializeChildContainer: Pwg_Controller.prototype.initializeChildContainer,
 
     doOnDelete: function() {
 //    	if (this.yuiMenu) {
@@ -151,7 +151,7 @@ Pmt_Menu.prototype = {
      * This methods creates child instances, adds them to the menu or it's child and re-draws new parent if it's
      * already rendered.
      *
-     * @param {Array[]} childrenArray Prototypes of child Pmt_Menu_Item's
+     * @param {Array[]} childrenArray Prototypes of child Pwg_Menu_Item's
      * @param {String} [childId] Id of already registered menu item to add given children to (or will be added to menu root)
      * @param {String} [beforeChildId] Id of menu item within menu root or child#childId' children so new items will be placed before it
      */
@@ -215,5 +215,5 @@ Pmt_Menu.prototype = {
 
 }
 
-Pmt_Util.extend(Pmt_Menu, Pmt_Element);
-Pmt_Util.augment(Pmt_Menu.prototype, Pmt_Control_Parent_Functions);
+Pwg_Util.extend(Pwg_Menu, Pwg_Element);
+Pwg_Util.augment(Pwg_Menu.prototype, Pwg_Control_Parent_Functions);

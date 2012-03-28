@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Data_Binder_Records extends Pmt_Data_Binder {
+class Pwg_Data_Binder_Records extends Pwg_Data_Binder {
 
     const IN_VIEW = 0;
     const BEFORE_VIEW = -1;
@@ -12,12 +12,12 @@ class Pmt_Data_Binder_Records extends Pmt_Data_Binder {
     protected $positionTracking = false;
     
     /**
-     * @var Pmt_I_Control_RecordsDisplay
+     * @var Pwg_I_Control_RecordsDisplay
      */
     protected $dataControl = false;
     
     /**
-     * @var Pmt_I_Control_Paginator
+     * @var Pwg_I_Control_Paginator
      */
     protected $paginator = false;
     
@@ -36,13 +36,13 @@ class Pmt_Data_Binder_Records extends Pmt_Data_Binder {
     
 //  Datasource related methods & events 
     
-    function setDataControl(Pmt_I_Control_RecordsDisplay $v) {
+    function setDataControl(Pwg_I_Control_RecordsDisplay $v) {
     	$res = parent::setDataControl($v);
     	$this->refreshRecordPrototypeOfDataControl();
     	return $res;
     }
     
-    function setDataSource(Pmt_Data_Source $v) {
+    function setDataSource(Pwg_Data_Source $v) {
         $n = substr(__FUNCTION__, 3); $n{0} = strtolower($n{0}); $ov = $this->$n; $this->$n = $v;
         if ($ov !== $v) {
             if ($v) {
@@ -51,22 +51,22 @@ class Pmt_Data_Binder_Records extends Pmt_Data_Binder {
         }
     }
     
-    function handleDataSourceRefresh(Pmt_Data_Source $dataSource, $eventType, $params) {
+    function handleDataSourceRefresh(Pwg_Data_Source $dataSource, $eventType, $params) {
         parent::handleDataSourceRefresh($dataSource, $eventType, $params);
         if ($this->dataControl) $this->updateDataControlRecords();          
     }
 
-    function handleDataSourceCurrentRecord(Pmt_Data_Source $source, $eventType, $params = array()) {
+    function handleDataSourceCurrentRecord(Pwg_Data_Source $source, $eventType, $params = array()) {
         $r = $source->getCurrentRecord();
         if (!$r) $r = null;
         $this->internalSetRecord($r);
     }
     
-    function handleDataSourceUpdateRecord(Pmt_Data_Source $source, $eventType, $params = array()) {
+    function handleDataSourceUpdateRecord(Pwg_Data_Source $source, $eventType, $params = array()) {
         $this->updateDataControlCaps();
     }
     
-    function handleDataSourceStoreRecord(Pmt_Data_Source $dataSource, $eventType, $params) {
+    function handleDataSourceStoreRecord(Pwg_Data_Source $dataSource, $eventType, $params) {
         if ($this->fullRefreshOnOperations) {
             $this->refreshView();
         } else {
@@ -83,7 +83,7 @@ class Pmt_Data_Binder_Records extends Pmt_Data_Binder {
         }
     }
     
-    function handleDataSourceValidateRecord(Pmt_Data_Source $dataSource, $eventType, $params) {
+    function handleDataSourceValidateRecord(Pwg_Data_Source $dataSource, $eventType, $params) {
 //      if ($this->dataControl) {
 //          $rec = $dataSource->getCurrentRecord();
 //          $errors = $params['errors'];
@@ -91,7 +91,7 @@ class Pmt_Data_Binder_Records extends Pmt_Data_Binder {
 //      }
     }
     
-    function handleDataSourceDeleteRecord(Pmt_Data_Source $dataSource, $eventType, $params) {
+    function handleDataSourceDeleteRecord(Pwg_Data_Source $dataSource, $eventType, $params) {
         if ($this->fullRefreshOnOperations) {
             $this->refreshView();
         } elseif ($this->dataControl) {
@@ -268,7 +268,7 @@ class Pmt_Data_Binder_Records extends Pmt_Data_Binder {
         if (!$this->updateLevel && $this->hasToUpdateRecords) $this->updateDataControlRecords(); 
     }
     
-    function handleDataControlRecordCreated(Pmt_I_Control_RecordsDisplay $dataControl, $eventType, $params) {
+    function handleDataControlRecordCreated(Pwg_I_Control_RecordsDisplay $dataControl, $eventType, $params) {
         if ($this->dataSource) {
             if (isset($params['data'])) {
                 $data = $params['data'];    
@@ -280,7 +280,7 @@ class Pmt_Data_Binder_Records extends Pmt_Data_Binder {
         } else $dataControl->cancelCurrentAction();
     }
     
-    function handleDataControlRecordEdited(Pmt_I_Control_RecordsDisplay $dataControl, $eventType, $params) {
+    function handleDataControlRecordEdited(Pwg_I_Control_RecordsDisplay $dataControl, $eventType, $params) {
         if ($this->dataSource && $this->dataSource->canEdit()) {
             if (isset($params['data'])) {
                 $data = $params['data'];    
@@ -292,14 +292,14 @@ class Pmt_Data_Binder_Records extends Pmt_Data_Binder {
         } else $dataControl->cancelCurrentAction();
     }
     
-    function handleDataControlRecordRemoved(Pmt_I_Control_RecordsDisplay $dataControl, $eventType, $params) {
+    function handleDataControlRecordRemoved(Pwg_I_Control_RecordsDisplay $dataControl, $eventType, $params) {
         if ($this->dataSource && $this->dataSource->canDelete()) {
             $rec = $dataControl->getCurrentRecord();
             $rec->delete();
         } else $dataControl->cancelCurrentAction();
     }
     
-    function handleDataControlRecordSelected(Pmt_I_Control_RecordsDisplay $dataControl, $eventType, $params) {
+    function handleDataControlRecordSelected(Pwg_I_Control_RecordsDisplay $dataControl, $eventType, $params) {
         if ($this->dataSource && $this->dataSource->canMove()) {
             $idx = false;
             if ($rec = $dataControl->getCurrentRecord()) {
@@ -365,7 +365,7 @@ class Pmt_Data_Binder_Records extends Pmt_Data_Binder {
         return $this->limit;
     }   
     
-    function setPaginator(Pmt_I_Control_Paginator $paginator = null) {
+    function setPaginator(Pwg_I_Control_Paginator $paginator = null) {
         if ($paginator !== ($oldPaginator = $this->paginator)) {
             if ($oldPaginator) {
                 $oldPaginator->unobserveLimitChanged($this, 'handlePaginatorChange');
@@ -380,7 +380,7 @@ class Pmt_Data_Binder_Records extends Pmt_Data_Binder {
     }
 
     /**
-     * @return Pmt_I_Control_Paginator
+     * @return Pwg_I_Control_Paginator
      */
     function getPaginator() {
         return $this->paginator;
@@ -397,7 +397,7 @@ class Pmt_Data_Binder_Records extends Pmt_Data_Binder {
         $this->endUpdate();
     }
     
-    function handlePaginatorChange(Pmt_I_Control_Paginator $paginator, $eventType, $params) {
+    function handlePaginatorChange(Pwg_I_Control_Paginator $paginator, $eventType, $params) {
         $this->updateLimitsFromPaginator();
     }
     

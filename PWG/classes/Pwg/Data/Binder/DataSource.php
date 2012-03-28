@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Data_Binder_DataSource extends Pmt_Data_Binder {
+class Pwg_Data_Binder_DataSource extends Pwg_Data_Binder {
     
     const SLAVE_MODE_NONE = 0;
     const SLAVE_MODE_BEFORE_SAVE = 1;
@@ -18,7 +18,7 @@ class Pmt_Data_Binder_DataSource extends Pmt_Data_Binder {
 //  protected $disabled = false;
     
     /**
-     * @var Pmt_Data_Source
+     * @var Pwg_Data_Source
      */
     protected $dataControl = false;
 
@@ -26,7 +26,7 @@ class Pmt_Data_Binder_DataSource extends Pmt_Data_Binder {
     
     /**
      * When master record is refreshed, details records will always be refreshed, even if restrictions aren't changed
-     * @var mixed false|Pmt_Data_Source::HOLD_NUMBER|Pmt_Data_Source::HOLD_KEY  
+     * @var mixed false|Pwg_Data_Source::HOLD_NUMBER|Pwg_Data_Source::HOLD_KEY  
      */
     protected $alwaysReloadDetails = false;
     
@@ -43,7 +43,7 @@ class Pmt_Data_Binder_DataSource extends Pmt_Data_Binder {
 //  
 //  function setDisabled() {$n = substr(__FUNCTION__, 3); $n{0} = strtolower($n{0}); return $this->$n;}
     
-    function setDataSource(Pmt_Data_Source $dataSource = null) {
+    function setDataSource(Pwg_Data_Source $dataSource = null) {
         if (($this->dataSource !== $dataSource) && ($this->slaveMode !== self::SLAVE_MODE_NONE)) {
             $this->disableSlaveMode();
             parent::setDataSource($dataSource);
@@ -66,7 +66,7 @@ class Pmt_Data_Binder_DataSource extends Pmt_Data_Binder {
     
     function getRelationMap() {$n = substr(__FUNCTION__, 3); $n{0} = strtolower($n{0}); return $this->$n;}
     
-    function setDataControl(Pmt_Data_Source $v = null) {
+    function setDataControl(Pwg_Data_Source $v = null) {
         if ($this->dataControl !== $v) {
             if ($this->slaveMode !== self::SLAVE_MODE_NONE) $this->disableSlaveMode();
             parent::setDataControl($v);
@@ -77,7 +77,7 @@ class Pmt_Data_Binder_DataSource extends Pmt_Data_Binder {
     }
     
     /**
-     * @return Pmt_Data_Source
+     * @return Pwg_Data_Source
      */
     function getDataControl() {
         return parent::getDataControl();
@@ -144,13 +144,13 @@ class Pmt_Data_Binder_DataSource extends Pmt_Data_Binder {
         if ($this->dataSource) $this->dataSource->updateCurrentRecord();
     }
     
-    function beforeMasterSave(Pmt_Data_Source $ds, $eventType, $params) {
+    function beforeMasterSave(Pwg_Data_Source $ds, $eventType, $params) {
         if (($this->slaveMode === self::SLAVE_MODE_BEFORE_SAVE) && $this->dataControl->isDirty()) {
             if (!$this->dataControl->saveRecord()) $params['canProceed'] = false;
         }
     }
     
-    function afterMasterSave(Pmt_Data_Source $ds, $eventType, $params) {
+    function afterMasterSave(Pwg_Data_Source $ds, $eventType, $params) {
         if (($this->slaveMode === self::SLAVE_MODE_AFTER_SAVE) && $this->dataControl->isDirty()) {
             if (!$this->dataControl->saveRecord()) $this->dataSource->updateCurrentRecord();
         }
@@ -170,8 +170,8 @@ class Pmt_Data_Binder_DataSource extends Pmt_Data_Binder {
 
     function setAlwaysReloadDetails($alwaysReloadDetails) {
         if ($alwaysReloadDetails !== ($oldAlwaysReloadDetails = $this->alwaysReloadDetails)) {
-            if (!in_array($alwaysReloadDetails, array(false, Pmt_Data_Source::HOLD_NUMBER, Pmt_Data_Source::HOLD_KEY), true))
-                throw new Exception("Allowed values for \$alwaysReloadDetails are false, Pmt_Data_Source::HOLD_NUMBER, Pmt_Data_Source::HOLD_KEY");
+            if (!in_array($alwaysReloadDetails, array(false, Pwg_Data_Source::HOLD_NUMBER, Pwg_Data_Source::HOLD_KEY), true))
+                throw new Exception("Allowed values for \$alwaysReloadDetails are false, Pwg_Data_Source::HOLD_NUMBER, Pwg_Data_Source::HOLD_KEY");
             $this->alwaysReloadDetails = $alwaysReloadDetails;
         }
     }

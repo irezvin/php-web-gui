@@ -1,10 +1,10 @@
 <?php
 
-class Pmt_Controller_Std_ListWithDetails extends Pmt_Controller_Std_List {
+class Pwg_Controller_Std_ListWithDetails extends Pwg_Controller_Std_List {
 
     protected function fldPrototype(array $overrides = array()) {
         $res = array(
-            'class' => 'Pmt_Data_Field',
+            'class' => 'Pwg_Data_Field',
             'displayParentPath' => '../pnlDetails',
             'dataSourcePath' => '../dsData',
             'prototypesOverride' => array(
@@ -68,7 +68,7 @@ class Pmt_Controller_Std_ListWithDetails extends Pmt_Controller_Std_List {
             	'hasBtnSave' => true,
             	'hasBtnCancel' => true,
             	'hasBtnReload' => true,
-            	'deleteConfirmation' => new Pmt_Lang_String('deleteRecordConfirmation'),
+            	'deleteConfirmation' => new Pwg_Lang_String('deleteRecordConfirmation'),
             ),
 
             'lstSort' => array(

@@ -1,7 +1,7 @@
-Pmt_UiDefaults = {
+Pwg_UiDefaults = {
 		
 	override: function(options) {
-		if (typeof(options) === 'object') Pmt_Util.override(this, options);
+		if (typeof(options) === 'object') Pwg_Util.override(this, options);
 	},
 	
 	pollDelay: null, // protocol default

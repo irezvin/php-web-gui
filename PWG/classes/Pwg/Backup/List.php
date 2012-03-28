@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_Backup_List extends Pmt_Autoparams {
+class Pwg_Backup_List extends Pwg_Autoparams {
     
     protected $backups = false;
     
@@ -25,7 +25,7 @@ class Pmt_Backup_List extends Pmt_Autoparams {
                 while (($f = readdir($d)) !== false) {
                     $fn = Ae_Util::addTrailingSlash($this->path).$f;
                     if (($f !== '.') && ($f !== '..') && is_dir($fn)) $this->backups[$f] = false;
-                    Pm_Conversation::log($f);
+                    Pwg_Conversation::log($f);
                 }
                 closedir($d);
             }
@@ -36,19 +36,19 @@ class Pmt_Backup_List extends Pmt_Autoparams {
     }
     
     /**
-     * @return Pmt_Backup
+     * @return Pwg_Backup
      */
     function createBackup() {
-        return new Pmt_Backup(array('path' => $this->path));
+        return new Pwg_Backup(array('path' => $this->path));
     }
     
     /**
-     * @return Pmt_Backup
+     * @return Pwg_Backup
      */
     function getBackup($i) {
         if (in_array($i, $this->listBackups())) {
             if (!is_object($this->backups[$i])) {
-                $this->backups[$i] = new Pmt_Backup(array('path' => $this->path, 'prefix' => $i, ));
+                $this->backups[$i] = new Pwg_Backup(array('path' => $this->path, 'prefix' => $i, ));
             }
             $res = $this->backups[$i];
         } else $res = null;

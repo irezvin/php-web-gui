@@ -1,6 +1,6 @@
 <?php
 
-interface Pmt_I_Control extends Pm_I_Responder, Pm_I_Observable {
+interface Pwg_I_Control extends Pwg_I_Responder, Pwg_I_Observable {
     
     function __construct(array $options = array());
     
@@ -8,17 +8,17 @@ interface Pmt_I_Control extends Pm_I_Responder, Pm_I_Observable {
     
     function getId();
     
-    function setParent(Pmt_I_Control_Parent $parent);
+    function setParent(Pwg_I_Control_Parent $parent);
     
     /**
-     * @return Pmt_I_Control_Parent
+     * @return Pwg_I_Control_Parent
      */
     function getParent();
     
-    function setController(Pmt_I_Controller $controller);
+    function setController(Pwg_I_Controller $controller);
     
     /**
-     * @return Pmt_I_Controller
+     * @return Pwg_I_Controller
      */
     function getController();
 
@@ -31,7 +31,7 @@ interface Pmt_I_Control extends Pm_I_Responder, Pm_I_Observable {
     function showContainer();
     
     /**
-     * @return Pm_Js_Initializer 
+     * @return Pwg_Js_Initializer 
      */
     function getInitializer();
     
@@ -41,11 +41,11 @@ interface Pmt_I_Control extends Pm_I_Responder, Pm_I_Observable {
     function getAssetLibs();
     
     /**
-     * @return Pmt_I_Control_DisplayParent
+     * @return Pwg_I_Control_DisplayParent
      */
     function getDisplayParent();
     
-    function setDisplayParent(Pmt_I_Control_DisplayParent $displayParent = null);
+    function setDisplayParent(Pwg_I_Control_DisplayParent $displayParent = null);
     
     function getDisplayOrder();
     
@@ -81,21 +81,21 @@ interface Pmt_I_Control extends Pm_I_Responder, Pm_I_Observable {
 
     function destroy();
     
-//  Pm_I_Observable 
+//  Pwg_I_Observable 
 /*  
-    function observe($eventType, Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function observe($eventType, Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
     
-    function unobserve($eventType, Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
+    function unobserve($eventType, Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array());
 */  
-//  Pm_I_Responder  
+//  Pwg_I_Responder  
 /*  
     function getResponderId();
     
-    function setConversation(Pm_I_Conversation $conversation);
+    function setConversation(Pwg_I_Conversation $conversation);
     
     function startQueue();
     
-    function acceptMessage(Pm_Message $message);
+    function acceptMessage(Pwg_Message $message);
     
     function endQueue();
 */  

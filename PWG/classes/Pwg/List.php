@@ -1,6 +1,6 @@
 <?php
 
-class Pmt_List extends Pmt_Element {
+class Pwg_List extends Pwg_Element {
 
     protected $autoSize = false;
     
@@ -14,7 +14,7 @@ class Pmt_List extends Pmt_Element {
     
     protected $selectedOptions = array();
     
-    protected $optionClass = 'Pmt_List_Option';
+    protected $optionClass = 'Pwg_List_Option';
     
     protected $className = 'list';
     
@@ -42,7 +42,7 @@ class Pmt_List extends Pmt_Element {
      * @param string $label
      * @param string $value
      * @param int $index
-     * @return Pmt_List_Option
+     * @return Pwg_List_Option
      */
     function addOption($label = false, $value = false, $index = false) {
         $cl = $this->optionClass;
@@ -63,7 +63,7 @@ class Pmt_List extends Pmt_Element {
         return $res;
     }
     
-    function getOptionIndex(Pmt_List_Option $option) {
+    function getOptionIndex(Pwg_List_Option $option) {
         $k = $this->getOptionKey($option);
         if ($k !== false) {
             $res = array_search($k, array_keys($this->options));
@@ -74,7 +74,7 @@ class Pmt_List extends Pmt_Element {
     }
     
     /**
-     * @return Pmt_List_Option
+     * @return Pwg_List_Option
      */
     function getOptionByIndex($index) {
         $res = false;
@@ -83,19 +83,19 @@ class Pmt_List extends Pmt_Element {
         return $res;
     }
     
-    function notifyOptionUpdated(Pmt_List_Option $option) {
+    function notifyOptionUpdated(Pwg_List_Option $option) {
         if (($index = $this->getOptionIndex($option)) !== false) {
             $this->sendMessage('optionUpdated', array($option, $index));
         }
     }
     
-//  function notifyOptionDeleted(Pmt_List_Option $option) {
+//  function notifyOptionDeleted(Pwg_List_Option $option) {
 //      if (($index = $this->getOptionIndex($option)) !== false) {
 //          $this->sendMessage('optionDeleted', array($index));
 //      }
 //  }
     
-    function getOptionKey(Pmt_List_Option $option) {
+    function getOptionKey(Pwg_List_Option $option) {
         $res = false;
         foreach ($this->options as $k => $opt) {
             if ($opt === $option) {
@@ -121,7 +121,7 @@ class Pmt_List extends Pmt_Element {
         return array_keys($this->options);
     }
 
-    protected function notifySelected(Pmt_List_Option $option) {
+    protected function notifySelected(Pwg_List_Option $option) {
         if (($index = $this->getOptionIndex($option)) !== false) {
             $this->sendMessage('optionSelected', array($index));
         }
@@ -133,7 +133,7 @@ class Pmt_List extends Pmt_Element {
         }
     }
     
-    function selectOption(Pmt_List_Option $option) {
+    function selectOption(Pwg_List_Option $option) {
         if (!$this->isOptionSelected($option)) {
             if (!$this->multiple) {
                 foreach ($this->selectedOptions as $opt) $opt->setSelected(false);
@@ -146,7 +146,7 @@ class Pmt_List extends Pmt_Element {
         }
     }
     
-    function isOptionSelected(Pmt_List_Option $option) {
+    function isOptionSelected(Pwg_List_Option $option) {
         $res = false;
         foreach (array_keys($this->selectedOptions) as $k) 
             if ($this->selectedOptions[$k] === $option) {
@@ -155,7 +155,7 @@ class Pmt_List extends Pmt_Element {
         return $res;
     }
     
-    function deselectOption(Pmt_List_Option $option) {
+    function deselectOption(Pwg_List_Option $option) {
         foreach ($this->selectedOptions as $k => $opt) 
             if ($this->selectedOptions[$k] === $option) {
                 unset($this->selectedOptions[$k]); 
@@ -187,7 +187,7 @@ class Pmt_List extends Pmt_Element {
     }
     
     /**
-     * @return Pmt_List_Option
+     * @return Pwg_List_Option
      */
     function getFirstSelectedOption() {
         if (strlen($i = $this->getFirstSelectedIndex())) {
@@ -233,7 +233,7 @@ class Pmt_List extends Pmt_Element {
     }
     
     /**
-     * @return Pmt_List_Option
+     * @return Pwg_List_Option
      */
     function getOption($k) {
         if (isset($this->options[$k])) {
@@ -428,14 +428,14 @@ class Pmt_List extends Pmt_Element {
         return $res;
     }
     
-//  Template methods of Pmt_Base
+//  Template methods of Pwg_Base
     
     protected function doOnInitialize($options) {
         parent::doOnInitialize($options);
         $this->internalObservers['selectionChange'] = 1;
     }
     
-    protected function doOnGetInitializer(Pm_Js_Initializer $initializer) {
+    protected function doOnGetInitializer(Pwg_Js_Initializer $initializer) {
         parent::doOnGetInitializer($initializer);
         $initializer->constructorParams[0]['selectedIndices'] = $this->getSelectedOptionIndices(); 
     }
@@ -483,9 +483,9 @@ class Pmt_List extends Pmt_Element {
     
     protected function doGetConstructorName() {
         if ($this->useCheckboxes) {
-            $res = 'Pmt_Checklist';
+            $res = 'Pwg_Checklist';
         } else {
-            $res = 'Pmt_List';
+            $res = 'Pwg_List';
         }
         return $res;
     }

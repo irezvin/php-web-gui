@@ -1,6 +1,6 @@
 <?php
 
-interface Pm_I_Queue {
+interface Pwg_I_Queue {
 	
     function setDb(Ae_Sql_Db $db);
     

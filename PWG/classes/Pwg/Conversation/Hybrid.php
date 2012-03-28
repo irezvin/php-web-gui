@@ -1,13 +1,13 @@
 <?php
 
-class Pm_Conversation_Hybrid extends Pm_Conversation_Abstract {
+class Pwg_Conversation_Hybrid extends Pwg_Conversation_Abstract {
 
     const resetMsg = '__reset__';
     const refreshMsg = '__refresh__';
     const releaseMsg = '__release__';
     
 	/**
-	 * @var Pm_I_Queue
+	 * @var Pwg_I_Queue
 	 */
     protected $queue = false;
 
@@ -31,14 +31,14 @@ class Pm_Conversation_Hybrid extends Pm_Conversation_Abstract {
     
     protected $autosaveTimeout = 1.5;
     
-    protected function setQueue(Pm_I_Queue $queue) {
+    protected function setQueue(Pwg_I_Queue $queue) {
         $this->queue = $queue;
     }
 
     function getQueue() {
     	if (!$this->queue) {
     		if (is_array($this->queuePrototype)) {
-    			$this->queue = Pmt_Autoparams::factory($this->queuePrototype);
+    			$this->queue = Pwg_Autoparams::factory($this->queuePrototype);
     			if ($this->sessionId) $this->queue->setId($this->sessionId);
     		}
     	}
@@ -81,10 +81,10 @@ class Pm_Conversation_Hybrid extends Pm_Conversation_Abstract {
 	        	$queue->addMessages($mess);
 	        	echo "2"; // OK response -- messages accepted
 		        $junk = ob_get_clean();
-		        if (strlen(trim($junk))) Pm_Conversation::log("junk output: ".$junk);
+		        if (strlen(trim($junk))) Pwg_Conversation::log("junk output: ".$junk);
 	       }
         } elseif (isset($_REQUEST['comet'])) {
-			$cmt = new Pm_Cmt_Responder();
+			$cmt = new Pwg_Cmt_Responder();
 			$cmt->start();
 			
 			$cycles = 0;
@@ -116,16 +116,16 @@ class Pm_Conversation_Hybrid extends Pm_Conversation_Abstract {
 					    $queue->delete();
 					    die();
 					} elseif ($this->refreshFlag) {
-					    Pm_Conversation::log("session - RefreshFlag received");
+					    Pwg_Conversation::log("session - RefreshFlag received");
 					    $this->refreshFlag = false;
 					    if ($this->webFront) {
-					        Pm_Conversation::log("session - lets save");
+					        Pwg_Conversation::log("session - lets save");
 					        $this->webFront->saveSessionData();
 					        die();
 					    }
 					    break;
 					} elseif ($this->releaseFlag) {
-					    Pm_Conversation::log("session - ReleaseFlag received");
+					    Pwg_Conversation::log("session - ReleaseFlag received");
 					    $this->releaseFlag = false;
 					    $cmt->disconnect();
 					    if ($this->webFront) {
@@ -135,13 +135,13 @@ class Pm_Conversation_Hybrid extends Pm_Conversation_Abstract {
 					    break;
 					} elseif ($this->autosaveTimeout) {
 					    $modifiedTime = microtime(true);
-					    Pm_Conversation::log("session modified ".($modifiedTime));
+					    Pwg_Conversation::log("session modified ".($modifiedTime));
 					}
-					//Pm_Conversation::log(gettype($msgs));
+					//Pwg_Conversation::log(gettype($msgs));
 				} else {
 				    if ($modifiedTime && ((microtime(true) - $modifiedTime) > $this->autosaveTimeout)) {
 					    if ($this->webFront) {
-					        Pm_Conversation::log("session - lets save");
+					        Pwg_Conversation::log("session - lets save");
 					        $this->webFront->saveSessionData(true);
 				            $modifiedTime = 0;
 				        }
@@ -179,7 +179,7 @@ class Pm_Conversation_Hybrid extends Pm_Conversation_Abstract {
         ob_start();
         $res = parent::getResponse();
 		$junk = ob_get_clean();
-		if (strlen(trim($junk))) Pm_Conversation::log("junk output: ".$junk);
+		if (strlen(trim($junk))) Pwg_Conversation::log("junk output: ".$junk);
         $processedIds = array();
         foreach ($this->inbox as $msg) $processedIds[] = $msg->msgId;
         $res['processedIds'] = $processedIds;
@@ -238,9 +238,9 @@ class Pm_Conversation_Hybrid extends Pm_Conversation_Abstract {
     
     function getInitJavascript() {
         ob_start();
-        $initializer = new Ae_Js_Call('Pm_Protocol', array(array(
+        $initializer = new Ae_Js_Call('Pwg_Protocol', array(array(
           'serverUrl' => $this->baseUrl,
-          'transport' => new Ae_Js_Call('Pm_Protocol_CometTransport', array(
+          'transport' => new Ae_Js_Call('Pwg_Protocol_CometTransport', array(
               array('sid' => session_id())
           ), true))     
         ), true);

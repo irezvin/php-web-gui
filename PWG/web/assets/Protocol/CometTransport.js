@@ -1,15 +1,15 @@
-Pm_Protocol_CometTransport = function(options) {
+Pwg_Protocol_CometTransport = function(options) {
 
 	this._unsent = [];
 	this._sent = [];
 	
-	if (window.Pmt_UiDefaults && window.Pmt_UiDefaults.pollDelay !== null)
-		this.pollDelay = window.Pmt_UiDefaults.pollDelay;
+	if (window.Pwg_UiDefaults && window.Pwg_UiDefaults.pollDelay !== null)
+		this.pollDelay = window.Pwg_UiDefaults.pollDelay;
 	
-	Pm_Protocol_Transport.call(this, options);
+	Pwg_Protocol_Transport.call(this, options);
 };
 
-Pm_Protocol_CometTransport.prototype = {
+Pwg_Protocol_CometTransport.prototype = {
 	
 	msgVar: 'messages',
 	checkComplete: false,
@@ -46,8 +46,8 @@ Pm_Protocol_CometTransport.prototype = {
 	},
 	
 	notifyProtocolInitialized: function() {
-		if (this.pollDelay) this._dc = new Pmt_Util.DelayedCall(this._immediateCheckAndPoll, null, this, [], this.pollDelay, false);
-		Pm_Protocol_Transport.prototype.notifyProtocolInitialized.call(this);
+		if (this.pollDelay) this._dc = new Pwg_Util.DelayedCall(this._immediateCheckAndPoll, null, this, [], this.pollDelay, false);
+		Pwg_Protocol_Transport.prototype.notifyProtocolInitialized.call(this);
 		if (!this.checkComplete) this._checkAndPoll();
 	},
 	
@@ -78,7 +78,7 @@ Pm_Protocol_CometTransport.prototype = {
             success: this._axComplete,
             failure: this._axError,
             scope: this
-        }, Pmt_Util.makeQuery(q, '', true));
+        }, Pwg_Util.makeQuery(q, '', true));
 
         this._sent = this._sent.concat(this._unsent);
         this._unsent = [];
@@ -98,7 +98,7 @@ Pm_Protocol_CometTransport.prototype = {
 			if (cmtUrl.indexOf('?') < 0) cmtUrl += '?';
 				else cmtUrl += '&';
 			cmtUrl += this.cometParamSuffix;
-			this._comet = new Pmt_Comet(cmtUrl, this._cometData, this._cometFinished, undefined, this, this._cometError);
+			this._comet = new Pwg_Comet(cmtUrl, this._cometData, this._cometFinished, undefined, this, this._cometError);
 			this._comet.connect();
 		}
 	},
@@ -126,7 +126,7 @@ Pm_Protocol_CometTransport.prototype = {
 	        	
 	        	this.protocol.reportError(
 						msgs.errorPushData,
-						Pm_Protocol.ERROR_SERVER_EXCEPTION,
+						Pwg_Protocol.ERROR_SERVER_EXCEPTION,
 						null,
 						false
 				);
@@ -147,7 +147,7 @@ Pm_Protocol_CometTransport.prototype = {
 		found = false;
 	
 		for (var i = this._sent.length - 1; (i >= 0) && mi.length; i--) {
-			if ((idx = Pmt_Util.indexOf(this._sent[i].msgId, mi)) >= 0) {
+			if ((idx = Pwg_Util.indexOf(this._sent[i].msgId, mi)) >= 0) {
 				this._sent.splice(i, 1);
 				mi.splice(idx, 1);
 				found = true;
@@ -176,7 +176,7 @@ Pm_Protocol_CometTransport.prototype = {
 		if (this._nErrors > this.maxErrors) {
 			this.protocol.reportError(
 				"Cannot parse server message:\n" + responseText,
-				Pm_Protocol.ERROR_UNPARSABLE_RESPONSE,
+				Pwg_Protocol.ERROR_UNPARSABLE_RESPONSE,
 				exception,
 				true
 			);
@@ -228,4 +228,4 @@ Pm_Protocol_CometTransport.prototype = {
 		
 };
 
-Pmt_Util.extend (Pm_Protocol_CometTransport, Pm_Protocol_Transport);
+Pwg_Util.extend (Pwg_Protocol_CometTransport, Pwg_Protocol_Transport);

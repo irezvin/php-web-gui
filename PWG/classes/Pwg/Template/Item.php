@@ -1,11 +1,11 @@
 <?php
 
-class Pmt_Template_Item {
+class Pwg_Template_Item {
 
     protected static $templateItems = false;
     
     /**
-     * @var Pmt_I_Control_DisplayParent
+     * @var Pwg_I_Control_DisplayParent
      */
     protected $display = false;
     
@@ -19,7 +19,7 @@ class Pmt_Template_Item {
         return $this->display;
     }   var $dataSource = false;
     
-    protected function __construct($text, Pmt_I_Control_DisplayParent $display = null) {
+    protected function __construct($text, Pwg_I_Control_DisplayParent $display = null) {
         $this->text = $text;
         $this->dataSource = $dataSource;  
     }
@@ -27,7 +27,7 @@ class Pmt_Template_Item {
     /**
      * @param unknown_type $snippet
      */
-    static function factory($text, Pmt_I_Control_DisplayParent $display = null) {
+    static function factory($text, Pwg_I_Control_DisplayParent $display = null) {
         
     }
     

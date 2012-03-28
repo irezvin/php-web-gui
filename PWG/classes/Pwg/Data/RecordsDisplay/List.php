@@ -1,8 +1,8 @@
 <?php
 
-class Pmt_Data_RecordsDisplay_List extends Pmt_List implements Pmt_I_Control_RecordsDisplay {
+class Pwg_Data_RecordsDisplay_List extends Pwg_List implements Pwg_I_Control_RecordsDisplay {
 
-    protected $optionClass = 'Pmt_Data_RecordsDisplay_List_Option';
+    protected $optionClass = 'Pwg_Data_RecordsDisplay_List_Option';
     
     protected $displayField = 'title';
     
@@ -14,7 +14,7 @@ class Pmt_Data_RecordsDisplay_List extends Pmt_List implements Pmt_I_Control_Rec
      * @param string $label
      * @param string $value
      * @param int $index
-     * @return Pmt_Data_RecordsDisplay_List_Option
+     * @return Pwg_Data_RecordsDisplay_List_Option
      */
     function addOption($label = false, $value = false, $index = false) {
         return parent::addOption($label, $value, $index);
@@ -41,13 +41,13 @@ class Pmt_Data_RecordsDisplay_List extends Pmt_List implements Pmt_I_Control_Rec
     }
     
     /**
-     * @return Pmt_Data_RecordsDisplay_List_Option
+     * @return Pwg_Data_RecordsDisplay_List_Option
      */
     function locateOptionByRecord(Ae_Model_Object $record, $multiple = false) {
         $key = $record->getPrimaryKey();
         $found = array();
         foreach ($this->options as $opt) {
-            if ($opt instanceof Pmt_Data_RecordsDisplay_List_Option && ($r = $opt->getRecord())) {
+            if ($opt instanceof Pwg_Data_RecordsDisplay_List_Option && ($r = $opt->getRecord())) {
                 if ($r->matchesPk($key)) {
                     $found[] = $opt;
                     if (!$multiple) break;
@@ -66,7 +66,7 @@ class Pmt_Data_RecordsDisplay_List extends Pmt_List implements Pmt_I_Control_Rec
         return $res;
     }
     
-//  Pmt_I_Control_RecordsDisplay    
+//  Pwg_I_Control_RecordsDisplay    
     
     function setRecordPrototype(Ae_Model_Object $record = null) {
     	// prototype isn't used by this control.
@@ -144,39 +144,39 @@ class Pmt_Data_RecordsDisplay_List extends Pmt_List implements Pmt_I_Control_Rec
         return array();
     }
     
-    function observeRecordSelected (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function observeRecordSelected (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->observe('onRecordSelected', $observer, $methodName, $extraParams);
     }
 
-    function unobserveRecordSelected (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function unobserveRecordSelected (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->unobserve('onRecordSelected', $observer, $methodName, $extraParams);
     }
     
-    function observeRecordEdited (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function observeRecordEdited (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->observe('onRecordEdited', $observer, $methodName, $extraParams);
     }
     
-    function unobserveRecordEdited (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function unobserveRecordEdited (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->unobserve('onRecordEdited', $observer, $methodName, $extraParams);
     }
     
-    function observeRecordCreated (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function observeRecordCreated (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->observe('onRecordCreated', $observer, $methodName, $extraParams);
     }
     
-    function unobserveRecordCreated (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function unobserveRecordCreated (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->unobserve('onRecordCreated', $observer, $methodName, $extraParams);
     }
 
-    function observeRecordRemoved (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function observeRecordRemoved (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->observe('onRecordRemoved', $observer, $methodName, $extraParams);
     }
     
-    function unobserveRecordRemoved (Pm_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
+    function unobserveRecordRemoved (Pwg_I_Observer $observer, $methodName = 'handleEvent', $extraParams = array()) {
         return $this->unobserve('onRecordRemoved', $observer, $methodName, $extraParams);
     }
     
-    protected function doOnOptionSelected(Pmt_List_Option $option) {
+    protected function doOnOptionSelected(Pwg_List_Option $option) {
         if ($this->inSelection <= 0) {
             $this->inSelection++;
             $this->triggerEvent('onRecordSelected');
@@ -184,9 +184,9 @@ class Pmt_Data_RecordsDisplay_List extends Pmt_List implements Pmt_I_Control_Rec
         }
     }
     
-    protected function doOnGetInitializer(Pm_Js_Initializer $i) {
+    protected function doOnGetInitializer(Pwg_Js_Initializer $i) {
         parent::doOnGetInitializer($i);
-        $i->constructorName = 'Pmt_List';
+        $i->constructorName = 'Pwg_List';
     }
     
 }

@@ -1,14 +1,14 @@
 <?php
 
-interface Pm_I_Conversation {
+interface Pwg_I_Conversation {
 
-//  Pm_I_Conversation   
+//  Pwg_I_Conversation   
     
-    function registerResponder(Pm_I_Responder $responder);
+    function registerResponder(Pwg_I_Responder $responder);
     
-    function registerFilter(Pm_I_Responder $filter);
+    function registerFilter(Pwg_I_Responder $filter);
     
-    function sendClientMessage(Pm_Message $message);
+    function sendClientMessage(Pwg_Message $message);
     
     function setJsId($jsId);
     
@@ -41,7 +41,7 @@ interface Pm_I_Conversation {
     
     function getAssetLibs();
 
-    function setWebFront(Pm_I_Web_Front $webFront);
+    function setWebFront(Pwg_I_Web_Front $webFront);
 
     function releaseSession();
     
