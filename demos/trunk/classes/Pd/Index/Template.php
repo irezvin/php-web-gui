@@ -61,7 +61,7 @@ class Pd_Index_Template extends Ae_Template_Html {
             <div class='clr'></div>
         </div>
         <div class='footer'>
-            &copy; 2012 Ilya Rezvin &middot; Google Code: <a href='http://code.google.com/pax-mvc/'>PWG</a>, <a href='http://code.google.com/avancore/'>Avancore</a>
+            &copy; 2012 Ilya Rezvin &middot; Google Code: <a href='http://code.google.com/p/php-web-gui/'>PWG</a>, <a href='http://code.google.com/p/avancore/'>Avancore</a>
         </div>
         
 <?php
