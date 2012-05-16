@@ -50,7 +50,7 @@ class Pwg_Table_Column extends Pwg_Composite {
     protected $searchable = true;
     
     /**
-     * @var Ae_I_Decorator
+     * @var Ac_I_Decorator
      */
     protected $decorator = false;
     
@@ -351,10 +351,10 @@ class Pwg_Table_Column extends Pwg_Composite {
     }
 
     /**
-     * @return Ae_I_Decorator
+     * @return Ac_I_Decorator
      */
     function getDecorator() {
-        $this->decorator = Ae_Decorator::instantiate($this->decorator);
+        $this->decorator = Ac_Decorator::instantiate($this->decorator);
         return $this->decorator;
     }    
     

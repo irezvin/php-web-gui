@@ -38,7 +38,7 @@ class Pwg_Cmt_Responder extends Pwg_Autoparams {
 
     function getPmJs() {
         if ($this->pmJs === false) {
-        	$this->pmJs = new Ae_Js();
+        	$this->pmJs = new Ac_Js();
         }
         return $this->pmJs;
     }
@@ -60,9 +60,9 @@ class Pwg_Cmt_Responder extends Pwg_Autoparams {
     function send($json) {
     	$call = 'Pwg_Comet.sendDataToInstance';
     	if (!$this->getIsXhr()) $call = 'parent.'.$call;
-    	$j = new Ae_Js_Call($call, array($this->getInstanceId(), $json));
+    	$j = new Ac_Js_Call($call, array($this->getInstanceId(), $json));
     	if (!$this->getIsXhr()) {
-    		$s = Ae_Util::mkElement('script', $this->getPmJs()->toJs($j), array('type' => 'text/javascript')).self::fixEol;
+    		$s = Ac_Util::mkElement('script', $this->getPmJs()->toJs($j), array('type' => 'text/javascript')).self::fixEol;
 			$len = mb_strlen($s,'utf-8');
 			if ($len < self::fixLen2) {
 				$s .= str_repeat(chr(32), self::fixLen2 - $len);
@@ -84,9 +84,9 @@ class Pwg_Cmt_Responder extends Pwg_Autoparams {
     function disconnect() {
     	$call = 'Pwg_Comet.disconnectInstance';
     	if (!$this->getIsXhr()) $call = 'parent.'.$call;
-    	$j = new Ae_Js_Call($call, array($this->getInstanceId()));
+    	$j = new Ac_Js_Call($call, array($this->getInstanceId()));
 		if (!$this->getIsXhr()) {
-    		echo Ae_Util::mkElement('script', $this->getPmJs()->toJs($j), array('type' => 'text/javascript')).self::fixEol;
+    		echo Ac_Util::mkElement('script', $this->getPmJs()->toJs($j), array('type' => 'text/javascript')).self::fixEol;
     	} else {
     		$strJson = $this->getPmJs()->toJs($j);
 			$len = mb_strlen($strJson,'utf-8');

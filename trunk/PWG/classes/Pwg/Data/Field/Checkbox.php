@@ -20,7 +20,7 @@ class Pwg_Data_Field_Checkbox extends Pwg_Data_Field {
                 'readOnlyPropertyName' => 'readOnly',
             ),
         );
-        Ae_Util::ms($prototypes, $p);
+        Ac_Util::ms($prototypes, $p);
     }
     
 }

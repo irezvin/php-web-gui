@@ -144,8 +144,8 @@ class Pwg_Yui_Paginator extends Pwg_Base implements Pwg_I_Control_Paginator, Pwg
     
     protected function jsGetTemplate() {
         if ($this->template === false && $this->rowsPerPageOptions) $this->template = self::TEMPLATE_ROWS_PER_PAGE;
-        if ($this->template === self::TEMPLATE_DEFAULT) $res = new Ae_Js_Var('YAHOO.widget.Paginator.TEMPLATE_DEFAULT');
-        elseif ($this->template === self::TEMPLATE_ROWS_PER_PAGE) $res = new Ae_Js_Var('YAHOO.widget.Paginator.TEMPLATE_ROWS_PER_PAGE');
+        if ($this->template === self::TEMPLATE_DEFAULT) $res = new Ac_Js_Var('YAHOO.widget.Paginator.TEMPLATE_DEFAULT');
+        elseif ($this->template === self::TEMPLATE_ROWS_PER_PAGE) $res = new Ac_Js_Var('YAHOO.widget.Paginator.TEMPLATE_ROWS_PER_PAGE');
         
         else $res = $this->template;
         

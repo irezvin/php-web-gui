@@ -85,7 +85,7 @@ class Pwg_Data_Field_AutoComplete extends Pwg_Data_Field {
             $p['ownListSource'] = $this->ownListSourcePrototype;
             $this->ownListSourcePrototype = false;
         }
-        Ae_Util::ms($prototypes, $p);
+        Ac_Util::ms($prototypes, $p);
     }
     
     protected function replaceQuery(& $expression, $query) {

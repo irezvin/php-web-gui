@@ -8,23 +8,23 @@ interface Pwg_I_Control_RecordsDisplay extends Pwg_I_Control {
     
 //  Pwg_I_Control_RecordsDisplay    
 
-	function setRecordPrototype(Ae_Model_Object $record = null);
+	function setRecordPrototype(Ac_Model_Object $record = null);
 	
-    function addRecord(Ae_Model_Object $record, $newIndex = false);
+    function addRecord(Ac_Model_Object $record, $newIndex = false);
     
-    function deleteRecord(Ae_Model_Object $record);
+    function deleteRecord(Ac_Model_Object $record);
     
-    function updateRecord(Ae_Model_Object $record, $newIndex = false);
+    function updateRecord(Ac_Model_Object $record, $newIndex = false);
 
     function setRecords(array $records = array());
 
-    function setCurrentRecord(Ae_Model_Object $record = null);
+    function setCurrentRecord(Ac_Model_Object $record = null);
     
-    function setRecordErrors(Ae_Model_Object $record, array $errors = array());
+    function setRecordErrors(Ac_Model_Object $record, array $errors = array());
     
     /**
      * Returns selected record.
-     * @return Ae_Model_Object
+     * @return Ac_Model_Object
      */
     function getCurrentRecord();
     
@@ -48,7 +48,7 @@ interface Pwg_I_Control_RecordsDisplay extends Pwg_I_Control {
     
     function getCurrentCaps();
     
-    function getRecordIndex(Ae_Model_Object $record);
+    function getRecordIndex(Ac_Model_Object $record);
     
     /**
      * Is triggered when user selects some record by the control and getCurrentRecord() changes

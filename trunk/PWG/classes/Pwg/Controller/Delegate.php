@@ -55,13 +55,13 @@ class Pwg_Controller_Delegate extends Pwg_Autoparams implements Pwg_I_Observer, 
     function getExternMap() {
         if ($this->resultingExternMap === false) {
             $this->resultingExternMap = array();
-            foreach (array_keys(Ae_Util::getClassVars(get_class($this))) as $vn) {
+            foreach (array_keys(Ac_Util::getClassVars(get_class($this))) as $vn) {
                 $ext = $vn;
                 if (strlen($this->externPrefix)) $ext = $this->externPrefix.ucfirst($ext);
                 $this->resultingExternMap[$vn] = $ext;
             }
         }
-        if (is_array($this->externMap)) Ae_Util::ms($this->resultingExternMap, $this->externMap);
+        if (is_array($this->externMap)) Ac_Util::ms($this->resultingExternMap, $this->externMap);
         return $this->resultingExternMap;
     }
 

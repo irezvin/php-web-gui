@@ -1,9 +1,9 @@
 <?php
 
-abstract class Pwg_Application extends Ae_Application {
+abstract class Pwg_Application extends Ac_Application {
     
     /**
-     * @var Ae_Avancore
+     * @var Ac_Avancore
      */
     protected $avancore = false;
 
@@ -16,7 +16,7 @@ abstract class Pwg_Application extends Ae_Application {
 
     protected function doOnInitialize() {
         parent::doOnInitialize();
-        if (!$this->avancore) $this->avancore = Ae_Avancore::getInstance();
+        if (!$this->avancore) $this->avancore = Ac_Avancore::getInstance();
         $this->getPwg();
         $this->controllers['Pwg_Web_Front'] = array(
             'class' => 'Pwg_Web_Front',
@@ -33,16 +33,16 @@ abstract class Pwg_Application extends Ae_Application {
         return $this->getController('Pwg_Web_Front');
     }
     
-    function setAvancore(Ae_Avancore $avancore) {
+    function setAvancore(Ac_Avancore $avancore) {
         if ($this->avancore) throw new Exception("Can setAvancore() only once");
         $this->avancore = $avancore;
     }
 
     /**
-     * @return Ae_Avancore
+     * @return Ac_Avancore
      */
     function getAvancore() {
-        if (!$this->avancore) $this->avancore = Ae_Avancore::getInstance();
+        if (!$this->avancore) $this->avancore = Ac_Avancore::getInstance();
         return $this->avancore;
     }
 

@@ -386,12 +386,12 @@ class Pwg_Yui_Panel extends Pwg_Panel {
         $attribs = $this->getContainerAttribs();
         $innerTagName = $this->containerIsBlock? 'div' : 'span';
         
-        echo '<div '.Ae_Util::mkAttribs($outerTagAttribs).'>';
-        if (strlen($h = $this->jsGetHeader())) echo Ae_Util::mkElement('div', $h, array('class' => 'hd'));
-        echo Ae_Util::mkElement('div', 
-            Ae_Util::mkElement($innerTagName, $this->doGetContainerBody(), $attribs), 
+        echo '<div '.Ac_Util::mkAttribs($outerTagAttribs).'>';
+        if (strlen($h = $this->jsGetHeader())) echo Ac_Util::mkElement('div', $h, array('class' => 'hd'));
+        echo Ac_Util::mkElement('div', 
+            Ac_Util::mkElement($innerTagName, $this->doGetContainerBody(), $attribs), 
         array('class' => 'bd'));
-        if (strlen($f = $this->jsGetFooter())) echo Ae_Util::mkElement('div', $f, array('class' => 'ft'));
+        if (strlen($f = $this->jsGetFooter())) echo Ac_Util::mkElement('div', $f, array('class' => 'ft'));
         echo "</div>";
     }
     

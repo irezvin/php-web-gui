@@ -112,7 +112,7 @@ class Pwg_Yui_Calendar_Popup extends Pwg_Controller_Aggregate implements Pwg_I_C
 		    'label' => $months[$i - 1],
 		);
 	    
-	    Ae_Util::ms($prototypes, array(
+	    Ac_Util::ms($prototypes, array(
 			'edit' => array(
 				'class' => 'Pwg_Text',
 				'containerIsBlock' => false,
@@ -157,7 +157,7 @@ class Pwg_Yui_Calendar_Popup extends Pwg_Controller_Aggregate implements Pwg_I_C
 			),
 		));
 		
-		Ae_Util::ms($prototypes, $this->preConfig);
+		Ac_Util::ms($prototypes, $this->preConfig);
 		if (($val = $this->getSelectedValue()) !== false) {
 			$prototypes['edit']['text'] = is_array($val)? implode(" ", $val) : $val;
 		}
@@ -329,7 +329,7 @@ class Pwg_Yui_Calendar_Popup extends Pwg_Controller_Aggregate implements Pwg_I_C
     		        break;
     		    }
     		}
-    		if (($d = Ae_Util::date($val)) !== false) $sv[] = $d;
+    		if (($d = Ac_Util::date($val)) !== false) $sv[] = $d;
     	}
     	if ($maskOk) {
         	if (!$this->calendar->getMultiple()) $sv = count($sv)? $sv[0] : false;
@@ -362,9 +362,9 @@ class Pwg_Yui_Calendar_Popup extends Pwg_Controller_Aggregate implements Pwg_I_C
     protected function applyPageDate() {
         if ($this->calendar && $this->lblYear && $this->lstMonths) {
             $pd = $this->calendar->getPageDate();
-            if (Ae_Util::date($pd) !== false) {
-                $year = Ae_Util::date($pd, 'Y');
-                $month = (int) Ae_Util::date($pd, 'm');
+            if (Ac_Util::date($pd) !== false) {
+                $year = Ac_Util::date($pd, 'Y');
+                $month = (int) Ac_Util::date($pd, 'm');
                 $this->lblYear->setHtml("<a class='calnavleft' href='##prev'>{$this->yearPrevHtml}</a> {$year} <a class='calnavright' href='##next'>{$this->yearNextHtml}</a>");
                 $this->lstMonths->setSelectedValue($month);
             }
@@ -373,7 +373,7 @@ class Pwg_Yui_Calendar_Popup extends Pwg_Controller_Aggregate implements Pwg_I_C
     
     function handleLblYearClick($lbl, $eventType, $params) {
         if (isset($params['href'])) {
-            $year = Ae_Util::date($this->calendar->getPageDate(), 'Y');
+            $year = Ac_Util::date($this->calendar->getPageDate(), 'Y');
             if ($year !== false) {
                 $year = (int) $year;
                 if ($params['href'] == '##prev') {
@@ -382,7 +382,7 @@ class Pwg_Yui_Calendar_Popup extends Pwg_Controller_Aggregate implements Pwg_I_C
                     $year++;
                 }
             }
-            $newPageDate = $year.Ae_Util::date($this->calendar->getPageDate(), '-m-').'-01';
+            $newPageDate = $year.Ac_Util::date($this->calendar->getPageDate(), '-m-').'-01';
             $this->calendar->setPageDate($newPageDate);
             $this->applyPageDate();
         }
@@ -391,11 +391,11 @@ class Pwg_Yui_Calendar_Popup extends Pwg_Controller_Aggregate implements Pwg_I_C
     function handleLstMonthsSelectionChange() {
         $v = $this->lstMonths->getSelectedValue();
         Pwg_Conversation::log("Selected value is ", $v);
-        $month = Ae_Util::date($this->calendar->getPageDate(), 'm');
+        $month = Ac_Util::date($this->calendar->getPageDate(), 'm');
         if ($month !== false) {
             $newMonth = ''.$v;
             if (strlen($v) < 2) $v = '0'.$v;
-            $year = Ae_Util::date($this->calendar->getPageDate(), 'Y');
+            $year = Ac_Util::date($this->calendar->getPageDate(), 'Y');
             $newPageDate = $year.'-'.$newMonth.'-01';
             $this->calendar->setPageDate($newPageDate);
         }

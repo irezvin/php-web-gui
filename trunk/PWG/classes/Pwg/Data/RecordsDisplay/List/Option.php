@@ -3,7 +3,7 @@
 class Pwg_Data_RecordsDisplay_List_Option extends Pwg_List_Option {
     
     /**
-     * @var Ae_Model_Object
+     * @var Ac_Model_Object
      */
     protected $record = false;
     
@@ -12,12 +12,12 @@ class Pwg_Data_RecordsDisplay_List_Option extends Pwg_List_Option {
      */
     protected $list = false;
     
-    function setRecord(Ae_Model_Object $record) {
+    function setRecord(Ac_Model_Object $record) {
         $this->record = $record;
     }
     
     /**
-     * @return Ae_Model_Object
+     * @return Ac_Model_Object
      */
     function getRecord() {
         return $this->record;       

@@ -103,7 +103,7 @@ abstract class Pwg_Yui_Tree_Node extends Pwg_Struct_Tree_Node {
     }
 
 	function toJs() {
-		$res = new Ae_Js_Call($this->getJsNodeType(), array($this->getJsConstructorArgs()), true);
+		$res = new Ac_Js_Call($this->getJsNodeType(), array($this->getJsConstructorArgs()), true);
 		return $res;
 	}
 	

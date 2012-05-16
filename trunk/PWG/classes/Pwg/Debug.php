@@ -11,8 +11,8 @@ class Pwg_Debug {
     }
     
     static function registerHandlers() {
-        if (class_exists('Ae_Legacy_Database')) {
-            Ae_Callbacks::getInstance()->addHandler(CALLBACK_AE_DATABASE_AFTER_QUERY, array('Pwg_Debug', 'logSql'), 'Pwg_Debug.logSql');
+        if (class_exists('Ac_Legacy_Database')) {
+            Ac_Callbacks::getInstance()->addHandler(CALLBACK_AE_DATABASE_AFTER_QUERY, array('Pwg_Debug', 'logSql'), 'Pwg_Debug.logSql');
         }
     }
     

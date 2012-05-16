@@ -23,7 +23,7 @@ class Pwg_Data_Field_Rte extends Pwg_Data_Field {
             ),
         );
         if ($this->withLabel) $p['label']['html'] = $this->labelText;
-        Ae_Util::ms($prototypes, $p);
+        Ac_Util::ms($prototypes, $p);
     }
     
     function setLabelText($labelText) {

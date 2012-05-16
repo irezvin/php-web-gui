@@ -7,13 +7,13 @@ class Pwg_Conversation extends Pwg_Conversation_Abstract {
     protected static $currentApplication = null;
     
     /**
-     * @return Ae_Application
+     * @return Ac_Application
      */
     static function getCurrentApplication() {
         return self::$currentApplication;
     }
     
-    static function setCurrentApplication(Ae_Application $application) {
+    static function setCurrentApplication(Ac_Application $application) {
         self::$currentApplication = $application;
     }
 
@@ -96,7 +96,7 @@ class Pwg_Conversation extends Pwg_Conversation_Abstract {
         	echo "1"; // check routine
         } else {
         	Pwg_Conversation::log("in: ".urldecode(http_build_query($_POST['messages'])));
-        	if (ini_get('magic_quotes_gpc')) $msgs = Ae_Util::stripSlashes($msgs);
+        	if (ini_get('magic_quotes_gpc')) $msgs = Ac_Util::stripSlashes($msgs);
 	        $this->setRequestData($msgs);
 	        $response = $this->getResponse();
 	        $r = $this->js->toJs($response);
@@ -123,9 +123,9 @@ class Pwg_Conversation extends Pwg_Conversation_Abstract {
     function getInitJavascript() {
 		ob_start();
         if ($this->useNewProtocol) {
-		    $initializer = new Ae_Js_Call('Pwg_Protocol', array(array(
+		    $initializer = new Ac_Js_Call('Pwg_Protocol', array(array(
 		      'serverUrl' => $this->baseUrl,
-		      'transport' => new Ae_Js_Call('Pwg_Protocol_AjaxTransport', array(
+		      'transport' => new Ac_Js_Call('Pwg_Protocol_AjaxTransport', array(
 		      ), true))     
 		    ), true);
 ?>

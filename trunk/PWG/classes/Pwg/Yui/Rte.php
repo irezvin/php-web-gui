@@ -212,7 +212,7 @@ class Pwg_Yui_Rte extends Pwg_Element {
     protected function doGetContainerBody() {
         $attr = $this->attribs;
         $attr['name'] = $this->getContainerId().'_textarea';
-        return Ae_Util::mkElement('textarea', htmlspecialchars($this->text), $attr);
+        return Ac_Util::mkElement('textarea', htmlspecialchars($this->text), $attr);
     }
     
     function triggerFrontendChange($newText) {

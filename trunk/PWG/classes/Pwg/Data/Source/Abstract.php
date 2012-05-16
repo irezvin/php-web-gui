@@ -7,7 +7,7 @@ class Pwg_Data_Source_Abstract extends Pwg_Base {
 	
     
     /**
-     * @var Ae_Model_Data
+     * @var Ac_Model_Data
      */
     protected $currentRecord = false;
     

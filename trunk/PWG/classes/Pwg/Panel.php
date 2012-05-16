@@ -61,8 +61,8 @@ class Pwg_Panel extends Pwg_Group {
                                 $val = $this->getContainerId();
                                 break;
                             case 'event':
-                                $js = new Ae_Js();
-                                $jsc = new Ae_Js_Call('window.v_'.$this->getResponderId().'.sendEvent', array_slice($m2s, 1));
+                                $js = new Ac_Js();
+                                $jsc = new Ac_Js_Call('window.v_'.$this->getResponderId().'.sendEvent', array_slice($m2s, 1));
                                 $val = $jsc->toJs($js, 0, 4, false);
                                 break;
                         }

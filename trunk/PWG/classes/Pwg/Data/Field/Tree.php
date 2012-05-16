@@ -407,7 +407,7 @@ class Pwg_Data_Field_Tree extends Pwg_Data_Field {
     protected function doOnGetControlPrototypes(& $prototypes) {
         parent::doOnGetControlPrototypes($prototypes);
         unset($prototypes['editor']); // we don't need it
-        Ae_Util::ms($prototypes, array(
+        Ac_Util::ms($prototypes, array(
             'lblHeader' => array(
                 '.click' => 'nodesLabelClick',
                 'displayParentPath' => '../panel',
@@ -420,7 +420,7 @@ class Pwg_Data_Field_Tree extends Pwg_Data_Field {
                 'controlChangeEvents' => array('apply'),
             ),
         ));
-        if (!$this->lazyPopup) Ae_Util::ms($prototypes, $this->getPopupControlPrototypes());
+        if (!$this->lazyPopup) Ac_Util::ms($prototypes, $this->getPopupControlPrototypes());
     }
     
     protected function getControlPrototypes() {
@@ -532,7 +532,7 @@ class Pwg_Data_Field_Tree extends Pwg_Data_Field {
         if (!$this->withBtnReset) unset($res['btnReset']);
         if (!$this->withBtnReload) unset($res['btnReload']);
         
-        Ae_Util::ms($res, $this->popupPrototypesOverride);
+        Ac_Util::ms($res, $this->popupPrototypesOverride);
         return $res;
     }
     

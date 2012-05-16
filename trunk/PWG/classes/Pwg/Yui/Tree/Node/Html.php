@@ -31,7 +31,7 @@ class Pwg_Yui_Tree_Node_Html extends Pwg_Yui_Tree_Node {
     
     
     protected function getJsNodeType() {
-    	return new Ae_Js_Var('YAHOO.widget.HTMLNode');
+    	return new Ac_Js_Var('YAHOO.widget.HTMLNode');
     }
     
     protected function getJsConstructorArgs() {

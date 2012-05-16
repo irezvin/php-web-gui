@@ -48,12 +48,12 @@ class Pwg_Data_Binder extends Pwg_Base implements Pwg_I_Observer {
     protected $updateControlAttribsFromProperty = false;
 
     /**
-     * @var Ae_Model_Object
+     * @var Ac_Model_Object
      */
     protected $currentRecord = false;
     
     /**
-     * @var Ae_Model_Property
+     * @var Ac_Model_Property
      */
     protected $propInfo = false;
     
@@ -331,7 +331,7 @@ class Pwg_Data_Binder extends Pwg_Base implements Pwg_I_Observer {
         return $res;
     }
     
-    protected function internalSetRecord(Ae_Model_Object $record = null) {
+    protected function internalSetRecord(Ac_Model_Object $record = null) {
         if ($this->debug)
             Pwg_Conversation::log("!!!!" . $this->getResponderId()." internalSetRecord: ".($record? (get_class($record)." #".$record->getPrimaryKey()) : "null"));
         
@@ -367,7 +367,7 @@ class Pwg_Data_Binder extends Pwg_Base implements Pwg_I_Observer {
         Pwg_Conversation::log("$this RefreshErrorControlFromData", $this->recordPropertyName);
         $n = func_num_args();       
         if (func_num_args() == 0) $error = $this->getRecordError();
-        if (is_array($error)) $error = Ae_Util::implode_r("<br />", $error);
+        if (is_array($error)) $error = Ac_Util::implode_r("<br />", $error);
         if (strlen($error)) {
             Pwg_Base::setProperty($this->errorControl, $this->errorPropertyName, $error); 
             Pwg_Base::setProperty($this->errorControl, 'visible', true);
@@ -486,10 +486,10 @@ class Pwg_Data_Binder extends Pwg_Base implements Pwg_I_Observer {
     }
 
     /**
-     * @return Ae_I_Decorator
+     * @return Ac_I_Decorator
      */
     function getDecorator() {
-        $this->decorator = Ae_Decorator::instantiate($this->decorator);
+        $this->decorator = Ac_Decorator::instantiate($this->decorator);
         return $this->decorator;
     }    
     

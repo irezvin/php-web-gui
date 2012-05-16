@@ -183,7 +183,7 @@ class Pwg_Data_Navigator extends Pwg_Controller {
 //      $this->createDisplayParentImpl();
         parent::doOnInitialize($options);
         $proto = $this->getDefaultPrototype();
-        $this->controlPrototypes = Ae_Util::m($proto, $this->controlPrototypes);
+        $this->controlPrototypes = Ac_Util::m($proto, $this->controlPrototypes);
 
         
         foreach ($this->getNavButtonNames() as $n) {
@@ -198,7 +198,7 @@ class Pwg_Data_Navigator extends Pwg_Controller {
     }
     
     /*function getControlPrototypes() {
-        return Ae_Util::m($this->controlPrototypes, $this->getDefaultPrototype());
+        return Ac_Util::m($this->controlPrototypes, $this->getDefaultPrototype());
     }*/
         
     
@@ -213,7 +213,7 @@ class Pwg_Data_Navigator extends Pwg_Controller {
             );
         }
         
-        $res = Ae_Util::ms($res, array(
+        $res = Ac_Util::ms($res, array(
             'btnNext' => array(
                 'label' => html_entity_decode(new Pwg_Lang_String('next', array('suffix' => ' &gt;')), null, 'utf-8'),
             ),

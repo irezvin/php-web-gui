@@ -55,7 +55,7 @@ class Pwg_Controller_MDI extends Pwg_Controller {
     function getControlPrototypes() {
     	if (!$this->defaultPrototypesApplied) {
     		$this->defaultPrototypesApplied = true;
-    		$this->controlPrototypes = Ae_Util::m($this->controlPrototypes, $this->getDefaultControlPrototypes());
+    		$this->controlPrototypes = Ac_Util::m($this->controlPrototypes, $this->getDefaultControlPrototypes());
     	}
     	return parent::getControlPrototypes();
     }
@@ -108,7 +108,7 @@ class Pwg_Controller_MDI extends Pwg_Controller {
      * @param bool|array $activateIfExists  FALSE, TRUE or array of controller options to search 
      *      FALSE = always create new window and controller; 
      *      TRUE = find and return controller of same class (or it's subclass) and activate it's window
-     *      array = find controlller with specific properties (matching is done using Ae_Autoparams::findItems)  
+     *      array = find controlller with specific properties (matching is done using Ac_Autoparams::findItems)  
      */
     function createWindowWithController($controllerClass, array $windowOptions = array(), array $controllerOptions = array(), $activateIfExists = false) {
         
@@ -127,13 +127,13 @@ class Pwg_Controller_MDI extends Pwg_Controller {
         $winId = 'window'.$idSfx;
         $conId = 'controller'.$idSfx;
 
-        $winOptions = Ae_Util::m($this->getWindowDefaults(), $windowOptions);
+        $winOptions = Ac_Util::m($this->getWindowDefaults(), $windowOptions);
         $winOptions['id'] = $winId;
         $window = Pwg_Base::factory($winOptions, 'Pwg_Yui_Panel');
         $this->windows[$idSfx] = $window; 
         $this->addControl($window);
         
-        $controllerOptions = Ae_Util::m(
+        $controllerOptions = Ac_Util::m(
             array(
                 //'delayedInitialize' => true,
                 'parent' => $this, 
@@ -185,12 +185,12 @@ class Pwg_Controller_MDI extends Pwg_Controller {
     /**
      * Searches Pwg_Yui_Panel instances that contain controllers with matching class and properties
      * @param string $controllerClass
-     * @param array  $controllerProperties - specifiy matches for controller properties - as in Ae_Autoparams::findItems
+     * @param array  $controllerProperties - specifiy matches for controller properties - as in Ac_Autoparams::findItems
      * @return array of Pwg_Yui_Panel
      */
     function findWindowsWithController($controllerClass, array $controllerProperties = array()) {
         $res = array();
-        $controllers = Ae_Autoparams::findItems($this->controllers, $controllerProperties, false, true, $controllerClass);
+        $controllers = Ac_Autoparams::findItems($this->controllers, $controllerProperties, false, true, $controllerClass);
         foreach (array_keys($controllers) as $idSfx) {
             if (isset($this->windows[$idSfx])) {
                 $res[$idSfx] = $this->windows[$idSfx];
@@ -316,12 +316,12 @@ class Pwg_Controller_MDI extends Pwg_Controller {
 	}
 	
 	function handlerChildCreateRecord($controller, $eventType, $params) {
-		if ($mc = Ae_Util::getArrayByPath($params, 'mapperClass', null)) {
+		if ($mc = Ac_Util::getArrayByPath($params, 'mapperClass', null)) {
 			$detailsClass = $this->getUiInfo($mc, 'details');
 			if ($detailsClass) {
 				$controllerParams = (isset($params['controllerParams']) && is_array($params['controllerParams']))? $params['controllerParams'] : array();
 				$windowParams = array();
-				$controllerParams = Ae_Util::m(array(
+				$controllerParams = Ac_Util::m(array(
 					'createOnNoId' => true,
 					'closeOnCreateCancel' => true,
 				), $controllerParams);
@@ -333,11 +333,11 @@ class Pwg_Controller_MDI extends Pwg_Controller {
 	}
 	
 	function handlerChildOpenDetails($controller, $eventType, $params) {
-		if ($mc = Ae_Util::getArrayByPath($params, 'mapperClass', null)) {
+		if ($mc = Ac_Util::getArrayByPath($params, 'mapperClass', null)) {
 			$detailsClass = $this->getUiInfo($mc, 'details');
 			$windowParams = array();
 			$controllerParams = (isset($params['controllerParams']) && is_array($params['controllerParams']))? $params['controllerParams'] : array();
-			$controllerParams = Ae_Util::m(array('primaryKey' => $params['primaryKey']), $controllerParams);
+			$controllerParams = Ac_Util::m(array('primaryKey' => $params['primaryKey']), $controllerParams);
 			$this->doOnCreateDetailsWindow($detailsClass, $controllerParams, $windowParams);
 			if ($detailsClass) {
 			    Pwg_Conversation::log('Profiling to...', PAX_TMP_PATH);

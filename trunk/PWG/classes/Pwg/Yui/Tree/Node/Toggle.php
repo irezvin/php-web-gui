@@ -49,7 +49,7 @@ class Pwg_Yui_Tree_Node_Toggle extends Pwg_Yui_Tree_Node_Text {
     }
 	
     protected function getJsNodeType() {
-    	return new Ae_Js_Var('YAHOO.widget.ToggleNode');
+    	return new Ac_Js_Var('YAHOO.widget.ToggleNode');
     }    
     
 }

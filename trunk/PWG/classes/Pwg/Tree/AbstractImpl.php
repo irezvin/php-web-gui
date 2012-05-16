@@ -2,7 +2,7 @@
 
 /**
  * @deprecated
- * Use Ae_Tree_AbstractImpl
+ * Use Ac_Tree_AbstractImpl
  */
-abstract class Pwg_Tree_AbstractImpl extends Ae_Tree_AbstractImpl {
+abstract class Pwg_Tree_AbstractImpl extends Ac_Tree_AbstractImpl {
 } 

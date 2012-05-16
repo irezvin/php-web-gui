@@ -68,7 +68,7 @@ class Pwg_Controller_Std_List extends Pwg_Controller_MDI_Window implements Pwg_I
     		}
     	}
     	
-    	Ae_Util::ms($prototypes, array(
+    	Ac_Util::ms($prototypes, array(
         
             'pnlLayout' => array(
                 
@@ -178,7 +178,7 @@ class Pwg_Controller_Std_List extends Pwg_Controller_MDI_Window implements Pwg_I
         ));
         
         if ($this->finderClass !== false) {
-        	Ae_Util::ms($prototypes, array(            
+        	Ac_Util::ms($prototypes, array(            
             	'fltFilter' => array(
             		'class' => 'Pwg_Data_Filter',
             		'finder' => $finder,
@@ -186,7 +186,7 @@ class Pwg_Controller_Std_List extends Pwg_Controller_MDI_Window implements Pwg_I
             	),
         	));
         	if (strlen($alias)) {
-        		Ae_Util::ms($prototypes, array(
+        		Ac_Util::ms($prototypes, array(
 	            	'dsData' => array(
 	            		'alias' => $alias,
         				'debug' => true,

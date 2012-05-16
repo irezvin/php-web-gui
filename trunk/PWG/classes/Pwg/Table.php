@@ -127,7 +127,7 @@ class Pwg_Table extends Pwg_Controller implements Pwg_I_Control_RecordsDisplay {
     function clearRows() {
         foreach ($this->rows as $row) $row->destroy();
         $this->rows = array();
-        $this->sendMessage('setRows', array(new Ae_Js_Var('[]')));
+        $this->sendMessage('setRows', array(new Ac_Js_Var('[]')));
         //foreach ($this->rows as $row) $row->destroy();
     }
     
@@ -244,7 +244,7 @@ class Pwg_Table extends Pwg_Controller implements Pwg_I_Control_RecordsDisplay {
             this.yuiTable.subscribe("cellClickEvent", this.yuiTable.onEventShowCellEditor);
 <?php       } ?>
 <?php
-        $res = new Ae_Js_Var('function() { '.ob_get_clean().'}');
+        $res = new Ac_Js_Var('function() { '.ob_get_clean().'}');
         return $res;
     }
     
@@ -260,10 +260,10 @@ class Pwg_Table extends Pwg_Controller implements Pwg_I_Control_RecordsDisplay {
     
     protected function getDataSource() {
         $dsParams = array(array(), array(
-            'responseType' => new Ae_Js_Var('YAHOO.util.DataSource.TYPE_JSARRAY'),
+            'responseType' => new Ac_Js_Var('YAHOO.util.DataSource.TYPE_JSARRAY'),
             'responseSchema' => array('fields' => array_merge(array('__aeUid'), $this->getColset()->listControls())),
         ));
-        $res = new Ae_Js_Call($this->dataSourceJsClass, $dsParams, "YAHOO.util.DataSource");
+        $res = new Ac_Js_Call($this->dataSourceJsClass, $dsParams, "YAHOO.util.DataSource");
         return $res;
     }
     
@@ -476,19 +476,19 @@ class Pwg_Table extends Pwg_Controller implements Pwg_I_Control_RecordsDisplay {
 
 //  Pwg_I_Control_RecordsDisplay    
     
-    function setRecordPrototype(Ae_Model_Object $record = null) {
+    function setRecordPrototype(Ac_Model_Object $record = null) {
     	if (!$record) $this->setMetadataProvider(null);
     		else $this->setMetadataProvider(new Pwg_Record_Ae($record));
     }
     
-    function addRecord(Ae_Model_Object $record, $newIndex = false) {
+    function addRecord(Ac_Model_Object $record, $newIndex = false) {
         // TODO
         
 //      $this->controller->logMessage("add record", $newIndex, $record->getDataFields());
 //      $this->getRowset()->addRecordRow(new Pwg_Record_Ae($record), $newIndex);
     }
     
-    function deleteRecord(Ae_Model_Object $record) {
+    function deleteRecord(Ac_Model_Object $record) {
 //      // TODO
 //      $row = $this->getRowset()->locateRowsByRecord(new Pwg_Record_Ae($record));
 //      foreach ($rows as $row) {
@@ -496,7 +496,7 @@ class Pwg_Table extends Pwg_Controller implements Pwg_I_Control_RecordsDisplay {
 //      }
     }
     
-    function updateRecord(Ae_Model_Object $record, $newIndex = false) {
+    function updateRecord(Ac_Model_Object $record, $newIndex = false) {
 //      // TODO
 //      $rows = $this->getRowset()->locateRowsByRecord(new Pwg_Record_Ae($record));
 //      if ($rows) {
@@ -525,7 +525,7 @@ class Pwg_Table extends Pwg_Controller implements Pwg_I_Control_RecordsDisplay {
         return $res;
     }
     
-    function findRowByAeRecord(Ae_Model_Data $record, $many = false) {
+    function findRowByAeRecord(Ac_Model_Data $record, $many = false) {
         $res = array();
         $pmtRecord = new Pwg_Record_Ae($record);
         foreach ($this->listRows() as $i) {
@@ -577,7 +577,7 @@ class Pwg_Table extends Pwg_Controller implements Pwg_I_Control_RecordsDisplay {
         }
     }
     
-    function setCurrentRecord(Ae_Model_Object $record = null) {
+    function setCurrentRecord(Ac_Model_Object $record = null) {
         $sr = array();
         if ($record) {
             $row = $this->findRowByAeRecord($record);
@@ -588,7 +588,7 @@ class Pwg_Table extends Pwg_Controller implements Pwg_I_Control_RecordsDisplay {
         $this->setSelectedRecords($sr);
     }
     
-    function setRecordErrors(Ae_Model_Object $record, array $errors = array()) {
+    function setRecordErrors(Ac_Model_Object $record, array $errors = array()) {
         // skip it...
     }
     
@@ -604,7 +604,7 @@ class Pwg_Table extends Pwg_Controller implements Pwg_I_Control_RecordsDisplay {
         return array();
     }
     
-    function getRecordIndex(Ae_Model_Object $record) {
+    function getRecordIndex(Ac_Model_Object $record) {
         $res = false;
         $r = new Pwg_Record_Ae($record);
         foreach ($this->rows as $i => $row) {
@@ -915,7 +915,7 @@ class Pwg_Table extends Pwg_Controller implements Pwg_I_Control_RecordsDisplay {
     
     protected function getModelObject(Pwg_Table_Row $row) {
         $res = false;
-        if (($rec = $row->getRecord()) && $rec instanceof Pwg_Record_Ae && (($aeRec = $rec->getAeModelData()) instanceof Ae_Model_Object)) {
+        if (($rec = $row->getRecord()) && $rec instanceof Pwg_Record_Ae && (($aeRec = $rec->getAeModelData()) instanceof Ac_Model_Object)) {
             $res = $aeRec;
         }
         return $res;
@@ -997,7 +997,7 @@ class Pwg_Table extends Pwg_Controller implements Pwg_I_Control_RecordsDisplay {
     }    
     
     function jsGetSortedBy() {
-        if ($this->sortMode) $res = array('key' => $this->sortMode[0], 'dir' => new Ae_Js_Var('YAHOO.widget.DataTable.CLASS_'.($this->sortMode[1]? 'ASC' : 'DESC')));
+        if ($this->sortMode) $res = array('key' => $this->sortMode[0], 'dir' => new Ac_Js_Var('YAHOO.widget.DataTable.CLASS_'.($this->sortMode[1]? 'ASC' : 'DESC')));
             else $res = null;
         return $res;
     }

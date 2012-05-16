@@ -42,7 +42,7 @@ class Pwg_Yui_Calendar extends Pwg_Base implements Pwg_I_Calendar {
     
 	protected function doGetAssetLibs() {
 		return array_merge(parent::doGetAssetLibs(), array(
-            '{AE}/util.js',
+            '{AC}/util.js',
 			'core.js',
 			'widgets.js',
 			'widgets/yui/calendar.js',
@@ -97,7 +97,7 @@ class Pwg_Yui_Calendar extends Pwg_Base implements Pwg_I_Calendar {
     }
     
     function isZeroDate($date) {
-        return Ae_Util::date($date) === 0; 
+        return Ac_Util::date($date) === 0; 
     }
     
     protected function toFormat($dateOrDates, $format) {
@@ -113,7 +113,7 @@ class Pwg_Yui_Calendar extends Pwg_Base implements Pwg_I_Calendar {
     		elseif ($this->isZeroDate($dateOrDates)) {
     		    $res = ($format === $this->phpDateFormat)? $this->zeroDate : '';
     		} else {
-    		    $res = Ae_Util::date($dateOrDates, $format);
+    		    $res = Ac_Util::date($dateOrDates, $format);
     		}
     	}
     	return $res;
@@ -123,7 +123,7 @@ class Pwg_Yui_Calendar extends Pwg_Base implements Pwg_I_Calendar {
     	$res = array();
     	if (is_array($this->dateClasses)) {
     		foreach($this->dateClasses as $date => $classes) if (is_array($classes) && $classes || strlen($classes)) {
-    			$d = Ae_Util::date($date, 'n/j/Y');
+    			$d = Ac_Util::date($date, 'n/j/Y');
     			if (strlen($d)) {
     				$res[$d] = $classes;
     			}
@@ -234,24 +234,24 @@ class Pwg_Yui_Calendar extends Pwg_Base implements Pwg_I_Calendar {
     	$res = false;
         if (!strlen($this->pageDate)) {
     	    if (!$this->multiple && strlen($this->selectedValue) && !$this->isZeroDate($this->selectedValue)) {
-    	        $strPageDate = Ae_Util::date($this->selectedValue, 'Y-m').'-01';
+    	        $strPageDate = Ac_Util::date($this->selectedValue, 'Y-m').'-01';
     	    }  else {
     	        $strPageDate = date('Y-m').'-01';
     	    } 
     	} else {
     	    $strPageDate = $this->pageDate;
     	}
-    	$res = Ae_Util::date($strPageDate, $this->phpDateFormat);
+    	$res = Ac_Util::date($strPageDate, $this->phpDateFormat);
     	return $res;
     }
     
     function jsGetPageDate() {
-    	//Pwg_Conversation::log("PageDate to set" , $this->pageDate, Ae_Util::date($this->pageDate, 'Y-m-d'), Ae_Util::date($this->pageDate, 'n/Y'));
+    	//Pwg_Conversation::log("PageDate to set" , $this->pageDate, Ac_Util::date($this->pageDate, 'Y-m-d'), Ac_Util::date($this->pageDate, 'n/Y'));
     	if (!strlen($this->pageDate)) {
-    	    if (!$this->multiple && strlen($this->selectedValue) && !$this->isZeroDate($this->selectedValue)) $res = Ae_Util::date($this->selectedValue, 'n/Y'); 
+    	    if (!$this->multiple && strlen($this->selectedValue) && !$this->isZeroDate($this->selectedValue)) $res = Ac_Util::date($this->selectedValue, 'n/Y'); 
     	        else $res = date('n/Y'); 
     	} else {
-    	    $res = Ae_Util::date($this->pageDate, 'n/Y');
+    	    $res = Ac_Util::date($this->pageDate, 'n/Y');
     	}
     	//Pwg_Conversation::log("jsPageDate is ", $res);
     	return $res;
@@ -259,7 +259,7 @@ class Pwg_Yui_Calendar extends Pwg_Base implements Pwg_I_Calendar {
     
     function triggerFrontendPageDate($pageDate) {
     	if (preg_match("#([0-9]{1,2})/([0-9]{1,4})#", $pageDate, $matches)) {
-    		$this->pageDate = Ae_Util::date("{$matches[2]}-{$matches[1]}-01", $this->phpDateFormat);
+    		$this->pageDate = Ac_Util::date("{$matches[2]}-{$matches[1]}-01", $this->phpDateFormat);
     		Pwg_Conversation::log($pageDate, $this->pageDate);
     		$this->triggerEvent(self::evtPageDateChange, array('pageDate' => $this->pageDate));
     	}

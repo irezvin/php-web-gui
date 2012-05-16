@@ -3,16 +3,16 @@
 class Pwg_Record_Ae extends Pwg_Record_Abstract {
 
     /**
-     * @var Ae_Model_Data
+     * @var Ac_Model_Data
      */
     protected $aeModelData = false;
     
-    function __construct(Ae_Model_Data $aeModelData) {
+    function __construct(Ac_Model_Data $aeModelData) {
         $this->aeModelData = $aeModelData;
     }
     
     /**
-     * @return Ae_Model_Data
+     * @return Ac_Model_Data
      */
     function getAeModelData() {
         return $this->aeModelData;
@@ -23,13 +23,13 @@ class Pwg_Record_Ae extends Pwg_Record_Abstract {
     }
 
     /**
-     * @param string|Ae_I_Getter $fieldName
+     * @param string|Ac_I_Getter $fieldName
      */
     function getField($fieldName) {
         if (is_string($fieldName) && $this->aeModelData->hasProperty($fieldName)) {
             $res = $this->aeModelData->getField($fieldName);
         } else {
-            $res = Ae_Autoparams::getObjectProperty($this->aeModelData, $fieldName);
+            $res = Ac_Autoparams::getObjectProperty($this->aeModelData, $fieldName);
         }
         return $res;
     }
@@ -45,7 +45,7 @@ class Pwg_Record_Ae extends Pwg_Record_Abstract {
     }
     
     /**
-     * @param string|Ae_I_Getter $fieldName
+     * @param string|Ac_I_Getter $fieldName
      */
     function getFieldInfo($fieldName) {
         if (is_string($fieldName) && $this->aeModelData->hasProperty($fieldName)) {
@@ -66,7 +66,7 @@ class Pwg_Record_Ae extends Pwg_Record_Abstract {
             if ($otherRecord instanceof Pwg_Record_Ae) {
                 $otherData = $otherRecord->getAeModelData();
                 if ($this->aeModelData === $otherData) $res = true;
-                elseif ($this->aeModelData instanceof Ae_Model_Object && $otherData instanceof Ae_Model_Object) {
+                elseif ($this->aeModelData instanceof Ac_Model_Object && $otherData instanceof Ac_Model_Object) {
                     if ($this->aeModelData->hasFullPrimaryKey() && $otherData->hasFullPrimaryKey()) {
                         $res = $this->aeModelData->matchesPk($otherData->getPrimaryKey());
                     }
@@ -79,7 +79,7 @@ class Pwg_Record_Ae extends Pwg_Record_Abstract {
     
 //  function getUid() {
 //      if ($this->uid === false) {
-//          if ($this->aeModelData instanceof Ae_Model_Object && $this->aeModelData->hasFullPrimaryKey())
+//          if ($this->aeModelData instanceof Ac_Model_Object && $this->aeModelData->hasFullPrimaryKey())
 //              $this->uid = md5($this->aeModelData->getPrimaryKey());
 //          else $this->uid = parent::getUid();
 //      }

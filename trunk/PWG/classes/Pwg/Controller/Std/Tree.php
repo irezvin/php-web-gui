@@ -49,7 +49,7 @@ class Pwg_Controller_Std_Tree extends Pwg_Controller_MDI_Window implements Pwg_I
     protected $mapper = false;
 
     /**
-     * @return Ae_Model_Mapper
+     * @return Ac_Model_Mapper
      */
     function getMapper() {
         if ($this->mapper === false) {
@@ -88,7 +88,7 @@ class Pwg_Controller_Std_Tree extends Pwg_Controller_MDI_Window implements Pwg_I
     
     protected function doOnGetControlPrototypes(& $prototypes) {
         parent::doOnGetControlPrototypes($prototypes);
-        Ae_Util::ms($prototypes, array(
+        Ac_Util::ms($prototypes, array(
             'pnlLayout' => array(
                 'template' => "
                     <table cols='2'>
@@ -178,14 +178,14 @@ class Pwg_Controller_Std_Tree extends Pwg_Controller_MDI_Window implements Pwg_I
         $mapper = $this->getMapper();
         if ($mapper instanceof Pwg_I_Tree_Mapper_NestedSets) {
             $ns = $mapper->getNestedSets();
-            Ae_Util::ms($prototypes, array(
+            Ac_Util::ms($prototypes, array(
                 'dsData' => array(
                     'extraJoins' => array($ns->getJoinClause(array('t', 'id'))),
                     'ordering' => array($ns->getOrderByPart()),
                 )
             ));
         } elseif ($mapper instanceof Pwg_I_Tree_Mapper_AdjacencyList) {
-            Ae_Util::ms($prototypes, array(
+            Ac_Util::ms($prototypes, array(
                 'dsData' => array(
                     'ordering' => array($mapper->database->NameQuote($mapper->getNodeOrderField())),
                 )
@@ -230,11 +230,11 @@ class Pwg_Controller_Std_Tree extends Pwg_Controller_MDI_Window implements Pwg_I
         $this->btnNewSibling->setDisabled(!$sibEnabled);
     }
     
-    protected function doOnNewChild($primaryKey, Ae_Model_Object $currentRecord = null) {
+    protected function doOnNewChild($primaryKey, Ac_Model_Object $currentRecord = null) {
         
     }
     
-    protected function doOnNewSibling($primaryKey, Ae_Model_Object $currentRecord = null) {
+    protected function doOnNewSibling($primaryKey, Ac_Model_Object $currentRecord = null) {
         
     }
     

@@ -31,7 +31,7 @@ class Pwg_Data_Source_Lister_Memory extends Pwg_Data_Source_Lister {
             foreach ($sqlDb->fetchArray($sql) as $row) {
                 $pk = '';
                 foreach ($pkf as $f) {
-                    if (is_a($row[$f], 'DateTime')) $row[$f] = Ae_Util::date($row[$f], 'm/d/Y H:i:s');
+                    if (is_a($row[$f], 'DateTime')) $row[$f] = Ac_Util::date($row[$f], 'm/d/Y H:i:s');
                     $pk .= '_'.$row[$f];
                 }
                 if ($cpkf == 1) $pka = $row[$pkf[0]];

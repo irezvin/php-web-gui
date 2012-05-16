@@ -23,7 +23,7 @@ class Pwg_Backup_List extends Pwg_Autoparams {
             if (is_dir($this->path)) {
                 $d = opendir($this->path);
                 while (($f = readdir($d)) !== false) {
-                    $fn = Ae_Util::addTrailingSlash($this->path).$f;
+                    $fn = Ac_Util::addTrailingSlash($this->path).$f;
                     if (($f !== '.') && ($f !== '..') && is_dir($fn)) $this->backups[$f] = false;
                     Pwg_Conversation::log($f);
                 }

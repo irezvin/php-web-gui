@@ -3,11 +3,11 @@
 class Pwg_Record_Fieldinfo_Ae implements Pwg_I_Record_Fieldinfo {
     
     /**
-     * @var Ae_Model_Property
+     * @var Ac_Model_Property
      */
     var $aeModelProperty = false;
     
-    function __construct(Ae_Model_Property $aeModelProperty) {
+    function __construct(Ac_Model_Property $aeModelProperty) {
         $this->aeModelProperty = $aeModelProperty;
     }
     

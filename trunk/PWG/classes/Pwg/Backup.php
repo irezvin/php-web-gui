@@ -46,24 +46,24 @@ class Pwg_Backup extends Pwg_Autoparams {
     
     function getPrefix() {
         if ($this->prefix === false) {
-            $this->prefix = Ae_Util::date($this->getDateTime(), 'Y-m-d_H-i-s', false);
+            $this->prefix = Ac_Util::date($this->getDateTime(), 'Y-m-d_H-i-s', false);
         }
         return $this->prefix;
     }
     
     function getDirName($withPath = false) {
         $res = $this->getPrefix();
-        if ($withPath) $res = Ae_Util::addTrailingSlash($this->path).$res;
+        if ($withPath) $res = Ac_Util::addTrailingSlash($this->path).$res;
         return $res;
     }
     
     function getMySqlFilename($withPath = false) {
-        $res = Ae_Util::addTrailingSlash($this->getDirName($withPath)).$this->getPrefix().'_mysql.sql.gz';
+        $res = Ac_Util::addTrailingSlash($this->getDirName($withPath)).$this->getPrefix().'_mysql.sql.gz';
         return $res;
     }
     
     function getCommentFilename($withPath = false) {
-        $res = Ae_Util::addTrailingSlash($this->getDirName($withPath)).$this->getPrefix().'_info.dat';
+        $res = Ac_Util::addTrailingSlash($this->getDirName($withPath)).$this->getPrefix().'_info.dat';
         return $res;
     }
     

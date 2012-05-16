@@ -71,7 +71,7 @@ class Pwg_Conversation_Hybrid extends Pwg_Conversation_Abstract {
 	        if (!is_array($_POST['messages']) && !strlen($_POST['messages'])) {
 	        	echo "1"; // check routine
 	        } else {
-	        	if (ini_get('magic_quotes_gpc')) $msgs = Ae_Util::stripSlashes($msgs);
+	        	if (ini_get('magic_quotes_gpc')) $msgs = Ac_Util::stripSlashes($msgs);
 	        	$mess = array();
 	        	foreach ($msgs as $msg) {
 	        		if (isset($msg['msgId']) && ($id = (int) $msg['msgId'])) {
@@ -238,9 +238,9 @@ class Pwg_Conversation_Hybrid extends Pwg_Conversation_Abstract {
     
     function getInitJavascript() {
         ob_start();
-        $initializer = new Ae_Js_Call('Pwg_Protocol', array(array(
+        $initializer = new Ac_Js_Call('Pwg_Protocol', array(array(
           'serverUrl' => $this->baseUrl,
-          'transport' => new Ae_Js_Call('Pwg_Protocol_CometTransport', array(
+          'transport' => new Ac_Js_Call('Pwg_Protocol_CometTransport', array(
               array('sid' => session_id())
           ), true))     
         ), true);

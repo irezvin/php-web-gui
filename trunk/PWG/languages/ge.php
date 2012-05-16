@@ -3,7 +3,7 @@
 
 require(dirname(__FILE__).'/en.php');
 
-Ae_Util::ms($lang, array(
+Ac_Util::ms($lang, array(
 
     'locale_months_short' => "Jan|Feb|Mär|Apr|Mai|Jun|Jul|Aug|Sep|Okt|Nov|Dez",
     'locale_months_long' => implode("|", array(

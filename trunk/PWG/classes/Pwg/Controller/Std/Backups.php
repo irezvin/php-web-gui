@@ -63,7 +63,7 @@ class Pwg_Controller_Std_Backups extends Pwg_Controller_MDI_Window {
         
     protected function doOnGetControlPrototypes (& $prototypes) {
         parent::doOnGetControlPrototypes($prototypes);
-        Ae_Util::ms($prototypes, array(
+        Ac_Util::ms($prototypes, array(
             'pnlLayout' => array(
                 'template' => '
                     <table cols="2">

@@ -188,7 +188,7 @@ class Pwg_Yui_Tree extends Pwg_Element implements Pwg_I_Control_DisplayParent {
             $c->showContainer();
             
         $body = ob_get_clean();
-        $res = Ae_Util::mkElement('div', $body, array('id' => $this->getContainerId().'_insetPanel'));
+        $res = Ac_Util::mkElement('div', $body, array('id' => $this->getContainerId().'_insetPanel'));
         return $res; 
     } 
 
