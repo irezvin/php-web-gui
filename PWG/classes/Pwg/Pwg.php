@@ -16,7 +16,7 @@ class Pwg_Pwg extends Pwg_Application {
     }
     
     static function getInstance($id = null) {
-        return Ae_Application::getInstance('Pwg_Pwg', $id);
+        return Ac_Application::getInstance('Pwg_Pwg', $id);
     }
     
     function setPwg(Pwg_Pwg $pwg) {
@@ -24,7 +24,7 @@ class Pwg_Pwg extends Pwg_Application {
     }
 
     function getDefaultAssetPlaceholders() {
-        $res = array_merge($this->getAvancore()->getAssetPlaceholders(), Ae_Application::getDefaultAssetPlaceholders());
+        $res = array_merge($this->getAvancore()->getAssetPlaceholders(), Ac_Application::getDefaultAssetPlaceholders());
         return $res;
     }
 

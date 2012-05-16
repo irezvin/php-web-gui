@@ -19,7 +19,7 @@ class Pwg_Data_Binder_LookupList extends Pwg_Data_Binder {
     protected $clearAssocOnValueChange = true;
     
     /**
-     * @var Ae_Model_Values
+     * @var Ac_Model_Values
      */
     protected $valuesProvider = false;
 
@@ -158,16 +158,16 @@ class Pwg_Data_Binder_LookupList extends Pwg_Data_Binder {
     }
     
     /**
-     * @return Ae_Model_Values
+     * @return Ac_Model_Values
      */
     function getValuesProvider() {
         if ($this->valuesProvider === false) {
             if ($this->valuesProviderPrototype) {
-                $this->valuesProvider = & Ae_Model_Values::factoryIndependent($this->valuesProviderPrototype);
+                $this->valuesProvider = & Ac_Model_Values::factoryIndependent($this->valuesProviderPrototype);
             }
             elseif ($p = & $this->propInfo) {
                 if (isset($p->values) && $p->values || isset($p->valueList) && is_array($p->valueList)) {
-                    $this->valuesProvider = & Ae_Model_Values::factoryWithProperty($p);
+                    $this->valuesProvider = & Ac_Model_Values::factoryWithProperty($p);
                 }
             }
             else $this->valuesProvider = null;
@@ -203,7 +203,7 @@ class Pwg_Data_Binder_LookupList extends Pwg_Data_Binder {
             if ($this->getActualDummyCaption() !== false) $items[$this->getActualDummyValue()] = $this->getActualDummyCaption();
             $av = $this->getActualValues();
             if (!is_array($av)) $av = array();
-            $items = Ae_Util::m($items, $av, true);
+            $items = Ac_Util::m($items, $av, true);
             Pwg_Base::setProperty($this->dataControl, $this->listPropertyName, $items);
             if ($this->disableIfNoValues) Pwg_Base::setProperty($this->dataControl, 'disabled', !count($av)); 
         }

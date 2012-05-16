@@ -53,7 +53,7 @@ class Pwg_Label extends Pwg_Element {
     }
     
     function getContainerAttribs() {
-        $res = Ae_Util::m($this->containerAttribs, $this->attribs);
+        $res = Ac_Util::m($this->containerAttribs, $this->attribs);
         if ($this->style !== false) $res['style'] = $this->style;
         return $res;
     }

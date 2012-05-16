@@ -22,7 +22,7 @@ class Pwg_Yui_Calendar_PopupWithTime extends Pwg_Yui_Calendar_Popup {
 	protected function doOnGetControlPrototypes(& $prototypes) {
 	    $prototypes = array('edit' => array(), 'timeEdit' => array());
 	    parent::doOnGetControlPrototypes($prototypes);
-	    Ae_Util::ms($prototypes, array(
+	    Ac_Util::ms($prototypes, array(
 	        'timeEdit' => array(
 	            'class' => 'Pwg_Text',
 	            'size' => 10,

@@ -28,7 +28,7 @@ class Pwg_Data_Field_List extends Pwg_Data_Field {
                 'readOnlyPropertyName' => 'readOnly',
             ),
         );
-        Ae_Util::ms($prototypes, $p);
+        Ac_Util::ms($prototypes, $p);
     }
     
     function setDummyCaption($dummyCaption) {
@@ -38,7 +38,7 @@ class Pwg_Data_Field_List extends Pwg_Data_Field {
 
     function getDummyCaption() {
         if ($this->binder) return $this->binder->getDummyCaption();
-            else return Ae_Util::getArrayByPath($this->controlPrototypes, array('binder', 'dummyCaption'), false);
+            else return Ac_Util::getArrayByPath($this->controlPrototypes, array('binder', 'dummyCaption'), false);
     }   
     
 }

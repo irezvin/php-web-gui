@@ -77,7 +77,7 @@ class Pwg_Controller_Std_Details extends Pwg_Controller_MDI_Window {
     }    
 
 	protected function doOnGetControlPrototypes(& $prototypes) {
-		Ae_Util::ms($prototypes, array(
+		Ac_Util::ms($prototypes, array(
 			'dsDetails' => array(
 				'debug' => true,
 				'mapperClass' => $this->mapperClass,

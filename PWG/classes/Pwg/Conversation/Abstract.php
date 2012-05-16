@@ -44,13 +44,13 @@ abstract class Pwg_Conversation_Abstract extends Pwg_Autoparams implements Pwg_I
     protected $webFront = false;
 
     /**
-     * @var Ae_Js
+     * @var Ac_Js
      */
     protected $js = false;
 
     function __construct(array $options = array()) {
         parent::__construct($options);
-        $this->js = new Ae_Js();
+        $this->js = new Ac_Js();
     }
 
     function setRequestData(array $data) {

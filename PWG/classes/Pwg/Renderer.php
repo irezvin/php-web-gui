@@ -30,7 +30,7 @@ class Pwg_Renderer implements Pwg_I_Renderer {
         return $res;
     }
     
-    function getAllInitializers(Ae_Js $js = null) {
+    function getAllInitializers(Ac_Js $js = null) {
         if (is_null($js)) $res = $this->allInitializers;
         else {
             $a = array();

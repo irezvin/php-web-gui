@@ -110,7 +110,7 @@ class Pwg_Group extends Pwg_Element implements Pwg_I_Control_DisplayParent {
         $attribs = $this->attribs;
         if ($this->style) $attribs['style'] = $this->style;
 ?>
-        <table <?php echo Ae_Util::mkAttribs($attribs); ?>>
+        <table <?php echo Ac_Util::mkAttribs($attribs); ?>>
             <tr>
 <?php           foreach ($controls as $control) { ?>
                 <td>
@@ -126,7 +126,7 @@ class Pwg_Group extends Pwg_Element implements Pwg_I_Control_DisplayParent {
         $attribs = $this->attribs;
         if ($this->style) $attribs['style'] = $this->style;
 ?>
-        <div <?php echo Ae_Util::mkAttribs($attribs); ?>>
+        <div <?php echo Ac_Util::mkAttribs($attribs); ?>>
 <?php           foreach ($controls as $control) { ?>
                 <div>
 <?php               $control->showContainer(); ?> 
@@ -140,7 +140,7 @@ class Pwg_Group extends Pwg_Element implements Pwg_I_Control_DisplayParent {
         $attribs = $this->attribs;
         if ($this->style) $attribs['style'] = $this->style;
 ?>
-        <div <?php echo Ae_Util::mkAttribs($attribs); ?>>
+        <div <?php echo Ac_Util::mkAttribs($attribs); ?>>
 <?php           foreach ($controls as $control) { ?>
 <?php               $control->showContainer(); ?> 
 <?php           } ?>                

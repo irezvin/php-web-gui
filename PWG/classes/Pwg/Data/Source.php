@@ -12,7 +12,7 @@ class Pwg_Data_Source extends Pwg_Base {
     protected $groupBy = array();
     
     /**
-     * @var Ae_Model_Object
+     * @var Ac_Model_Object
      */
     protected $currentRecord = false;
 
@@ -222,14 +222,14 @@ class Pwg_Data_Source extends Pwg_Base {
         return $this->mapperClass;
     }
     
-    function setMapper(Ae_Model_Mapper $mapper) {
+    function setMapper(Ac_Model_Mapper $mapper) {
         $this->mapper = $mapper;
         $this->mapperClass = $mapper->getId();
         $this->intReset();
     }
     
     /**
-     * @return Ae_Model_Mapper
+     * @return Ac_Model_Mapper
      */
     function getMapper() {
         if ($this->mapper === false && strlen($this->mapperClass)) $this->mapper = $this->getApplication()->getMapper($this->mapperClass);
@@ -257,7 +257,7 @@ class Pwg_Data_Source extends Pwg_Base {
     }
     
     /**
-     * @return Ae_Model_Object
+     * @return Ac_Model_Object
      */
     function getCurrentRecord() {
         if ($this->currentRecord === false) {
@@ -404,9 +404,9 @@ class Pwg_Data_Source extends Pwg_Base {
             $errors = array();
             $errorsToRecord = array();
             $this->triggerEvent('onBeforeStoreRecord', array('canProceed' => & $canProceed, 'errors' => & $errors, 'record' => & $rec, 'errorsToRecord' => & $errorsToRecord));
-            Ae_Util::ms($errors, $err = $rec->getErrors());
-            if ($errorsToRecord) Ae_Util::ms($rec->_errors, $errorsToRecord);
-            Ae_Util::ms($errors, $errorsToRecord);
+            Ac_Util::ms($errors, $err = $rec->getErrors());
+            if ($errorsToRecord) Ac_Util::ms($rec->_errors, $errorsToRecord);
+            Ac_Util::ms($errors, $errorsToRecord);
             $this->log("Errors are", $err, $rec->_errors);
             $this->log("Values are ", $rec->getDataFields());
             $this->triggerEvent('onValidateRecord', array($errors));
@@ -608,10 +608,10 @@ class Pwg_Data_Source extends Pwg_Base {
 //  DataSource: implementation functions
     
     /**
-     * @return Ae_Model_Collection
+     * @return Ac_Model_Collection
      */
     function createCollection() {
-        $coll = new Ae_Model_Collection($this->mapperClass, false, $this->where? "(".implode(") AND (", $this->where).")" : '', false, $this->extraJoins);
+        $coll = new Ac_Model_Collection($this->mapperClass, false, $this->where? "(".implode(") AND (", $this->where).")" : '', false, $this->extraJoins);
         if ($this->having) $coll->setHaving($this->having);
         if ($this->restrictions) {
         	$hasFalse = false;
@@ -736,7 +736,7 @@ class Pwg_Data_Source extends Pwg_Base {
     }
     
     /**
-     * @return Ae_Sql_Db
+     * @return Ac_Sql_Db
      */
     function getSqlDb() {
         if ($this->sqlDb === false) {
@@ -746,7 +746,7 @@ class Pwg_Data_Source extends Pwg_Base {
     }
     
     /**
-     * @return Ae_Legacy_Database
+     * @return Ac_Legacy_Database
      */
     function getLegacyDb() {
         if ($this->legacyDb === false) {

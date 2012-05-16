@@ -17,7 +17,7 @@ class Pwg_Data_Field_Label extends Pwg_Data_Field {
                 'dataPropertyName' => 'html',
             ),
         );
-        Ae_Util::ms($prototypes, $p);
+        Ac_Util::ms($prototypes, $p);
     }
     
 }

@@ -2,7 +2,7 @@
 
 interface Pwg_I_Queue {
 	
-    function setDb(Ae_Sql_Db $db);
+    function setDb(Ac_Sql_Db $db);
     
 	function setId($id);
 	

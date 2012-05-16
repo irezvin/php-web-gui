@@ -13,7 +13,7 @@ class Pwg_Controller_Std_ListWithDetails extends Pwg_Controller_Std_List {
                 ),
             ),
         );
-        if ($overrides) Ae_Util::ms($res, $overrides);
+        if ($overrides) Ac_Util::ms($res, $overrides);
         return $res;
     }
 
@@ -24,7 +24,7 @@ class Pwg_Controller_Std_ListWithDetails extends Pwg_Controller_Std_List {
         unset($prototypes['btnCreate']);
         unset($prototypes['btnOpenDetails']);
 
-        Ae_Util::ms($prototypes, array(
+        Ac_Util::ms($prototypes, array(
 
             'pnlLayout' => array(
 

@@ -43,7 +43,7 @@ class Pwg_Data_RecordsDisplay_List extends Pwg_List implements Pwg_I_Control_Rec
     /**
      * @return Pwg_Data_RecordsDisplay_List_Option
      */
-    function locateOptionByRecord(Ae_Model_Object $record, $multiple = false) {
+    function locateOptionByRecord(Ac_Model_Object $record, $multiple = false) {
         $key = $record->getPrimaryKey();
         $found = array();
         foreach ($this->options as $opt) {
@@ -68,20 +68,20 @@ class Pwg_Data_RecordsDisplay_List extends Pwg_List implements Pwg_I_Control_Rec
     
 //  Pwg_I_Control_RecordsDisplay    
     
-    function setRecordPrototype(Ae_Model_Object $record = null) {
+    function setRecordPrototype(Ac_Model_Object $record = null) {
     	// prototype isn't used by this control.
     }
     
-    function addRecord(Ae_Model_Object $record, $newIndex = false) {
+    function addRecord(Ac_Model_Object $record, $newIndex = false) {
         $opt = $this->addOption(false, false, $newIndex);
         $opt->setRecord($record);
     }
     
-    function deleteRecord(Ae_Model_Object $record) {
+    function deleteRecord(Ac_Model_Object $record) {
         if (($opt = $this->locateOptionByRecord($record)) && (($k = $this->getOptionKey($opt)) !== false) ) $this->removeOption($k);
     }
     
-    function updateRecord(Ae_Model_Object $record, $newIndex = false) {
+    function updateRecord(Ac_Model_Object $record, $newIndex = false) {
         $o = $this->locateOptionByRecord($record, true);
         if ($o) {
             foreach ($o as $opt) {
@@ -97,7 +97,7 @@ class Pwg_Data_RecordsDisplay_List extends Pwg_List implements Pwg_I_Control_Rec
         foreach ($records as $rec) $this->addRecord($rec);
     }
 
-    function setCurrentRecord(Ae_Model_Object $record = null) {
+    function setCurrentRecord(Ac_Model_Object $record = null) {
         if ($record && $opt = $this->locateOptionByRecord($record)) {
             $opt->setSelected(true);
         } else {
@@ -105,7 +105,7 @@ class Pwg_Data_RecordsDisplay_List extends Pwg_List implements Pwg_I_Control_Rec
         }
     }
     
-    function setRecordErrors(Ae_Model_Object $record, array $errors = array()) {
+    function setRecordErrors(Ac_Model_Object $record, array $errors = array()) {
         // skip it...
     }
     
@@ -119,7 +119,7 @@ class Pwg_Data_RecordsDisplay_List extends Pwg_List implements Pwg_I_Control_Rec
         //return $this->currentRecord;
     }
     
-    function getRecordIndex(Ae_Model_Object $record) {
+    function getRecordIndex(Ac_Model_Object $record) {
         $res = false;
         $pk = $record->getPrimaryKey();
         foreach ($this->listOptions() as $i) {

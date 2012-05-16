@@ -2,7 +2,7 @@
 
 /**
  * @deprecated
- * Use Ae_Finder_Criterion_SearchByProperties
+ * Use Ac_Finder_Criterion_SearchByProperties
  */
-class Pwg_Finder_Criterion_SearchByProperties extends Ae_Finder_Criterion_SearchByProperties {
+class Pwg_Finder_Criterion_SearchByProperties extends Ac_Finder_Criterion_SearchByProperties {
 }

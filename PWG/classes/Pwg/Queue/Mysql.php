@@ -13,7 +13,7 @@ class Pwg_Queue_Mysql extends Pwg_Autoparams implements Pwg_I_Queue {
     protected $sessMapName = '#__cmt_sessmap';
     
     /**
-     * @var Ae_Sql_Db
+     * @var Ac_Sql_Db
      */
     protected $db = false;
 
@@ -26,7 +26,7 @@ class Pwg_Queue_Mysql extends Pwg_Autoparams implements Pwg_I_Queue {
     }
     
 	function setId($id) {
-		if (!$this->db) $this->db = new Ae_Sql_Db_Ae();
+		if (!$this->db) $this->db = new Ac_Sql_Db_Ae();
 		if ($id !== $this->sessId) {
 			$this->sessId = $id;
 			$intId = $this->db->fetchValue("SELECT id FROM {$this->sessMapName} WHERE sessId = ".$this->db->q($id));
@@ -169,13 +169,13 @@ class Pwg_Queue_Mysql extends Pwg_Autoparams implements Pwg_I_Queue {
     	
     }
     
-    function setDb(Ae_Sql_Db $db) {
+    function setDb(Ac_Sql_Db $db) {
         if ($this->db) throw new Exception("Can setDb() only once");
         $this->db = $db;
     }
 
     /**
-     * @return Ae_Sql_Db 
+     * @return Ac_Sql_Db 
      */
     function getDb() {
         return $this->db;

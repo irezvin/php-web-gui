@@ -1,6 +1,6 @@
 <?php
 
-class Pwg_Web_Front extends Ae_Legacy_Controller implements Pwg_I_Web_Front {
+class Pwg_Web_Front extends Ac_Legacy_Controller implements Pwg_I_Web_Front {
     
     var $_defaultMethodName = 'default';
     
@@ -88,7 +88,7 @@ class Pwg_Web_Front extends Ae_Legacy_Controller implements Pwg_I_Web_Front {
     protected $conversation = false;
 
     /**
-     * @var Ae_Js
+     * @var Ac_Js
      */
     protected $js = false;
 
@@ -164,11 +164,11 @@ class Pwg_Web_Front extends Ae_Legacy_Controller implements Pwg_I_Web_Front {
 
         if (!Pwg_Conversation::getCurrentApplication()) Pwg_Conversation::setCurrentApplication($this->application);
         
-        if ($this->topController) $this->registerController (Ae_Autoparams::factory($this->topController, 'Pwg_I_Controller'));
+        if ($this->topController) $this->registerController (Ac_Autoparams::factory($this->topController, 'Pwg_I_Controller'));
 
         
         if ($this->getUseComet()) {
-            $this->conversationOptions = Ae_Util::m(array(
+            $this->conversationOptions = Ac_Util::m(array(
                 'class' => 'Pwg_Conversation_Hybrid',
                 'queuePrototype' => array(
                     'class' => 'Pwg_Queue_Mysql',
@@ -230,7 +230,7 @@ class Pwg_Web_Front extends Ae_Legacy_Controller implements Pwg_I_Web_Front {
             }
         }
         
-        $this->js = new Ae_Js();
+        $this->js = new Ac_Js();
         
         if ($this->conversation->hasToProcessWebRequest()) {
             ob_start();
@@ -269,7 +269,7 @@ class Pwg_Web_Front extends Ae_Legacy_Controller implements Pwg_I_Web_Front {
     
     function showHtml() {
 
-        if (!$this->_response) $this->_response = new Ae_Controller_Response_Html;
+        if (!$this->_response) $this->_response = new Ac_Controller_Response_Html;
         
         $jsl = $this->getInitiallyLoadedAssets();
         foreach ($this->controllers as $c) {
@@ -302,7 +302,7 @@ class Pwg_Web_Front extends Ae_Legacy_Controller implements Pwg_I_Web_Front {
         <head>
 <?php       $this->showHead(); ?>       
         </head>
-        <body<?php if ($this->bodyAttribs) echo ' '.Ae_Util::mkAttribs($this->bodyAttribs); ?>>
+        <body<?php if ($this->bodyAttribs) echo ' '.Ac_Util::mkAttribs($this->bodyAttribs); ?>>
 <?php       $this->showBody(); ?>
         </body>
 </html><?php
@@ -383,7 +383,7 @@ class Pwg_Web_Front extends Ae_Legacy_Controller implements Pwg_I_Web_Front {
     protected function createConversation() {
         //var_dump($this->application->getAdapter()->getVarPath());
         
-    	$options = Ae_Util::m(array(
+    	$options = Ac_Util::m(array(
     		'class' => 'Pwg_Conversation',
     		'tempDir' => $this->application->getAdapter()->getVarPath(),
     		'autoTrapErrors' => true,
@@ -557,7 +557,7 @@ class Pwg_Web_Front extends Ae_Legacy_Controller implements Pwg_I_Web_Front {
 
     function getInitiallyLoadedAssets() {
         $res = array();
-        $res[] = '{AE}/util.js';
+        $res[] = '{AC}/util.js';
         $res[] = 'core.js';
         $res[] = 'uiDefaults.js';
         $res = array_merge($res, $this->defaultJsLibs);

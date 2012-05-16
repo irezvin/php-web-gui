@@ -2,7 +2,7 @@
 
 /**
  * @deprecated
- * Use Ae_Tree_NestedSetsImpl
+ * Use Ac_Tree_NestedSetsImpl
  */
-class Pwg_Tree_NestedSetsImpl extends Ae_Tree_NestedSetsImpl {   
+class Pwg_Tree_NestedSetsImpl extends Ac_Tree_NestedSetsImpl {   
 }

@@ -219,7 +219,7 @@ abstract class Pwg_Base implements Pwg_I_Control, Pwg_I_Refcontrol {
     
     /**
      * Finds topmost control in creation hierarchy. If current control does not have parents, returns current one ($this). 
-     * @return Ae_I_Control
+     * @return Ac_I_Control
      */
     protected function getRootControl() {
         $res = $this;
@@ -640,7 +640,7 @@ abstract class Pwg_Base implements Pwg_I_Control, Pwg_I_Refcontrol {
         $tagName = $this->containerIsBlock? 'div' : 'span';
         $attribs = $this->getContainerAttribs();
         $attribs['id'] = $this->getContainerId();
-        echo Ae_Util::mkElement($tagName, $this->doGetContainerBody(), $attribs);
+        echo Ac_Util::mkElement($tagName, $this->doGetContainerBody(), $attribs);
     }
     
     function pageRender(Pwg_I_Renderer $renderer) {

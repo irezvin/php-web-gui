@@ -314,8 +314,8 @@ class Pwg_Composite extends Pwg_Base implements Pwg_I_Control_Parent, Pwg_I_Obse
         $child->notifyJsObjectInitialized();
         
         $i = $child->getInitializer();
-        $js = new Ae_Js();
-        $initFn = new Ae_Js_Var('function () {'.$i->getInitScript($js).'}');
+        $js = new Ac_Js();
+        $initFn = new Ac_Js_Var('function () {'.$i->getInitScript($js).'}');
         
         // TODO: fix double (at least!) call to initializeControl() of same super-parent (since without syncHash $child->getResponderId() it caused excessive calls to js intantiation methods) 
         $this->sendMessage('initializeControl', array($assetUrls, $initFn), $child->getResponderId());

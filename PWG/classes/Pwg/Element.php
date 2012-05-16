@@ -172,7 +172,7 @@ class Pwg_Element extends Pwg_Base implements Pwg_I_Observer {
                 if ($e === true) { $attribs = array(); }
                 elseif (is_string($e)) { $attribs = array('class' => $e); }
                 elseif (is_array($e)) { $attribs = $e; if (isset($e['_tagName'])) { $t = $e['_tagName']; unset($attribs['tagName']); } }
-                $res = Ae_Util::mkElement($t, $res, $attribs);
+                $res = Ac_Util::mkElement($t, $res, $attribs);
             }
         }
         return $res; 
@@ -183,7 +183,7 @@ class Pwg_Element extends Pwg_Base implements Pwg_I_Observer {
         $attribs = $this->getContainerAttribs();
         $attribs['id'] = $this->getContainerId();
         
-        echo Ae_Util::mkElement($tagName, $this->renderInnerContainers($this->doGetContainerBody()), $attribs);
+        echo Ac_Util::mkElement($tagName, $this->renderInnerContainers($this->doGetContainerBody()), $attribs);
     }
     
     function scrollIntoView() {

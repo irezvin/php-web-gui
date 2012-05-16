@@ -3,7 +3,7 @@
 class Pwg_Uploader extends Pwg_Label {
     
     /**
-     * @var Ae_Upload_Controller
+     * @var Ac_Upload_Controller
      */
     protected $uploadController = false;
     
@@ -51,7 +51,7 @@ class Pwg_Uploader extends Pwg_Label {
         
     }
     
-    function setUploadController(Ae_Upload_Controller $uploadController = null) {
+    function setUploadController(Ac_Upload_Controller $uploadController = null) {
         if ($uploadController !== ($oldUploadController = $this->uploadController)) {
             $this->uploadController = $uploadController;
             $this->needRefresh = true;
@@ -59,7 +59,7 @@ class Pwg_Uploader extends Pwg_Label {
     }
 
     /**
-     * @return Ae_Upload_Controller
+     * @return Ac_Upload_Controller
      */
     function getUploadController() {
         if ($this->uploadController === false) {
@@ -82,7 +82,7 @@ class Pwg_Uploader extends Pwg_Label {
     }
     
     /**
-     * @return Ae_Upload_Manager
+     * @return Ac_Upload_Manager
      */
     function getUploadManager() {
         return $this->getUploadController()->getUploadManager();

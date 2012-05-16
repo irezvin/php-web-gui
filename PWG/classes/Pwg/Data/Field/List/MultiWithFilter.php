@@ -74,7 +74,7 @@ class Pwg_Data_Field_List_MultiWithFilter extends Pwg_Data_Field_List {
                 'labelControlPath' => '../lblShowAll',
             ),
         );
-        Ae_Util::ms($prototypes, $p);
+        Ac_Util::ms($prototypes, $p);
     }
 
     function setIdExpr($idExpr) {

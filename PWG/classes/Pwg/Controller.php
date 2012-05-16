@@ -31,7 +31,7 @@ class Pwg_Controller extends Pwg_Composite_Display implements Pwg_I_Controller {
     }
     
     function execJavascript($javascript) {
-    	$this->sendMessage(__FUNCTION__, array(new Ae_Js_Val($javascript)));
+    	$this->sendMessage(__FUNCTION__, array(new Ac_Js_Val($javascript)));
     }
     
 //  Pwg_Composite
@@ -206,8 +206,8 @@ class Pwg_Controller extends Pwg_Composite_Display implements Pwg_I_Controller {
     protected function getControlPrototypes() {
         if ($this->delegates) {
             $res = array();
-            Ae_Util::ms($res, $this->controlPrototypes);
-            foreach ($this->delegates as $d) Ae_Util::ms($res, $d->getControlPrototypes(true));
+            Ac_Util::ms($res, $this->controlPrototypes);
+            foreach ($this->delegates as $d) Ac_Util::ms($res, $d->getControlPrototypes(true));
             return $res;
         } else return $this->controlPrototypes;
     }

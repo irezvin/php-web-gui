@@ -12,8 +12,8 @@ class Pwg_Controller_Aggregate extends Pwg_Controller {
     }
     
     function listPublicControls() {
-        $myVars = array_keys(Ae_Util::getClassVars(get_class($this)));
-        $parentVars = array_keys(Ae_Util::getClassVars('Pwg_Controller'));
+        $myVars = array_keys(Ac_Util::getClassVars(get_class($this)));
+        $parentVars = array_keys(Ac_Util::getClassVars('Pwg_Controller'));
         return array_diff($myVars, $parentVars);
     }
 
@@ -29,7 +29,7 @@ class Pwg_Controller_Aggregate extends Pwg_Controller {
         $prototypes = parent::getControlPrototypes();
         $this->doOnGetControlPrototypes($prototypes);
         if (is_array($this->prototypesOverride)) {
-            Ae_Util::ms($prototypes, $this->prototypesOverride);
+            Ac_Util::ms($prototypes, $this->prototypesOverride);
         }
         $this->triggerEvent('onGetControlPrototypes', array('prototypes' => & $prototypes));
         return $prototypes;

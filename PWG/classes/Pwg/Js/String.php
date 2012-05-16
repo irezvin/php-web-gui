@@ -2,9 +2,9 @@
 
 /**
  * @deprecated
- * Use Ae_Js_String instead
+ * Use Ac_Js_String instead
  */
-class Pwg_Js_String extends Ae_Js_String {
+class Pwg_Js_String extends Ac_Js_String {
     
     function toJson() {
         return self::toJs();

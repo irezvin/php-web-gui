@@ -136,7 +136,7 @@ class Pwg_Data_Binder_Records extends Pwg_Data_Binder {
      * Removes records from the window;
      * 
      *
-     * @param Ae_Model_Object $record
+     * @param Ac_Model_Object $record
      * @param bool $addFromHead Whether to add new records from the start or from the end of the list 
      */
     protected function deleteRecordFromView($record, $addInStart = false) {
@@ -158,14 +158,14 @@ class Pwg_Data_Binder_Records extends Pwg_Data_Binder {
      * Generally, removes $srcRecord from $srcPosition and replaces it with $destRecord in $destPosition.
      * $srcRecord and $destRecord can be the same; both $srcRecord and $destRecord can be skipped. 
      *
-     * @param Ae_Model_Object $srcRecord Can be NULL
-     * @param Ae_Model_Object  $destRecord Can be NULL
+     * @param Ac_Model_Object $srcRecord Can be NULL
+     * @param Ac_Model_Object  $destRecord Can be NULL
      * @param int $srcPosition If FALSE, will be determined automatically
      * @param int $destPosition If FALSE, will be determined automatically
      */
     protected function transformRecordView($srcRecord, $destRecord, $srcPosition, $destPosition) {
-        $strSrcRecord = $srcRecord instanceof Ae_Model_Object? '#'.$srcRecord->getPrimaryKey() : 'none';
-        $strDestRecord = $destRecord instanceof Ae_Model_Object? '#'.$destRecord->getPrimaryKey() : 'none';
+        $strSrcRecord = $srcRecord instanceof Ac_Model_Object? '#'.$srcRecord->getPrimaryKey() : 'none';
+        $strDestRecord = $destRecord instanceof Ac_Model_Object? '#'.$destRecord->getPrimaryKey() : 'none';
         if ($this->getController())
             $this->getController()->logMessage("Transforming record view: replacing {$strSrcRecord} in '{$srcPosition}' to {$strDestRecord} in '{$destPosition}'");
     }
@@ -319,7 +319,7 @@ class Pwg_Data_Binder_Records extends Pwg_Data_Binder {
     /**
      * Overrides behaviour of parent function
      */
-    protected function internalSetRecord(Ae_Model_Object $record = null) {
+    protected function internalSetRecord(Ac_Model_Object $record = null) {
         $this->currentRecord = $record;
         if ($this->dynamicPropInfo) $this->updatePropInfo();
         if ($this->dataControl) $this->dataControl->setCurrentRecord($record);

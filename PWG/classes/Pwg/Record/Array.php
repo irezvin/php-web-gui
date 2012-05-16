@@ -21,7 +21,7 @@ class Pwg_Record_Array extends Pwg_Record_Abstract {
     }
     
     protected function doUpdateData(array $data) {
-        Ae_Util::ms($this->data, $data);
+        Ac_Util::ms($this->data, $data);
     }
     
     /**

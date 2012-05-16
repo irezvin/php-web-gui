@@ -40,7 +40,7 @@ class Pwg_Data_Filter extends Pwg_Base {
     protected $initDefaultsFromDataSource = true;
 
     /**
-     * Aliases to exclude from Ae_Sql_Select joins (in case when they already are in the dataSource extraJoins) 
+     * Aliases to exclude from Ac_Sql_Select joins (in case when they already are in the dataSource extraJoins) 
      * @var array
      */
     protected $excludeAliases = array();
@@ -183,22 +183,22 @@ class Pwg_Data_Filter extends Pwg_Base {
         $this->sqlPartPrototypes = $sqlPartPrototypes;
     }
 
-    function setSqlSelect(Ae_Sql_Select $sqlSelect = null) {
+    function setSqlSelect(Ac_Sql_Select $sqlSelect = null) {
         if ($sqlSelect !== ($oldSqlSelect = $this->sqlSelect)) {
             $this->sqlSelect = $sqlSelect;
         }
     }
 
     /**
-     * @return Ae_Sql_Select
+     * @return Ac_Sql_Select
      */
     function createSqlSelect() {
         if ($f = $this->getFinder()) {
             $res = $f->createSqlSelect();
         } elseif ($this->sqlSelectPrototype) {
-            $res = new Ae_Sql_Select($this->getApplication()->getDb(), $this->sqlSelectPrototype);
+            $res = new Ac_Sql_Select($this->getApplication()->getDb(), $this->sqlSelectPrototype);
         } else {
-            $res = new Ae_Sql_Select($this->getApplication()->getDb(), array(
+            $res = new Ac_Sql_Select($this->getApplication()->getDb(), array(
                 'primaryAlias' => $this->dataSource->getAlias(),
                 'tables' => array(
                     $this->dataSource->getAlias() => array('tableName' => $this->dataSource->getMapper()->tableName),
@@ -219,13 +219,13 @@ class Pwg_Data_Filter extends Pwg_Base {
             if (is_array($this->sqlPartPrototypes))
                 foreach ($this->sqlPartPrototypes as $id => $proto) {
                     $proto['id'] = $id;
-                    $this->sqlParts[$id] = Ae_Sql_Part::factory($proto);
+                    $this->sqlParts[$id] = Ac_Sql_Part::factory($proto);
                 }
         }
         return array_keys($this->sqlParts);
     }
     
-    function addSqlPart(Ae_Sql_Part $part, $key = false) {
+    function addSqlPart(Ac_Sql_Part $part, $key = false) {
         if ($key === false) $key = $part->id; else $part->id = $key;
         if ($key === false) $key = $part->id = 'part'.count($this->listSqlParts);
         if (in_array($key, $this->listSqlParts())) throw new Exception("Part '{$key}' is already in the parts collection");
@@ -239,7 +239,7 @@ class Pwg_Data_Filter extends Pwg_Base {
     
     /**
      * @param string $key
-     * @return Ae_Sql_Part
+     * @return Ac_Sql_Part
      */
     function getSqlPart($key) {
         if (!in_array($key, $this->listSqlParts())) throw new Exception("No such sql part: '{$key}'");

@@ -2,7 +2,7 @@
 
 /**
  * @deprecated
- * Use Ae_Tree_NestedSetsMapper
+ * Use Ac_Tree_NestedSetsMapper
  */
-class Pwg_Tree_NestedSetsMapper extends Ae_Tree_NestedSetsMapper { 
+class Pwg_Tree_NestedSetsMapper extends Ac_Tree_NestedSetsMapper { 
 }

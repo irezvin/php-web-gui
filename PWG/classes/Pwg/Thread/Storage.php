@@ -15,7 +15,7 @@ class Pwg_Thread_Storage_File extends Pwg_Autoparams implements Pwg_I_Thread_Sto
         if (!strlen($this->dirName)) {
             $dirName = '';
             if (defined('PAX_TMP_PATH')) $dirName = PAX_TMP_PATH; 
-            elseif (class_exists('Ae_Dispatcher')) $dirName = Ae_Dispatcher::getInstance()->getCacheDir();
+            elseif (class_exists('Ac_Dispatcher')) $dirName = Ac_Dispatcher::getInstance()->getCacheDir();
             if (strlen($dirName)) $this->setDirName($dirName);
         }
         return $this->dirName;

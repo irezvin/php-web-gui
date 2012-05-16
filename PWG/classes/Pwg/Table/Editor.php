@@ -23,7 +23,7 @@ class Pwg_Table_Editor extends Pwg_Base {
     }
     
     function toJs() {
-        return new Ae_Js_Call($this->jsEditorClass, array($this->jsEditorOptions), true);
+        return new Ac_Js_Call($this->jsEditorClass, array($this->jsEditorOptions), true);
     }
 
     protected function setJsEditorOptions($jsEditorOptions) {

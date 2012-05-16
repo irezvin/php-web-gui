@@ -2,7 +2,7 @@
 
 /**
  * @deprecated
- * Use Ae_Finder
+ * Use Ac_Finder
  */
-class Pwg_Finder extends Ae_Finder {
+class Pwg_Finder extends Ac_Finder {
 }

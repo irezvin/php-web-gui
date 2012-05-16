@@ -29,7 +29,7 @@ class Pwg_Controller_Std_About extends Pwg_Controller_MDI_Window {
     }	
     
     protected function getControlPrototypes() {
-        return Ae_Util::m(array(
+        return Ac_Util::m(array(
         	'lblAboutText' => array(
         		'class' => 'Pwg_Label',
         		'containerIsBlock' => false,

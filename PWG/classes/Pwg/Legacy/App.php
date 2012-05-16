@@ -4,7 +4,7 @@
  * @deprecated
  * Use Pwg_Application instead
  */
-abstract class Pwg_Legacy_App extends Pwg_Autoparams implements Ae_I_Lang_ResourceProvider {
+abstract class Pwg_Legacy_App extends Pwg_Autoparams implements Ac_I_Lang_ResourceProvider {
     
     protected $currentUserId = false;
     
@@ -14,12 +14,12 @@ abstract class Pwg_Legacy_App extends Pwg_Autoparams implements Ae_I_Lang_Resour
     protected $currentUser = false;
     
     /**
-     * @var Ae_Legacy_Database
+     * @var Ac_Legacy_Database
      */
     protected $db = false;
     
     /**
-     * @var Ae_Sql_Db_Ae
+     * @var Ac_Sql_Db_Ae
      */
     protected $sqlDb = false;
     
@@ -28,21 +28,21 @@ abstract class Pwg_Legacy_App extends Pwg_Autoparams implements Ae_I_Lang_Resour
     protected $langStrings = array();
     
     /**
-     * @return Ae_Legacy_Database
+     * @return Ac_Legacy_Database
      */
     function getDb() {
         if ($this->db === false) {
-            $disp = Ae_Dispatcher::getInstance();
+            $disp = Ac_Dispatcher::getInstance();
             $this->db = & $disp->database;
         }
         return $this->db;
     }
 
     /**
-     * @return Ae_Sql_Db_Ae
+     * @return Ac_Sql_Db_Ae
      */
     function getSqlDb() {
-    	if ($this->sqlDb === false) $this->sqlDb = new Ae_Sql_Db_Ae($this->getDb());
+    	if ($this->sqlDb === false) $this->sqlDb = new Ac_Sql_Db_Ae($this->getDb());
     	return $this->sqlDb;
     }
     
@@ -94,18 +94,18 @@ abstract class Pwg_Legacy_App extends Pwg_Autoparams implements Ae_I_Lang_Resour
     }
 
     /**
-     * @return Ae_Image_Upload_Controller
+     * @return Ac_Image_Upload_Controller
      */
     function getImageUploadController() {
         return $this->createImageUploadController();
     }
     
     /**
-     * @return Ae_Image_Upload_Controller
+     * @return Ac_Image_Upload_Controller
      */
     function createImageUploadController() {
         $baseUrl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
-        $uCtx = new Ae_Legacy_Controller_Context_Http(array(
+        $uCtx = new Ac_Legacy_Controller_Context_Http(array(
             'baseUrl' => $baseUrl.'?c=img', 
         ));
         $uCtx->populate('request', 'imageUploader');
@@ -114,12 +114,12 @@ abstract class Pwg_Legacy_App extends Pwg_Autoparams implements Ae_I_Lang_Resour
             'uploadManagerOptions' => $this->getUploadManagerOptions(),
             'templateExtraVars' => $this->getUploadControllerLangVars(),
         );
-        $uc = new Ae_Image_Upload_Controller($uCtx, $controllerOptions, 'imageUploadController');
+        $uc = new Ac_Image_Upload_Controller($uCtx, $controllerOptions, 'imageUploadController');
         return $uc;
     }
     
     /**
-     * @return Ae_Upload_Controller
+     * @return Ac_Upload_Controller
      */
     function getUploadController() {
         return $this->createUploadController();
@@ -227,11 +227,11 @@ abstract class Pwg_Legacy_App extends Pwg_Autoparams implements Ae_I_Lang_Resour
 	}
     
     /**
-     * @return Ae_Upload_Controller
+     * @return Ac_Upload_Controller
      */
     function createUploadController() {
         $baseUrl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
-        $uCtx = new Ae_Legacy_Controller_Context_Http(array(
+        $uCtx = new Ac_Legacy_Controller_Context_Http(array(
             'baseUrl' => $baseUrl.'?c=file', 
         ));
         $uCtx->populate('request', 'uploader');
@@ -240,12 +240,12 @@ abstract class Pwg_Legacy_App extends Pwg_Autoparams implements Ae_I_Lang_Resour
             'uploadManagerOptions' => $this->getUploadManagerOptions(),
             'templateExtraVars' => $this->getUploadControllerLangVars(),
         );
-        $uc = new Ae_Upload_Controller($uCtx, $controllerOptions, 'uploadController');
+        $uc = new Ac_Upload_Controller($uCtx, $controllerOptions, 'uploadController');
         return $uc;
     }
     
     function instantiateDispatcher() {
-        Ae_Dispatcher::instantiate(get_class($this).'_Dispatcher', false, $this->getDispatcherLang(), 'Ae_Legacy_Adapter_Native', 'Ae_Dispatcher', 
+        Ac_Dispatcher::instantiate(get_class($this).'_Dispatcher', false, $this->getDispatcherLang(), 'Ac_Legacy_Adapter_Native', 'Ac_Dispatcher', 
             array('configPath' => 'app.config.php'));       
     }
 
@@ -264,14 +264,14 @@ abstract class Pwg_Legacy_App extends Pwg_Autoparams implements Ae_I_Lang_Resour
             header('content-type: text/html; charset=utf8');
             $c = $this->createImageUploadController();
             $r = $c->getResponse();
-            $o = new Ae_Output_Native(array('showOuterHtml' => true));
+            $o = new Ac_Output_Native(array('showOuterHtml' => true));
             $o->outputResponse($r);
             $res = true;
         } elseif(isset($_REQUEST['c']) && ($_REQUEST['c'] == 'file')) {
             header('content-type: text/html; charset=utf8');
             $c = $this->createUploadController();
             $r = $c->getResponse();
-            $o = new Ae_Output_Native(array('showOuterHtml' => true));
+            $o = new Ac_Output_Native(array('showOuterHtml' => true));
             $o->outputResponse($r);
             $res = true;
         } 
