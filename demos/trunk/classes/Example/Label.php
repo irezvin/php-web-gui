@@ -27,7 +27,7 @@ class Example_Label extends Pwg_Controller_Aggregate {
     }
     
     function doOnGetControlPrototypes(& $prototypes) {
-        Ae_Util::ms($prototypes, array(
+        Ac_Util::ms($prototypes, array(
             
             'lblSimple' => array(
                 'html' => 'A simple label HTML'
@@ -77,7 +77,7 @@ class Example_Label extends Pwg_Controller_Aggregate {
     }
     
     // {clickableHandler}
-    function handleLblClickableClick(Pmt_Label $label, $eventType, array $params) {
+    function handleLblClickableClick(Pwg_Label $label, $eventType, array $params) {
         if ($params['href'] == '##link1') $message = 'Link 1 clicked';
             elseif ($params['href'] == '##link2') $message = 'Link 2 clicked';
             else $message = 'No A element clicked';

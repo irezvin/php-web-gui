@@ -3,7 +3,7 @@
 /**
  * PwgDemos examples index
  */
-class Pd_Index extends Ae_Legacy_Controller {
+class Pd_Index extends Ac_Legacy_Controller {
 
     var $_templateClass = 'Pd_Index_Template';
     
@@ -52,7 +52,7 @@ class Pd_Index extends Ae_Legacy_Controller {
             if (!isset($this->descriptions[$class])) {
                 $descClass = str_replace('Example', 'Description', $class);
                 if (class_exists($descClass, true)) {
-                    $res = $this->descriptions[$class] = Ae_Autoparams::factory(array(
+                    $res = $this->descriptions[$class] = Ac_Autoparams::factory(array(
                         'class' => $descClass,
                         'index' => $this,
                         'exampleClass' => $class,
@@ -77,7 +77,7 @@ class Pd_Index extends Ae_Legacy_Controller {
         $res = false;
         if (strlen($class = $this->getExample())) {
             $wf = $this->application->getWebFront();
-            $u = new Ae_Url($wf->baseUrl);
+            $u = new Ac_Url($wf->baseUrl);
             $u->query['example'] = $class;
             $wf->baseUrl = ''.$u;
             $u->query['reset'] = 1;

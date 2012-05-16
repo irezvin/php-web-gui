@@ -52,7 +52,7 @@ abstract class Pd_Description {
     
     function showExampleLink($className, $text = false) {
         if ($text === false) $text = $className;
-        $res = Ae_Util::mkElement('a', $className, array('href' => $this->index->getUrl(array('example' => $className), false)));
+        $res = Ac_Util::mkElement('a', $className, array('href' => $this->index->getUrl(array('example' => $className), false)));
         return $res;
     }
     
@@ -110,7 +110,7 @@ abstract class Pd_Description {
             <div class='body'>
 <?php       ob_start(); $this->showExampleBody(); $foo = ob_get_clean(); ?>
                 
-                <?php Ae_Indent::s($foo); ?>
+                <?php Ac_Indent::s($foo); ?>
                 
             </div>
         </div>

@@ -1,6 +1,6 @@
 <?php
 
-class Pd_Index_Template extends Ae_Template_Html {
+class Pd_Index_Template extends Ac_Template_Html {
  
     var $exampleBody = false;
     var $exampleClass = false;
@@ -32,9 +32,9 @@ class Pd_Index_Template extends Ae_Template_Html {
             $attribs = array('href' => $item['url']);
             $liAttribs = array();
             if ($item['current']) $liAttribs['class'] = 'current';
-            $links[] = Ae_Util::mkElement('li', Ae_Util::mkElement('a', $item['title'], $attribs), $liAttribs);
+            $links[] = Ac_Util::mkElement('li', Ac_Util::mkElement('a', $item['title'], $attribs), $liAttribs);
         }
-        echo Ae_Util::mkElement('ul', "\n    ".implode("\n    ", $links));
+        echo Ac_Util::mkElement('ul', "\n    ".implode("\n    ", $links));
     }
     
     function showWrap($body) {
@@ -53,11 +53,11 @@ class Pd_Index_Template extends Ae_Template_Html {
                 <br /><small>Examples and tutorials</small>
 
             </div>
-            <?php Ae_Indent::s($idx); ?>
+            <?php Ac_Indent::s($idx); ?>
             <div class='clr'></div>
         </div>
         <div class='main'>
-            <?php Ae_Indent::s($body); ?>
+            <?php Ac_Indent::s($body); ?>
             <div class='clr'></div>
         </div>
         <div class='footer'>

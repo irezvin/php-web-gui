@@ -18,7 +18,7 @@ class Pd_PwgDemos extends Pwg_Application {
     }
     
     static function getInstance($id = null) {
-        return Ae_Application::getInstance('Pd_PwgDemos', $id);
+        return Ac_Application::getInstance('Pd_PwgDemos', $id);
     }
     
 }
